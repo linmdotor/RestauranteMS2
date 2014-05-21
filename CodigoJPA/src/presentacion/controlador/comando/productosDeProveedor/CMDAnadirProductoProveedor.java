@@ -5,7 +5,7 @@ import negocio.factoria.FactoriaNegocio;
 import presentacion.controlador.CMD;
 import presentacion.controlador.RespuestaCMD;
 
-public class CMDAñadirProductoProveedor implements CMD {
+public class CMDAnadirProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		RespuestaCMD res = null;
