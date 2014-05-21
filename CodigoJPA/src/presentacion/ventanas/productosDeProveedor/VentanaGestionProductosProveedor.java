@@ -128,7 +128,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		btnAnadirProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.AÑADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, proveedor);				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
