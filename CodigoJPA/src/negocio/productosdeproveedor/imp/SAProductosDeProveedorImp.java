@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
@@ -11,6 +12,8 @@ import javax.persistence.TypedQuery;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 import principal.Principal;
+import negocio.excepciones.ExcepcionPersonalizada;
+import negocio.jpa.EntityManagerFactoryPlus;
 import negocio.producto.Producto;
 import negocio.producto.ProductoPerecedero;
 import negocio.producto.TProducto;
@@ -23,6 +26,7 @@ import negocio.proveedor.Proveedor;
 import negocio.proveedor.SAProveedor;
 import negocio.proveedor.TProveedor;
 import negocio.proveedor.ValidarTProveedor;
+import negocio.proveedor.servicioAplicacion.imp.NoResultException;
 
 public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
@@ -82,6 +86,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		@SuppressWarnings("unchecked")
 		List<ProductosDeProveedor> listaProductosDeProveedores = query.getResultList();
 		
+		
 		em.close();
 		emf.close();
 
@@ -93,8 +98,52 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			throws Exception {
 
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto de Proveedor.");
-			
 
+		Proveedor proveedorObtenido = null;
+		//ProductosDeProveedor productoDeProveedorObtenido = null;
+		TypedQuery<Proveedor> queryProveedor = null;
+		//TypedQuery<ProductosDeProveedor> queryProductoProveedor = null;
+		TProductoDeProveedor nuevoProductoDeProveedor = new TProductoDeProveedor();
+		nuevoProductoDeProveedor = (TProductoDeProveedor)objeto;
+		
+		if(nuevoProductoDeProveedor.getPrecio() > 0){
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");	
+			EntityManager em = emf.createEntityManager();
+			
+			try {
+							
+				em.getTransaction().begin();			
+	
+				Proveedor proveedor = em.find(Proveedor.class, nuevoProductoDeProveedor.getProveedor());
+				Producto producto = em.find(Producto.class, nuevoProductoDeProveedor.getProducto());
+				
+				em.lock(proveedorObtenido, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+				
+				// Actualizamos
+				
+				proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(nuevoProductoDeProveedor)).setPrecio(nuevoProductoDeProveedor.getPrecio());
+				
+				em.getTransaction().commit();
+				
+				respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha modificado el Producto de Proveedor.");
+				
+			} catch(OptimisticLockException oe) {
+				
+				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+			}			
+			catch (Exception e) {
+				
+				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar un producto de un proveedor. Error al insertar los datos.");
+				
+			} finally {
+				 
+				em.close();
+				emf.close();
+				
+			 }
+		} else
+			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "El Precio debe ser entero positivo.");
+		
 		return respuestaComando;
 	}
 

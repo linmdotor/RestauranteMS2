@@ -174,13 +174,13 @@ public class SAProductoImp implements SAProducto {
 					if(productoNuevo.getTipoProducto().equals("Perecedero")){
 						
 						//ProductoPerecedero producto = new ProductoPerecedero((TProductoPerecedero) tproducto);
-						ProductoPerecedero producto = em.find(Producto.class, tproducto.getId_producto());	
+						ProductoPerecedero producto = (ProductoPerecedero) em.find(Producto.class, tproducto.getId_producto());	
 						producto.setAll(tproducto);
 						
 					}else{
 						
 						//ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) tproducto);
-						ProductoNoPerecedero producto = em.find(Producto.class, tproducto.getId_producto());	
+						ProductoNoPerecedero producto = (ProductoNoPerecedero) em.find(Producto.class, tproducto.getId_producto());	
 						producto.setAll(tproducto);
 					}
 						
