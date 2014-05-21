@@ -8,9 +8,14 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDBajaProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-
-		return FactoriaNegocio.obtenerInstancia().generaSAProveedor().bajaProveedor(FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores().get((Integer) objeto).getId_proveedor());
-
+		RespuestaCMD res = null;
+		try {
+			res = FactoriaNegocio.obtenerInstancia().generaSAProveedor().bajaProveedor(FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores().get((Integer) objeto).getId_proveedor());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 }

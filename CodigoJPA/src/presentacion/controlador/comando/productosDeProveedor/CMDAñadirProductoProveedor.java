@@ -8,8 +8,14 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDAñadirProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-
-		return FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().anadirProductoProveedor(objeto);
+		RespuestaCMD res = null;
+		try {
+			res = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().anadirProductoProveedor(objeto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 }

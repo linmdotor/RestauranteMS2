@@ -81,7 +81,7 @@ public class SAProductoImp implements SAProducto {
 	@SuppressWarnings("unchecked")
 	public List<Producto> obtenerProductos() throws Exception {		
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -101,7 +101,7 @@ public class SAProductoImp implements SAProducto {
 		
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de alta un producto.");
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		TProducto productoNuevo = new TProducto();
@@ -158,7 +158,7 @@ public class SAProductoImp implements SAProducto {
 		
 		if (new ValidarTProducto().productoCorrecto(tproducto)){		
 		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");			
 			EntityManager em = emf.createEntityManager();
 			
 			
@@ -216,7 +216,7 @@ public class SAProductoImp implements SAProducto {
 		
 		if (ID >= 0){				
 		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
 			try {

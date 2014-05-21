@@ -94,7 +94,7 @@ public class SAPedidoImp implements SAPedido{
 	
 	public List<TPedidoProducto> obtenerPedidoProductos (int IDPedido)
 	{
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -111,7 +111,7 @@ public class SAPedidoImp implements SAPedido{
 	@SuppressWarnings("unchecked")
 	public List<Pedido> obtenerPedidos(){
 	
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -135,7 +135,7 @@ public class SAPedidoImp implements SAPedido{
 		
 		if (IDprov >= 0){
 								
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
 			try {
@@ -193,7 +193,7 @@ public class SAPedidoImp implements SAPedido{
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error creando el pedido.");
 		Calendar fecha = new GregorianCalendar();
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 		
 		//lo almacenamos Todo (el pedido y productos)
@@ -240,7 +240,7 @@ public class SAPedidoImp implements SAPedido{
 		
 		if (ID >= 0){
 			
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 			EntityManager em = emf.createEntityManager();
 			
 			try{
@@ -280,7 +280,7 @@ public class SAPedidoImp implements SAPedido{
 		
 		if (ID >= 0){
 			
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 			EntityManager em = emf.createEntityManager();
 			
 			try{

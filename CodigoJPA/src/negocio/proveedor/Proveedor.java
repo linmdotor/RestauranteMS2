@@ -106,13 +106,13 @@ public class Proveedor implements Serializable {
 		this.listaProductosProveedor = listaProductosProveedor;
 	}
 
-    public List<Producto> getListaProductos() {
+    /*public List<Producto> getListaProductos() {
 		return listaProductos;
 	}
 
 	public void setListaProductos(List<Producto> listaProductos) {
 		this.listaProductos = listaProductos;
-	}
+	}*/
 	
 
 	public int getId_proveedor() {

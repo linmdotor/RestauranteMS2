@@ -12,8 +12,6 @@ import javax.persistence.TypedQuery;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 import principal.Principal;
-import negocio.excepciones.ExcepcionPersonalizada;
-import negocio.jpa.EntityManagerFactoryPlus;
 import negocio.producto.Producto;
 import negocio.producto.ProductoPerecedero;
 import negocio.producto.TProducto;
@@ -26,7 +24,6 @@ import negocio.proveedor.Proveedor;
 import negocio.proveedor.SAProveedor;
 import negocio.proveedor.TProveedor;
 import negocio.proveedor.ValidarTProveedor;
-import negocio.proveedor.servicioAplicacion.imp.NoResultException;
 
 public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
@@ -77,7 +74,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	public List<ProductosDeProveedor> obtenerProductosProveedor(Object objecto)
 			throws Exception {
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -107,7 +104,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		nuevoProductoDeProveedor = (TProductoDeProveedor)objeto;
 		
 		if(nuevoProductoDeProveedor.getPrecio() > 0){
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");	
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");	
 			EntityManager em = emf.createEntityManager();
 			
 			try {

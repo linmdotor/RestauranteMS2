@@ -84,7 +84,7 @@ public class SAProveedorImp implements SAProveedor {
 	@SuppressWarnings("unchecked")
 	public List<Proveedor> obtenerProveedores() throws Exception{		
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -109,7 +109,7 @@ public class SAProveedorImp implements SAProveedor {
 			
 			proveedor = new Proveedor((TProveedor) objeto);
 								
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
 			try {
@@ -149,7 +149,7 @@ public class SAProveedorImp implements SAProveedor {
 			
 		if (new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto)){		
 		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
 			try {
@@ -192,7 +192,7 @@ public class SAProveedorImp implements SAProveedor {
 		
 		if (ID >= 0){				
 		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ServicioProducto");		
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
 			try {
