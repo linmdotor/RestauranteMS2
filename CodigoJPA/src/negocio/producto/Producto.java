@@ -6,8 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import negocio.pedido.PedidoProducto;
-
 import negocio.productosdeproveedor.*;
+import negocio.proveedor.Proveedor;
 
 
 /**
@@ -48,12 +48,14 @@ public class Producto implements Serializable {
     	PERECEDERO, NO_PERECEDERO /* En la base de datos, seran 0 y 1 respectivamente */
     };
     private TipoProducto tipoProducto;
+    
 	// Relaciones JPA
     @OneToMany(mappedBy="producto")
     private List<ProductosDeProveedor> listaProductosProveedor;
     
     @OneToMany(mappedBy="producto")
     private List<PedidoProducto> listaProductosPedido;
+
 	
 	// Constructores
 	

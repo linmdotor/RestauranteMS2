@@ -60,8 +60,8 @@ public class Proveedor implements Serializable {
     private int version;
 	// Relaciones JPA
 	
-    @ManyToMany(mappedBy = "listaProveedores")
-    private List<Producto> listaProductos;
+    //@ManyToMany(mappedBy = "listaProveedores")
+    //private List<Producto> listaProductos;
 
 	@OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
     private List<ProductosDeProveedor> listaProductosProveedor;
