@@ -75,7 +75,7 @@ public class VentanaGestionPedidos extends JFrame{
 		setResizable(false);
 		
 		setSize(798, 390);
-		setVisible(true);
+		//setVisible(true);
 		this.setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
