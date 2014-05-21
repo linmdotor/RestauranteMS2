@@ -45,7 +45,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		try {
 			
 			em.getTransaction().begin();
-				
+			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			em.persist(precioProductoProveedor);
 			
 			em.getTransaction().commit();	
@@ -96,10 +96,8 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto de Proveedor.");
 
-		Proveedor proveedorObtenido = null;
-		//ProductosDeProveedor productoDeProveedorObtenido = null;
-		TypedQuery<Proveedor> queryProveedor = null;
-		//TypedQuery<ProductosDeProveedor> queryProductoProveedor = null;
+		//Proveedor proveedorObtenido = null;
+
 		TProductoDeProveedor nuevoProductoDeProveedor = new TProductoDeProveedor();
 		nuevoProductoDeProveedor = (TProductoDeProveedor)objeto;
 		
@@ -114,7 +112,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 				Proveedor proveedor = em.find(Proveedor.class, nuevoProductoDeProveedor.getProveedor());
 				Producto producto = em.find(Producto.class, nuevoProductoDeProveedor.getProducto());
 				
-				em.lock(proveedorObtenido, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+				em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 				
 				// Actualizamos
 				
@@ -126,9 +124,13 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 				
 			} catch(OptimisticLockException oe) {
 				
+				em.getTransaction().rollback();
+				
 				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
 			}			
 			catch (Exception e) {
+				
+				em.getTransaction().rollback();
 				
 				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar un producto de un proveedor. Error al insertar los datos.");
 				
@@ -145,11 +147,55 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	}
 
 	@Override
-	public RespuestaCMD bajaProductoProveedor() throws Exception {
+	public RespuestaCMD bajaProductoProveedor(Object objeto) throws Exception {
 
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un Producto de Proveedor.");
 			
+		
+		TProductoDeProveedor tproductodeproveedor = new TProductoDeProveedor();
+		tproductodeproveedor=(TProductoDeProveedor) objeto;
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+			
+			em.getTransaction().begin();			
 
+			Proveedor proveedor = em.find(Proveedor.class, tproductodeproveedor.getProveedor());
+			Producto producto = em.find(Producto.class, tproductodeproveedor.getProducto());
+			
+			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			
+			// Borramos
+			
+			em.remove(proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tproductodeproveedor)));
+									
+			proveedor.getListaProductosProveedor().remove(proveedor.getListaProductosProveedor().indexOf(tproductodeproveedor));
+			
+			em.getTransaction().commit();
+			
+			respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha eliminado Producto de Proveedor.");
+			
+		} catch(OptimisticLockException oe) {
+			
+			em.getTransaction().rollback();
+			
+			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+		}			
+		catch (Exception e) {
+			
+			em.getTransaction().rollback();
+			
+			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar producto de un proveedor. Error al insertar los datos.");
+			
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		}
+		
 		return respuestaComando;
 	}
 
