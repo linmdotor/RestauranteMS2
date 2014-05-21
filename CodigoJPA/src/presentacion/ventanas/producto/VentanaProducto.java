@@ -391,14 +391,15 @@ public class VentanaProducto extends JFrame {
 		textFieldID.setText(Integer.toString(tProducto.getId_producto()));
 		textFieldNombre.setText(tProducto.getNombre());
 		textFieldStock.setText(Integer.toString(tProducto.getStock()));
-		
+		//importantisimo, no entra en ninguno de los dos, hay que mirar porque no devuelve ninguno de los dos
 		if(tProducto instanceof TProductoPerecedero)
 		{
 			TProductoPerecedero tProducto_aux = (TProductoPerecedero) tProducto;
+			
 			comboBoxTipo.setSelectedItem(EnumTipoProducto.Perecedero);
 			textFieldFecha.setText(tProducto_aux.getFechaCaducidad());
 		}
-		else //if(boProducto instanceof BOProductoNoPerecedero)
+		if(tProducto instanceof TProductoNoPerecedero)
 		{
 			TProductoNoPerecedero tProducto_aux = (TProductoNoPerecedero) tProducto;
 			comboBoxTipo.setSelectedItem(EnumTipoProducto.NO_Perecedero);

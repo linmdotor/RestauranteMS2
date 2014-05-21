@@ -17,6 +17,7 @@ public class CMDModificarFormularioProducto implements CMD {
 			if(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProducto(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProductos().get((int) objeto).getId_producto()) != null)
 			{
 				respuestaCMD = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO, FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProducto(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProductos().get((int) objeto).getId_producto()));
+				
 			} else {
 				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Producto seleccionado");
 			}

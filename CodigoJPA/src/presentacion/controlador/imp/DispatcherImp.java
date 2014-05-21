@@ -44,6 +44,7 @@ public class DispatcherImp extends Dispatcher {
 				break;
 	
 			case MODIFICAR_FORMULARIO_PRODUCTO:
+				
 				vistaProducto.modificarFormulario(respuestaCMD.getObjeto());
 				break;
 	
