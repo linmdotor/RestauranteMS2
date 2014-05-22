@@ -24,6 +24,7 @@ public class ProductosDeProveedor {
 
 	public ProductosDeProveedor() {
 		super();
+		
 	}
 	
 	public ProductosDeProveedor(Proveedor proveedor, Producto producto, double precio) {

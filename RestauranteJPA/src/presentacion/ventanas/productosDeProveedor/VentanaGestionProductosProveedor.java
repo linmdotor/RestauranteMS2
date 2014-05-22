@@ -227,7 +227,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			idProveedor.setText(Integer.toString((int)objeto));
 			
 		}		
-	
+		setVisible(true);
 		repaint();
 
 	}

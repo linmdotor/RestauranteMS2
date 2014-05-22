@@ -78,8 +78,10 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
-		TypedQuery query = em.createQuery("SELECT e FROM ProductosDeProveedor e", ProductosDeProveedor.class);
-		
+		//cambiar precio por el id del producto del proveedor, en la bbdd se llama proveedor_id_proveedor
+		//pero al ponerlo en la consulta, dice que no puede encontrarlo.
+		TypedQuery query = em.createQuery("select e from ProductosDeProveedor e where e.precio = :arg", ProductosDeProveedor.class);
+		query.setParameter("arg", (int)objeto);
 		List<ProductosDeProveedor> listaProductos = query.getResultList();
 		
 		em.close();
