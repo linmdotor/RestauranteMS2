@@ -9,6 +9,8 @@
 package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.productosdeproveedor.TProductoDeProveedor;
+import negocio.productosdeproveedor.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -16,14 +18,15 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDModificarProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-		RespuestaCMD res = null;
+		RespuestaCMD respuestaCMD  = null;
 		try {
-			res = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().modificarProductoProveedor(objeto);
+			if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {
+				respuestaCMD  = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().modificarProductoProveedor(objeto);
+			}
 		} catch (Exception e) {
-			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestaCMD  = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
-		return res;
+		return respuestaCMD;
 	}
-
 }

@@ -13,14 +13,23 @@ public class CMDAltaProducto implements CMD {
 	// Metodos
 
 	public RespuestaCMD ejecuta(Object objeto) {
-		RespuestaCMD res = null;
-		try {
-			res = FactoriaNegocio.obtenerInstancia().generaSAProducto().altaProducto(objeto);
-		} catch (Exception e) {
-			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
-		}
-		return res;
-	}
+		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
+		RespuestaCMD respuestaCMD= null;
 		
+		if(new ValidarTProducto().productoCorrecto((TProducto) objeto)) {
+		
+			try {
+				if (serviciosProducto.altaProducto((TProducto) objeto) != null)
+					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha añadido el Producto.");
+				else
+					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de alta producto. Error al insertar los datos.");	
+			} catch (Exception e) {
+				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				e.printStackTrace();
+			}	
+		}
+		
+		return respuestaCMD;
+		
+	}
 }
