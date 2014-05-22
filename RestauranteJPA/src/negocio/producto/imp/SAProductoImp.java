@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
+import negocio.producto.EnumTipoProducto;
 import negocio.producto.Producto;
 import negocio.producto.ProductoNoPerecedero;
 import negocio.producto.ProductoPerecedero;
@@ -73,8 +74,12 @@ public class SAProductoImp implements SAProducto {
 			em.close();
 	
 		}
-			
-		tProducto = new TProducto(productoObtenido);
+		
+		if(productoObtenido instanceof ProductoPerecedero)
+			tProducto = new TProductoPerecedero(productoObtenido);
+		else //(productoObtenido instanceof ProductoNoPerecedero)
+			tProducto = new TProductoNoPerecedero(productoObtenido);
+		
 		return tProducto;
 		
 	}
@@ -97,7 +102,14 @@ public class SAProductoImp implements SAProducto {
 		
 		for(Producto prod : listaProductos)
 		{
-			listaTProd.add(new TProducto(prod));
+			TProducto tProducto;
+			
+			if(prod instanceof ProductoPerecedero)
+				tProducto = new TProductoPerecedero(prod);
+			else //(prod instanceof ProductoNoPerecedero)
+				tProducto = new TProductoNoPerecedero(prod);
+			
+			listaTProd.add(tProducto);
 		}
 
 		return listaTProd;

@@ -318,7 +318,7 @@ public class VentanaProducto extends JFrame {
 			fila.add(prod.getId_producto());
 			fila.add(prod.getNombre());
 			fila.add(prod.getStock());
-			//importantisimo, no entra en ninguno de los dos, hay que mirar porque no devuelve ninguno de los dos
+			
 			if(prod instanceof TProductoPerecedero)
 			{
 				TProductoPerecedero p = (TProductoPerecedero) prod;
@@ -392,7 +392,7 @@ public class VentanaProducto extends JFrame {
 		textFieldID.setText(Integer.toString(tProducto.getId_producto()));
 		textFieldNombre.setText(tProducto.getNombre());
 		textFieldStock.setText(Integer.toString(tProducto.getStock()));
-		//importantisimo, no entra en ninguno de los dos, hay que mirar porque no devuelve ninguno de los dos
+		
 		if(tProducto instanceof TProductoPerecedero)
 		{
 			TProductoPerecedero tProducto_aux = (TProductoPerecedero) tProducto;
