@@ -26,7 +26,7 @@ public class CMDModificarProveedor implements CMD {
 		if(new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto))
 		{
 			try {
-				if (serviciosProveedor.modificarProveedor((TProveedor) objeto) != null)
+				if (serviciosProveedor.modificarProveedor((TProveedor) objeto))
 					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito modificando el Proveedor.");
 				else
 					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Proveedor. Error al insertar los datos.");

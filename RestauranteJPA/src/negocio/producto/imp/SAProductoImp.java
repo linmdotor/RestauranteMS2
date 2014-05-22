@@ -1,5 +1,6 @@
 package negocio.producto.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -79,7 +80,7 @@ public class SAProductoImp implements SAProducto {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Producto> obtenerProductos() throws Exception {		
+	public ArrayList<TProducto> obtenerProductos() throws Exception {		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
@@ -91,128 +92,110 @@ public class SAProductoImp implements SAProducto {
 		
 		em.close();
 		emf.close();
+		
+		ArrayList<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
+		
+		for(Producto prod : listaProductos)
+		{
+			listaTProd.add(new TProducto(prod));
+		}
 
-		return listaProductos;
+		return listaTProd;
 		
 	}
 	
-	public RespuestaCMD altaProducto(Object objeto) throws Exception {		
+	public boolean altaProducto(TProducto tProducto) throws Exception {		
 		
-		
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de alta un producto.");
+		boolean respuesta = false;
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
-		TProducto productoNuevo = new TProducto();
-		productoNuevo = (TProducto)objeto ;
-
-		if (new ValidarTProducto().productoCorrecto(productoNuevo))
-		{
+		try {
+			em.getTransaction().begin();
 			
-			try {
-				em.getTransaction().begin();
+			if(tProducto instanceof TProductoPerecedero){
 				
-				if(productoNuevo instanceof TProductoPerecedero){
-					
-					ProductoPerecedero producto = new ProductoPerecedero((TProductoPerecedero) productoNuevo);
-					//producto.setAll(productoNuevo);
-					em.persist(producto);
-					
-				}
-				else{//if(boProducto instanceof BOProductoNoPerecedero)
-					
-					ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) productoNuevo);
-					//producto.setAll(productoNuevo);
-					em.persist(producto);
-				}
+				ProductoPerecedero producto = new ProductoPerecedero((TProductoPerecedero) tProducto);
+				em.persist(producto);
+				
+			}
+			else{ //if(tProducto instanceof TProductoNoPerecedero)
+				
+				ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) tProducto);
+				em.persist(producto);
+			}
 
-				em.getTransaction().commit();
-				respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito al almacenar nuevo Producto.");
+			em.getTransaction().commit();
+			respuesta = true;
+		
+		} catch(OptimisticLockException oe) {
+			throw new Exception("No se pudo añadir el producto, porque está bloqueado");
+		} catch (Exception e) {
+			throw new Exception("No se pudo añadir el producto.");
+		} finally {
+			 
+			em.close();
+			emf.close();
 			
-			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
-			} catch (Exception e) {
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar nuevo producto.");
-				
-			} finally {
-				 
-				em.close();
-				emf.close();
-				
-			 }		
+		 }	
 		
-		}
-		
-		return respuestaComando;
-		
-	
+		return respuesta;
+
 	}		
 	
-	public RespuestaCMD modificarProducto(Object objeto) throws Exception {
-					
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto.");
-		TProducto tproducto = new TProducto();
-		tproducto = (TProducto)objeto ;
-		
-		if (new ValidarTProducto().productoCorrecto(tproducto)){		
-		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");			
-			EntityManager em = emf.createEntityManager();
+	public boolean modificarProducto(TProducto tProducto) throws Exception {
 			
-			
-			try {
-				
-				em.getTransaction().begin();
-				// Este producto encontrado, me sirve para saber que no esta vacio, que existe
-				//y que tipo de producto es
-				Producto productoNuevo = em.find(Producto.class, tproducto.getId_producto());
-					
-				if (productoNuevo != null){
-					
-					if(productoNuevo.getTipoProducto().equals("Perecedero")){
-						
-						//ProductoPerecedero producto = new ProductoPerecedero((TProductoPerecedero) tproducto);
-						ProductoPerecedero producto = (ProductoPerecedero) em.find(Producto.class, tproducto.getId_producto());	
-						producto.setAll(tproducto);
-						
-					}else{
-						
-						//ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) tproducto);
-						ProductoNoPerecedero producto = (ProductoNoPerecedero) em.find(Producto.class, tproducto.getId_producto());	
-						producto.setAll(tproducto);
-					}
-						
-					
-					em.getTransaction().commit();		
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha modificado el Producto.");
-				}									
-					
-			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
-			}			
-			catch (Exception e) {
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto. Error al insertar los datos.");
-				
-			} finally {
-				 
-				em.close();
-				emf.close();
-				
-			 }		
-			
-		} else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto. Los datos no son válidos.");
+		boolean respuesta = false;
 		
-		return respuestaComando;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");			
+		EntityManager em = emf.createEntityManager();
 		
+		
+		try {
+			
+			em.getTransaction().begin();
+			// Este producto encontrado, me sirve para saber que no esta vacio, que existe
+			//y que tipo de producto es
+			Producto productoNuevo = em.find(Producto.class, tProducto.getId_producto());
+				
+			if (productoNuevo != null){
+				
+				if(productoNuevo.getTipoProducto().equals("Perecedero")){
+					
+					ProductoPerecedero producto = (ProductoPerecedero) productoNuevo;	
+					producto.setAll(tProducto);
+					
+				}else{
+					
+					//ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) tproducto);
+					ProductoNoPerecedero producto = (ProductoNoPerecedero) productoNuevo;	
+					producto.setAll(tProducto);
+				}
+					
+				
+				em.getTransaction().commit();		
+				respuesta = true;
+			}									
+				
+		} catch(OptimisticLockException oe) {
+			throw new Exception("No se pudo modificar el producto, porque está bloqueado");
+		}			
+		catch (Exception e) {
+			throw new Exception("No se pudo modificar el producto.");
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		 }	
+		
+		return respuesta;
 	}
 	
-	public RespuestaCMD bajaProducto(int ID)  throws Exception {
-						
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de baja un producto.");
+	public boolean bajaProducto(int ID)  throws Exception {
+				
+		boolean respuesta = false;
 		
 		if (ID >= 0){				
 		
@@ -227,17 +210,15 @@ public class SAProductoImp implements SAProducto {
 					
 				if (producto != null){
 					producto.setDisponible(false);
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito dando de baja un Producto.");
+					respuesta = true;
 					em.getTransaction().commit();		
 				}
 					
 			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+				throw new Exception("No se pudo eliminar el producto, porque está bloqueado");
 			}			
 			catch (Exception e) {
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un producto. Debe seleccionar un Producto.");
-				
+				throw new Exception("No se pudo eliminar el producto.");
 			} finally {
 				 
 				em.close();
@@ -246,9 +227,9 @@ public class SAProductoImp implements SAProducto {
 			}	
 			
 		} else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "El ID debe ser entero positivo.");
+			throw new Exception("No se pudo eliminar el producto. No existe el ID " + ID);
 			
-		return respuestaComando;
+		return respuesta;
 		
 	}
 

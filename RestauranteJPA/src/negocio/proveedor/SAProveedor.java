@@ -12,8 +12,8 @@ public interface SAProveedor {
 	
 	public boolean altaProveedor(TProveedor tproveedor) throws Exception;
 		
-	public RespuestaCMD modificarProveedor(Object objeto) throws Exception;
+	public boolean modificarProveedor(TProveedor tproveedor) throws Exception;
 
-	public RespuestaCMD bajaProveedor(int ID)throws Exception;
+	public boolean bajaProveedor(int ID)throws Exception;
 	
 }

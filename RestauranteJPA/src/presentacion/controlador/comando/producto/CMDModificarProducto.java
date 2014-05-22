@@ -26,7 +26,7 @@ public class CMDModificarProducto implements CMD {
 		if(new ValidarTProducto().productoCorrecto((TProducto) objeto))
 		{
 			try {
-				if (serviciosProducto.modificarProducto((TProducto) objeto) != null)
+				if (serviciosProducto.modificarProducto((TProducto) objeto))
 					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito modificando el Plato.");
 				else
 					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto. Error al insertar los datos.");

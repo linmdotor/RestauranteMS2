@@ -19,7 +19,7 @@ public class CMDAltaProducto implements CMD {
 		if(new ValidarTProducto().productoCorrecto((TProducto) objeto)) {
 		
 			try {
-				if (serviciosProducto.altaProducto((TProducto) objeto) != null)
+				if (serviciosProducto.altaProducto((TProducto) objeto))
 					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha añadido el Producto.");
 				else
 					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de alta producto. Error al insertar los datos.");	

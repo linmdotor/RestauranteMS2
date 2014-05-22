@@ -104,6 +104,8 @@ public class SAProveedorImp implements SAProveedor {
 	
 	public boolean altaProveedor(TProveedor tproveedor) throws Exception{		
 			
+		boolean resultado = false;
+		
 		Proveedor proveedor = new Proveedor(tproveedor);
 							
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
@@ -117,15 +119,13 @@ public class SAProveedorImp implements SAProveedor {
 			
 			em.getTransaction().commit();	
 			
-			return true;
+			resultado = true;
 		
 		} catch(OptimisticLockException oe) {
-			return false;
+			throw new Exception("No se pudo añadir el proveedor, porque está bloqueado");
 		}			
 		catch (Exception e) {
-			
-			return false;
-			
+			throw new Exception("No se pudo añadir el proveedor.");
 		} finally {
 			 
 			em.close();
@@ -133,67 +133,51 @@ public class SAProveedorImp implements SAProveedor {
 			
 		 }		
 		
-	
+		return resultado;
+		
 	}		
 	
-	//¡¡¡¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//esto está mal, poruqe no tiene que devolver una respuesta de comando, si no que tiene que ser un boolean o algo así,
-		// y que 
+	
+	public boolean modificarProveedor(TProveedor tProveedor) throws Exception{
 		
-		// NO se puede devolver una respuesta comando desde un servicio de aplicación NUNCA!!!!!
-		//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
-	public RespuestaCMD modificarProveedor(Object objeto) throws Exception{
+		boolean resultado = false;
 		
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Proveedor.");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		try {
 			
-		if (new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto)){		
-		
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
-			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
 			
-			try {
+			Proveedor proveedor = em.find(Proveedor.class, (tProveedor.getId_proveedor()));
 				
-				em.getTransaction().begin();
+			if (proveedor != null){
 				
-				Proveedor proveedor = em.find(Proveedor.class, ((TProveedor) objeto).getId_proveedor());
-					
-				if (proveedor != null){
-					
-					proveedor.setAll((TProveedor) objeto);					
-					em.getTransaction().commit();		
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Se ha modificado el Proveedor.");
-				}									
-					
-			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
-			}			
-			catch (Exception e) {
+				proveedor.setAll(tProveedor);					
+				em.getTransaction().commit();		
+				resultado = true;
+			}									
 				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar proveedor. Error al insertar los datos.");
-				
-			} finally {
-				 
-				em.close();
-				emf.close();
-				
-			 }		
+		} catch(OptimisticLockException oe) {
+			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
+		}			
+		catch (Exception e) {
+			throw new Exception("No se pudo modificar el proveedor.");
+		} finally {
+			 
+			em.close();
+			emf.close();
 			
-		} else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar proveedor. Los datos no son válidos.");
-		
-		return respuestaComando;
+		 }		
+
+		return resultado;
 		
 	}
 	
-	//¡¡¡¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//esto está mal, poruqe no tiene que devolver una respuesta de comando, si no que tiene que ser un boolean o algo así,
-		// y que 
-		
-		// NO se puede devolver una respuesta comando desde un servicio de aplicación NUNCA!!!!!
-		//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
-	public RespuestaCMD bajaProveedor(int ID)throws Exception{
+	
+	public boolean bajaProveedor(int ID)throws Exception{
 						
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un proveedor.");
+		boolean respuesta = false;
 		
 		if (ID >= 0){				
 		
@@ -208,17 +192,15 @@ public class SAProveedorImp implements SAProveedor {
 					
 				if (proveedor != null){
 					proveedor.setDisponible(false);
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito dando de baja un Proveedor.");
+					respuesta = true;
 					em.getTransaction().commit();		
 				}
 					
 			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+				throw new Exception("No se pudo eliminar el proveedor, porque está bloqueado");
 			}			
 			catch (Exception e) {
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un proveedor. Debe seleccionar un Producto.");
-				
+				throw new Exception("No se pudo eliminar el proveedor.");
 			} finally {
 				 
 				em.close();
@@ -227,9 +209,9 @@ public class SAProveedorImp implements SAProveedor {
 			}	
 			
 		} else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "El ID debe ser entero positivo.");
+			throw new Exception("No se pudo eliminar el proveedor, el ID debe ser entero positivo.");
 			
-		return respuestaComando;
+		return respuesta;
 		
 	}
 	

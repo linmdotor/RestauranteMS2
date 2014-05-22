@@ -1,5 +1,6 @@
 package negocio.producto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import presentacion.controlador.RespuestaCMD;
@@ -8,12 +9,12 @@ public interface SAProducto {
 
 	public TProducto obtenerProducto(int ID) throws Exception;
 	
-	public List<Producto> obtenerProductos()throws Exception;
+	public ArrayList<TProducto> obtenerProductos()throws Exception;
 	
-	public RespuestaCMD altaProducto(Object objeto)throws Exception;
+	public boolean altaProducto(TProducto tProducto)throws Exception;
 		
-	public RespuestaCMD modificarProducto(Object objeto)throws Exception;
+	public boolean modificarProducto(TProducto tProducto)throws Exception;
 
-	public RespuestaCMD bajaProducto(int ID)throws Exception;
+	public boolean bajaProducto(int ID)throws Exception;
 	
 }

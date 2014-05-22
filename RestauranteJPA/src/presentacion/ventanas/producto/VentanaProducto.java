@@ -288,18 +288,18 @@ public class VentanaProducto extends JFrame {
 
 	public void actualizar(Object object) {
 
-		List<Producto> lista = new ArrayList<Producto>();
+		List<TProducto> lista = new ArrayList<TProducto>();
 		
 		if (object == null)
 			rellenarTabla(lista);
 		else			
-			rellenarTabla((List<Producto>) object);
+			rellenarTabla((List<TProducto>) object);
 
 		repaint();
 
 	}
 
-	public void rellenarTabla(List<Producto> lista) {
+	public void rellenarTabla(List<TProducto> object) {
 		
 		tabla = new Tabla();
 
@@ -310,28 +310,28 @@ public class VentanaProducto extends JFrame {
 		tabla.addColumn("RECOMENDACIONES");
 		tabla.addColumn("DISPONIBLE");
 
-		for (int i = 0; i < lista.size(); i++) {
+		for (int i = 0; i < object.size(); i++) {
 
 			fila = new Vector();
-			Producto bo = lista.get(i);
-			fila.add(bo.getId_producto());
-			fila.add(bo.getNombre());
-			fila.add(bo.getStock());
+			TProducto prod = object.get(i);
+			fila.add(prod.getId_producto());
+			fila.add(prod.getNombre());
+			fila.add(prod.getStock());
 			
-			if(bo instanceof ProductoPerecedero)
+			if(prod instanceof TProductoPerecedero)
 			{
-				ProductoPerecedero p = (ProductoPerecedero) bo;
+				TProductoPerecedero p = (TProductoPerecedero) prod;
 				fila.add(p.getFechaCaducidad());
 				fila.add("---");
 			} else // He creido bien poner else
-			if(bo instanceof ProductoNoPerecedero)
+			if(prod instanceof TProductoNoPerecedero)
 			{
-				ProductoNoPerecedero np = (ProductoNoPerecedero) bo;
+				TProductoNoPerecedero np = (TProductoNoPerecedero) prod;
 				fila.add("---");
 				fila.add(np.getRecomendaciones());
 			}
 			
-			fila.add(bo.isDisponible());
+			fila.add(prod.isDisponible());
 			
 			tabla.addRow(fila);
 		}

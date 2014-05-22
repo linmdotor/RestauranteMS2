@@ -22,9 +22,7 @@ public class CMDObtenerProductos implements CMD {
 		RespuestaCMD respuestaCMD = null;
 		
 		try {
-			if(new ValidarTProducto().productoCorrecto((TProducto) objeto)) {
 				respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS, serviciosProducto.obtenerProductos());
-			}
 		} catch (Exception e) {
 			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
