@@ -12,7 +12,7 @@ public class CMDBajaProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD respuestaCMD = null;
+		RespuestaCMD respuestacomando = null;
 		
 		int ID = -1;
 
@@ -21,19 +21,19 @@ public class CMDBajaProveedor implements CMD {
 			try {
 				ID = serviciosProveedor.obtenerProveedores().get((Integer) objeto).getId_proveedor();
 				if(serviciosProveedor.bajaProveedor(ID))
-					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito eliminando Proveedor.");
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito eliminando Proveedor.");
 				else
-					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el Proveedor.");
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el Proveedor.");
 				
 			} catch (Exception e) {
-				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		else
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el proveedor, debe seleccionar un proveedor.");
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el proveedor, debe seleccionar un proveedor.");
 			
-		return respuestaCMD;
+		return respuestacomando;
 	}
 
 }

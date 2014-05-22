@@ -12,23 +12,23 @@ public class CMDModificarFormularioProveedor implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 				
 		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD respuestaCMD = null;
+		RespuestaCMD respuestacomando = null;
 		
 		try {
 			
 			if(serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()) != null)
 			{
-				respuestaCMD = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()));
+				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()));
 			} else {
-				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Proveedor seleccionado");
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Proveedor seleccionado");
 			}
 			
 		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return respuestaCMD;		
+		return respuestacomando;		
 	
 	}
 			

@@ -11,16 +11,16 @@ public class CMDIniciarVistaProducto implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 		
 		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
-		RespuestaCMD respuestaComando = null;
+		RespuestaCMD respuestacomando = null;
 		
 		try {
-			respuestaComando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PRODUCTO, serviciosProducto.obtenerProductos());
+			respuestacomando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PRODUCTO, serviciosProducto.obtenerProductos());
 		} catch (Exception e) {
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
-		return respuestaComando;
+		return respuestacomando;
 
 	}
 			

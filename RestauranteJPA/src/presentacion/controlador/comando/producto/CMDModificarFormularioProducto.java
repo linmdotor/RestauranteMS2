@@ -2,6 +2,7 @@
 package presentacion.controlador.comando.producto;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.producto.SAProducto;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -10,24 +11,24 @@ public class CMDModificarFormularioProducto implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		
-		RespuestaCMD respuestaCMD;
+		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
+		RespuestaCMD respuestacomando;
 		
 		try {
 			
-			if(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProducto(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProductos().get((int) objeto).getId_producto()) != null)
+			if(serviciosProducto.obtenerProducto(serviciosProducto.obtenerProductos().get((int) objeto).getId_producto()) != null)
 			{
-				respuestaCMD = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO, FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProducto(FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProductos().get((int) objeto).getId_producto()));
-				
+				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO, serviciosProducto.obtenerProducto(serviciosProducto.obtenerProductos().get((int) objeto).getId_producto()));				
 			} else {
-				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Producto seleccionado");
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Producto seleccionado");
 			}
 			
 		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return respuestaCMD;		
+		return respuestacomando;		
 	
 	}
 	

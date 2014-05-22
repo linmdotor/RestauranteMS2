@@ -19,16 +19,17 @@ public class CMDObtenerProductos implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 		
 		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
-		RespuestaCMD respuestaCMD = null;
+		RespuestaCMD respuestacomando = null;
 		
 		try {
-				respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS, serviciosProducto.obtenerProductos());
+			respuestacomando = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS, serviciosProducto.obtenerProductos());
+		
 		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
-		return respuestaCMD;
+		return respuestacomando;
 
 	}
 }

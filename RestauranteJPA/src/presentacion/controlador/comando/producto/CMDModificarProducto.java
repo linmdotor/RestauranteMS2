@@ -21,24 +21,24 @@ public class CMDModificarProducto implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 		
 		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
-		RespuestaCMD respuestaComando = null;
+		RespuestaCMD respuestacomando = null;
 		
 		if(new ValidarTProducto().productoCorrecto((TProducto) objeto))
 		{
 			try {
 				if (serviciosProducto.modificarProducto((TProducto) objeto))
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito modificando el Plato.");
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito modificando el Plato.");
 				else
-					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto. Error al insertar los datos.");
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto. Error al insertar los datos.");
 			} catch (Exception e) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto. Los datos no son válidos.");
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto. Los datos no son válidos.");
 			
-		return respuestaComando;
+		return respuestacomando;
 
 	}
 

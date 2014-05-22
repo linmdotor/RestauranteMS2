@@ -11,16 +11,16 @@ public class CMDIniciarVistaProveedor implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 			
 		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD respuestaCMD = null;
+		RespuestaCMD respuestacomando = null;
 		
 		try {
-			respuestaCMD = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PROVEEDOR, serviciosProveedor.obtenerProveedores());
+			respuestacomando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PROVEEDOR, serviciosProveedor.obtenerProveedores());
 		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
-		return respuestaCMD;
+		return respuestacomando;
 
 	}
 

@@ -14,22 +14,24 @@ public class CMDAltaProducto implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		SAProducto serviciosProducto = FactoriaNegocio.obtenerInstancia().generaSAProducto();
-		RespuestaCMD respuestaCMD= null;
+		RespuestaCMD respuestacomando = null;
 		
 		if(new ValidarTProducto().productoCorrecto((TProducto) objeto)) {
 		
 			try {
 				if (serviciosProducto.altaProducto((TProducto) objeto))
-					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha añadido el Producto.");
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha añadido el Producto.");
 				else
-					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de alta producto. Error al insertar los datos.");	
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de alta producto. Error al insertar los datos.");	
 			} catch (Exception e) {
-				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();
 			}	
 		}
+		else
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar producto. Los datos no son válidos.");
 		
-		return respuestaCMD;
+		return respuestacomando;
 		
 	}
 }

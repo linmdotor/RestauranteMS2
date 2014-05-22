@@ -23,20 +23,17 @@ public class CMDObtenerProveedores implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 		
 		SAProveedor serviciosproveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD respuestaCMD = null;
+		RespuestaCMD respuestacomando = null;
 		
 		try {
-			
-			List<TProveedor> proveedores = serviciosproveedor.obtenerProveedores();
-			
-			respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDORES, proveedores);
+			respuestacomando = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDORES, serviciosproveedor.obtenerProveedores());
 			
 		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
-		return respuestaCMD;
+		return respuestacomando;
 
 	}
 
