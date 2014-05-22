@@ -12,6 +12,7 @@ import java.util.List;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.proveedor.Proveedor;
+import negocio.proveedor.TProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -24,7 +25,7 @@ public class CMDObtenerProveedor implements CMD {
 		
 		try {
 			
-			List<Proveedor> proveedores = FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores();
+			List<TProveedor> proveedores = FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores();
 			
 			respuestaComando = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDORES, proveedores);
 			

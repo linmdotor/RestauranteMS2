@@ -22,13 +22,21 @@ import javax.swing.JFrame;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 
+@SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6438727790611004327L;
+	
+	private static VentanaPrincipal ventana; //instancia singleton
+	
+	//GetInstance
+	public static VentanaPrincipal obtenerInstancia() {
 
+		if (ventana == null)
+			ventana = new VentanaPrincipal();
+
+		return ventana;
+	}
+	
 	// Constructor
 	public VentanaPrincipal() {
 		
@@ -36,8 +44,8 @@ public class VentanaPrincipal extends JFrame {
 		this.setLocationByPlatform(true);
 		setTitle("Restaurante");
 		setResizable(false);
-		setVisible(true);
-		setSize(326, 210);
+		setVisible(false);
+		setSize(256, 200);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -51,7 +59,7 @@ public class VentanaPrincipal extends JFrame {
 				
 			}
 		});
-		btnAlmacenDePlatos.setBounds(69, 45, 179, 26);
+		btnAlmacenDePlatos.setBounds(38, 30, 183, 26);
 		getContentPane().add(btnAlmacenDePlatos);
 		
 		JButton btnGestionarProveedores = new JButton("Gestionar PROVEEDORES");
@@ -62,7 +70,7 @@ public class VentanaPrincipal extends JFrame {
 				
 			}
 		});
-		btnGestionarProveedores.setBounds(69, 97, 179, 26);
+		btnGestionarProveedores.setBounds(38, 80, 183, 26);
 		getContentPane().add(btnGestionarProveedores);
 		
 		JButton btnGestionarPedidos = new JButton("Gestionar PEDIDOS");
@@ -73,7 +81,7 @@ public class VentanaPrincipal extends JFrame {
 				
 			}
 		});
-		btnGestionarPedidos.setBounds(69, 135, 179, 26);
+		btnGestionarPedidos.setBounds(38, 130, 183, 26);
 		getContentPane().add(btnGestionarPedidos);
 	
 	}

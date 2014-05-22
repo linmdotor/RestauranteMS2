@@ -342,6 +342,7 @@ import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
 
+@SuppressWarnings("serial")
 public class VentanaProveedor extends JFrame{
 
 	private JTextField textFieldID;
@@ -390,7 +391,7 @@ public class VentanaProveedor extends JFrame{
 
 		textFieldID = new JTextField();
 		textFieldID.setBounds(83, 44, 118, 20);
-		textFieldID.setEditable(true);
+		textFieldID.setEditable(false);
 		panelFormulario.add(textFieldID);
 		textFieldID.setColumns(10);
 
@@ -503,8 +504,8 @@ public class VentanaProveedor extends JFrame{
 			}
 		});
 
-		btnGestProductosProveedor.setFont(new Font("Dialog", Font.BOLD, 9));
-		btnGestProductosProveedor.setBounds(12, 200, 189, 60);
+		btnGestProductosProveedor.setFont(new Font("Dialog", Font.BOLD, 12));
+		btnGestProductosProveedor.setBounds(12, 200, 189, 50);
 		panelFormulario.add(btnGestProductosProveedor);	
 		
 
@@ -535,18 +536,18 @@ public class VentanaProveedor extends JFrame{
 
 	public void actualizar(Object object) {
 
-		List<Proveedor> lista = new ArrayList<Proveedor>();
+		List<TProveedor> lista = new ArrayList<TProveedor>();
 
 		if (object == null)
 			rellenarTabla(lista);
 		else			
-			rellenarTabla((List<Proveedor>) object);
+			rellenarTabla((List<TProveedor>) object);
 
 		repaint();
 
 	}
 
-	public void rellenarTabla(List<Proveedor> lista) {
+	public void rellenarTabla(List<TProveedor> lista) {
 
 		tabla = new Tabla();
 
@@ -559,12 +560,12 @@ public class VentanaProveedor extends JFrame{
 		for (int i = 0; i < lista.size(); i++) {
 
 			fila = new Vector();
-			Proveedor bo = lista.get(i);
-			fila.add(bo.getId_proveedor());
-			fila.add(bo.getNombre());
-			fila.add(bo.getNIF());
-			fila.add(bo.getTelefono());
-			fila.add(bo.isDisponible());
+			TProveedor prov = lista.get(i);
+			fila.add(prov.getId_proveedor());
+			fila.add(prov.getNombre());
+			fila.add(prov.getNIF());
+			fila.add(prov.getTelefono());
+			fila.add(prov.isDisponible());
 
 			tabla.addRow(fila);
 		}

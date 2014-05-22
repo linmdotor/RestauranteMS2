@@ -93,7 +93,7 @@ public class Proveedor implements Serializable {
 		this.disponible = tProveedor.isDisponible();
 		this.NIF = tProveedor.getNIF();
 		this.nombre = tProveedor.getNombre();
-		this.telefono = tProveedor.getNombre();
+		this.telefono = tProveedor.getTelefono();
 		
 	}
 	
@@ -161,7 +161,7 @@ public class Proveedor implements Serializable {
 		this.disponible = tProveedor.isDisponible();
 		this.NIF = tProveedor.getNIF();
 		this.nombre = tProveedor.getNombre();
-		this.telefono = tProveedor.getNombre();
+		this.telefono = tProveedor.getTelefono();
 		
 	}
 	

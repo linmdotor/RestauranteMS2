@@ -21,14 +21,8 @@
 
 package principal;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import negocio.pedido.Pedido;
-import negocio.producto.Producto;
-import negocio.producto.ProductoNoPerecedero;
-import negocio.proveedor.Proveedor;
+import presentacion.controlador.ApplicationController;
+import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.VentanaPrincipal;
 
 public class Principal {
@@ -36,15 +30,12 @@ public class Principal {
 	public static String UNIDAD_PERSISTENCIA = "UNIDAD_PERSISTENCIA_RESTAURANTE";
 	
 	@SuppressWarnings("unused")
-	private static VentanaPrincipal ventanaPrincipal;
-	
+		
 	// Metodos
 
 	public void ejecuta() {
 
-		System.out.println("Restaurante");
-		
-		ventanaPrincipal = new VentanaPrincipal();
+		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_PRINCIPAL, null);
 		
 	}
 	
@@ -53,9 +44,7 @@ public class Principal {
 	 */
 	public static void main(String[] args) {
 		
-		Principal principal = new Principal();
-		
-		principal.ejecuta();
+		new Principal().ejecuta();
 
 	}
 

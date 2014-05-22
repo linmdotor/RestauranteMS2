@@ -15,6 +15,7 @@ import presentacion.controlador.ApplicationController;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.FactoriaCMD;
+import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaPedido;
 import presentacion.controlador.comando.pedido.CMDModificarFormularioPedido;
 import presentacion.controlador.comando.pedido.CMDRellenarTBProductosPedido;
@@ -40,6 +41,8 @@ public class FactoriaCMDImp extends FactoriaCMD {
 
 		map_cmd = new HashMap<EnumComandos, CMD>();
 
+		map_cmd.put(EnumComandos.INICIAR_VISTA_PRINCIPAL, new CMDIniciarVistaPrincipal());
+		
 		// COMANDOS PRODUCTO
 		
 		map_cmd.put(EnumComandos.ALTA_PRODUCTO, new CMDAltaProducto());

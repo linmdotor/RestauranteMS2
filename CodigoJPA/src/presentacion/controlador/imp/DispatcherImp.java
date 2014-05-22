@@ -12,6 +12,7 @@ import presentacion.controlador.Dispatcher;
 import presentacion.controlador.RespuestaCMD;
 import presentacion.ventanas.VentanaCorrecto;
 import presentacion.ventanas.VentanaError;
+import presentacion.ventanas.VentanaPrincipal;
 import presentacion.ventanas.pedido.VentanaGestionPedidos;
 import presentacion.ventanas.producto.VentanaProducto;
 import presentacion.ventanas.productosDeProveedor.VentanaGestionProductosProveedor;
@@ -36,6 +37,10 @@ public class DispatcherImp extends Dispatcher {
 
 		switch (respuestaCMD.getEvento()) {
 	
+			case INICIAR_VISTA_PRINCIPAL:
+				VentanaPrincipal.obtenerInstancia().setVisible(true);
+				break;
+		
 			// PRODUCTO
 		
 			case INICIAR_VISTA_PRODUCTO:

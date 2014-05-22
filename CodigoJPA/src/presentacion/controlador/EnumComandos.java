@@ -1,7 +1,9 @@
 package presentacion.controlador;
 
 public enum EnumComandos {
-
+	
+	INICIAR_VISTA_PRINCIPAL,
+	
 	// PRODUCTO
 	
 	ALTA_PRODUCTO,

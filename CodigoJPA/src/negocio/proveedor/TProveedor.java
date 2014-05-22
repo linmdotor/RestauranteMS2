@@ -30,7 +30,7 @@ public class TProveedor  {
 		this.disponible = proveedor.isDisponible();
 		this.NIF = proveedor.getNIF();
 		this.nombre = proveedor.getNombre();
-		this.telefono = proveedor.getNombre();
+		this.telefono = proveedor.getTelefono();
 		
 	}
 

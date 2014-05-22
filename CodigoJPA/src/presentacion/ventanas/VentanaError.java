@@ -2,12 +2,8 @@ package presentacion.ventanas;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class VentanaError extends JFrame {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1573726462892800138L;
 
 	public VentanaError(String mensajeError) {
 

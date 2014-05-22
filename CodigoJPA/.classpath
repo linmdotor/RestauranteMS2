@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="org.eclipse.persistence.jpars_2.5.1.v20130918-f2b9fc5.jar"/>
 	<classpathentry kind="lib" path="org.eclipse.persistence.jpars.source_2.5.1.v20130918-f2b9fc5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink2.0"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

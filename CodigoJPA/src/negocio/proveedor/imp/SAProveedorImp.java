@@ -1,5 +1,6 @@
 package negocio.proveedor.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,14 +22,11 @@ import principal.Principal;
 
 public class SAProveedorImp implements SAProveedor {
 
-	protected EntityManager em;
-		
 	public TProveedor obtenerProveedor(int ID) throws Exception{
 				
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
-		TProveedor tProveedor;
 		Proveedor proveedorObtenido = null;
 		TypedQuery<Proveedor> query = null;
 		try { 
@@ -69,20 +67,18 @@ public class SAProveedorImp implements SAProveedor {
 		} finally {
 	
 			if (proveedorObtenido != null)
-				em.detach(proveedorObtenido);
+				em.detach(proveedorObtenido); //esta operación, al utilizar Transfer, no es necesaria.
 	
 			em.close();
 	
-		}
+		}		
 		
-		
-		tProveedor = new TProveedor(proveedorObtenido);
-		return tProveedor;
+		return new TProveedor(proveedorObtenido);
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Proveedor> obtenerProveedores() throws Exception{		
+	public List<TProveedor> obtenerProveedores() throws Exception{		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
@@ -95,54 +91,57 @@ public class SAProveedorImp implements SAProveedor {
 		em.close();
 		emf.close();
 
-		return listaProveedores;
+		List<TProveedor> listaTprov = new ArrayList<TProveedor>();
+		for(Proveedor prov : listaProveedores)
+		{
+			listaTprov.add(new TProveedor(prov));
+		}
+		
+		return listaTprov;
 		
 	}
 	
-	public RespuestaCMD altaProveedor(Object objeto) throws Exception{		
-		
-		Proveedor proveedor;
-		
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de alta un proveedor.");;
-		
-		if (new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto)){
+	
+	public boolean altaProveedor(TProveedor tproveedor) throws Exception{		
 			
-			proveedor = new Proveedor((TProveedor) objeto);
-								
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
-			EntityManager em = emf.createEntityManager();
-			
-			try {
-				
-				em.getTransaction().begin();
-					
-				em.persist(proveedor);
-				
-				em.getTransaction().commit();	
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO, "Exito al insertar proveedor.");
-			
-			} catch(OptimisticLockException oe) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
-			}			
-			catch (Exception e) {
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar proveedor. Error al insertar los datos.");
-				
-			} finally {
-				 
-				em.close();
-				emf.close();
-				
-			 }		
+		Proveedor proveedor = new Proveedor(tproveedor);
+							
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
 		
-		}
+		try {
+			
+			em.getTransaction().begin();
+				
+			em.persist(proveedor);
+			
+			em.getTransaction().commit();	
+			
+			return true;
 		
-		return respuestaComando;
+		} catch(OptimisticLockException oe) {
+			return false;
+		}			
+		catch (Exception e) {
+			
+			return false;
+			
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		 }		
 		
 	
 	}		
 	
+	//¡¡¡¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//esto está mal, poruqe no tiene que devolver una respuesta de comando, si no que tiene que ser un boolean o algo así,
+		// y que 
+		
+		// NO se puede devolver una respuesta comando desde un servicio de aplicación NUNCA!!!!!
+		//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
 	public RespuestaCMD modificarProveedor(Object objeto) throws Exception{
 		
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Proveedor.");
@@ -186,6 +185,12 @@ public class SAProveedorImp implements SAProveedor {
 		
 	}
 	
+	//¡¡¡¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//esto está mal, poruqe no tiene que devolver una respuesta de comando, si no que tiene que ser un boolean o algo así,
+		// y que 
+		
+		// NO se puede devolver una respuesta comando desde un servicio de aplicación NUNCA!!!!!
+		//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
 	public RespuestaCMD bajaProveedor(int ID)throws Exception{
 						
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un proveedor.");
