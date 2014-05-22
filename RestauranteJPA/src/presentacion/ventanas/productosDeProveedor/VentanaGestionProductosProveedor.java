@@ -222,9 +222,9 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 			ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, objeto);
 			
-			ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
+			//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			
-			idProveedor.setText(Integer.toString(proveedor));
+			idProveedor.setText(Integer.toString((int)objeto));
 			
 		}		
 	
@@ -325,4 +325,5 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		textFieldPrecio.setText(Double.toString((double) objeto));
 		
 	}	
+
 }

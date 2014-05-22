@@ -14,6 +14,7 @@ import negocio.pedido.imp.SAPedidoImp;
 import negocio.producto.SAProducto;
 import negocio.producto.imp.SAProductoImp;
 import negocio.productosdeproveedor.SAProductosDeProveedor;
+import negocio.productosdeproveedor.imp.SAProductosDeProveedorImp;
 import negocio.proveedor.SAProveedor;
 import negocio.proveedor.imp.SAProveedorImp;
 
@@ -42,7 +43,7 @@ public class FactoriaNegocioImp extends FactoriaNegocio {
 	@Override
 	public SAProductosDeProveedor generaSAProductosDeProveedor() {
 		// TODO Auto-generated method stub
-		return null;
+		return new SAProductosDeProveedorImp();
 	}
 		
 }

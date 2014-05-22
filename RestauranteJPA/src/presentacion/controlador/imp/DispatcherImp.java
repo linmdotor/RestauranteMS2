@@ -86,10 +86,15 @@ public class DispatcherImp extends Dispatcher {
 			// PRODUCTOS DE PROVEEDOR
 				
 			case INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR:
-				vistaProveedor.actualizar(respuestaCMD.getObjeto());
-				vistaProveedor.setVisible(true);
+				vistaProductosDeProveedor.actualizar(respuestaCMD.getObjeto());
+				vistaProductosDeProveedor.setVisible(true);
 				break;	
 			
+			case OBTENER_PRODUCTOS_PROVEEDOR:
+				vistaProductosDeProveedor.rellenarTablaProductosActuales(respuestaCMD.getObjeto());
+				vistaProductosDeProveedor.setVisible(true);
+				break;	
+				
 			case INICIAR_VISTA_PEDIDO:
 				vistaPedido.actualizar(respuestaCMD.getObjeto());
 				vistaPedido.setVisible(true);

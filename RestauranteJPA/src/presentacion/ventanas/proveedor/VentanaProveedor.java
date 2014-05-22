@@ -499,8 +499,10 @@ public class VentanaProveedor extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 
 				if ( getTbProveedores().getSelectedRow() != -1 )
+				{
+					
 					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR, getTbProveedores().getSelectedRow() );
-
+				}
 			}
 		});
 

@@ -26,6 +26,7 @@ import presentacion.controlador.comando.producto.CMDModificarFormularioProducto;
 import presentacion.controlador.comando.producto.CMDModificarProducto;
 import presentacion.controlador.comando.producto.CMDObtenerProductos;
 import presentacion.controlador.comando.productosDeProveedor.CMDIniciarVistaProductosDeProveedor;
+import presentacion.controlador.comando.productosDeProveedor.CMDObtenerProductosProveedor;
 import presentacion.controlador.comando.proveedor.CMDAltaProveedor;
 import presentacion.controlador.comando.proveedor.CMDBajaProveedor;
 import presentacion.controlador.comando.proveedor.CMDIniciarVistaProveedor;
@@ -64,7 +65,8 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		// PRODUCTOS DE PROVEEDOR
 		
 		map_cmd.put(EnumComandos.INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR, new CMDIniciarVistaProductosDeProveedor());
-	
+		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, new CMDObtenerProductosProveedor());
+		
 		
 		//COMANDOS PEDIDO
 		

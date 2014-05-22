@@ -1,5 +1,6 @@
 package negocio.productosdeproveedor.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -71,23 +72,21 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	}
 
 	@Override
-	public List<ProductosDeProveedor> obtenerProductosProveedor(Object objecto)
+	public List<ProductosDeProveedor> obtenerProductosProveedor(Object objeto)
 			throws Exception {
-		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
-/*>>>*/	TypedQuery query = em.createQuery("SELECT e FROM Proveedor e", ProductosDeProveedor.class);
+		TypedQuery query = em.createQuery("SELECT e FROM ProductosDeProveedor e", ProductosDeProveedor.class);
 		
-		@SuppressWarnings("unchecked")
-		List<ProductosDeProveedor> listaProductosDeProveedores = query.getResultList();
-		
+		List<ProductosDeProveedor> listaProductos = query.getResultList();
 		
 		em.close();
 		emf.close();
 
-		return listaProductosDeProveedores;
+		return listaProductos;
+		
 	}
 
 	@Override
