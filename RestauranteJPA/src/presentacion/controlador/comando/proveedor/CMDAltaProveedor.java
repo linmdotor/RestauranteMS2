@@ -14,25 +14,24 @@ public class CMDAltaProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		SAProveedor serviciosproveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD res = null;
+		RespuestaCMD respuestaCMD = null;
 		
 		if(new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto))
 		{
 			try {
 				if(serviciosproveedor.altaProveedor((TProveedor)objeto))
-				{
-					res = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Se ha añadido el proveedor.");
-				}
+					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Se ha añadido el proveedor.");
 				else
-				{
-					res = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar proveedor. Los datos son incorrectos.");
-				}
+					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar proveedor. Error al insertar los datos.");
 			} catch (Exception e) {
-				res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		return res;
+		else
+			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar proveedor. Los datos no son válidos.");
+			
+		return respuestaCMD;
 	}
 
 }

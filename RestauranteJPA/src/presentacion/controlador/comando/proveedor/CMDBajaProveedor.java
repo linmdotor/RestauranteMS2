@@ -19,10 +19,12 @@ public class CMDBajaProveedor implements CMD {
 		if ((Integer) objeto != -1) 
 		{	
 			try {
-				if(serviciosProveedor.bajaProveedor((Integer) objeto))
-					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Exito eliminando Proveedor.");
+				ID = serviciosProveedor.obtenerProveedores().get((Integer) objeto).getId_proveedor();
+				if(serviciosProveedor.bajaProveedor(ID))
+					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito eliminando Proveedor.");
 				else
 					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el Proveedor.");
+				
 			} catch (Exception e) {
 				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();

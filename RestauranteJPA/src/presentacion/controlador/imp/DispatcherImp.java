@@ -22,13 +22,11 @@ public class DispatcherImp extends Dispatcher {
 
 	private VentanaGestionPedidos vistaPedido;
 	private VentanaProducto vistaProducto;
-	private VentanaProveedor vistaProveedor;
 	private VentanaGestionProductosProveedor vistaProductosDeProveedor;
 
 	public DispatcherImp() {
 
 		vistaProducto = new VentanaProducto(null);
-		vistaProveedor = new VentanaProveedor(null);		
 		vistaProductosDeProveedor = new VentanaGestionProductosProveedor(null);
 		vistaPedido = new VentanaGestionPedidos(null);
 	}
@@ -64,20 +62,20 @@ public class DispatcherImp extends Dispatcher {
 			// PROVEEDOR
 				
 			case INICIAR_VISTA_PROVEEDOR:
-				vistaProveedor.actualizar(respuestaCMD.getObjeto());
+				VentanaProveedor.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
 	
 			case MODIFICAR_FORMULARIO_PROVEEDOR:
-				vistaProveedor.modificarFormulario(respuestaCMD.getObjeto());
+				VentanaProveedor.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());
 				break;
 			
 			case OBTENER_PROVEEDORES:
-				vistaProveedor.actualizar(respuestaCMD.getObjeto());
+				VentanaProveedor.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;				
 	
 			case CORRECTO_PROVEEDOR:
 				new VentanaCorrecto((String) respuestaCMD.getObjeto());
-				vistaProveedor.limpiarFormulario();
+				VentanaProveedor.obtenerInstancia().limpiarFormulario();
 				break;
 				
 			// PRODUCTOS DE PROVEEDOR
