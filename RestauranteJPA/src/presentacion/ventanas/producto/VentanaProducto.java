@@ -88,16 +88,6 @@ public class VentanaProducto extends JFrame {
 			
 	//Constructor
 	private VentanaProducto() {
-
-		/*
-	 	textFieldID.setText("");
-		textFieldNombre.setText("");
-		textFieldStock.setText("");
-		comboBoxTipo.setSelectedIndex(0);
-		textFieldFecha.setText("");
-		textFieldRecomendaciones.setText("");
-		 */
-		
 		
 		setTitle("Gestión de Productos");
 		setResizable(false);
@@ -122,7 +112,7 @@ public class VentanaProducto extends JFrame {
 		
 		textFieldID = new JTextField();
 		textFieldID.setBounds(83, 44, 118, 20);
-		textFieldID.setEditable(true);
+		textFieldID.setEditable(false);
 		panelFormulario.add(textFieldID);
 		textFieldID.setColumns(10);
 
@@ -159,8 +149,9 @@ public class VentanaProducto extends JFrame {
 		comboBoxTipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(comboBoxTipo.getSelectedItem().toString().compareTo(EnumTipoProducto.Perecedero.toString()) == 0)
-				{
+				{				
 					lblFecha.setVisible(true);
+					textFieldFecha.setText("");
 					textFieldFecha.setVisible(true);
 					textFieldFecha.setEnabled(true);
 					
@@ -173,8 +164,9 @@ public class VentanaProducto extends JFrame {
 					lblFecha.setVisible(false);
 					textFieldFecha.setVisible(false);
 					textFieldFecha.setEnabled(false);
-					
+						
 					lblRecomendaciones.setVisible(true);
+					textFieldRecomendaciones.setText("");
 					textFieldRecomendaciones.setEnabled(true);
 					textFieldRecomendaciones.setVisible(true);
 				}
@@ -204,14 +196,14 @@ public class VentanaProducto extends JFrame {
 		
 		comboBoxTipo.setSelectedIndex(0);
 
-		JLabel lblAadirNuevoProducto = new JLabel("A\u00F1adir o Modificar Producto:");
+		JLabel lblAadirNuevoProducto = new JLabel("Añadir o Modificar Producto:");
 		lblAadirNuevoProducto.setFont(new Font("Dialog", Font.BOLD, 13));
 		lblAadirNuevoProducto.setBounds(12, 12, 192, 16);
 		panelFormulario.add(lblAadirNuevoProducto);
 		lblAadirNuevoProducto.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		// ------- ALTA PRODUCTO ----------------------
-		JButton btnAadirProducto = new JButton("A\u00F1adir Producto");
+		JButton btnAadirProducto = new JButton("Añadir Producto");
 		btnAadirProducto.setBounds(9, 276, 192, 26);
 		panelFormulario.add(btnAadirProducto);
 		btnAadirProducto.addActionListener(new ActionListener() {
@@ -242,7 +234,7 @@ public class VentanaProducto extends JFrame {
 		panelLista.setLayout(null);
 
 		// ------- BAJA PRODUCTO ----------------------
-		JButton btnEliminarProducto = new JButton("Dar de baja Producto Seleccionado (Quitar Disponibilidad)");
+		JButton btnEliminarProducto = new JButton("Dar de baja Producto Seleccionado (Quitar DISPONIBLE)");
 		btnEliminarProducto.setBounds(0, 310, 564, 26);
 		panelLista.add(btnEliminarProducto);
 		btnEliminarProducto.addActionListener(new ActionListener() {
@@ -285,7 +277,7 @@ public class VentanaProducto extends JFrame {
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
 
-						if (getTbProductos().getSelectedRow() != -1)
+						if (getTbProductos().getSelectedRow() != -1) //hay alguna fila seleccionada
 						{
 							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO, getTbProductos().getSelectedRow() );	
 						}
@@ -298,10 +290,8 @@ public class VentanaProducto extends JFrame {
 
 	public void actualizar(Object object) {
 
-		List<TProducto> lista = new ArrayList<TProducto>();
-		
 		if (object == null)
-			rellenarTabla(lista);
+			rellenarTabla(new ArrayList<TProducto>());
 		else			
 			rellenarTabla((List<TProducto>) object);
 
@@ -328,14 +318,14 @@ public class VentanaProducto extends JFrame {
 			fila.add(prod.getId_producto());
 			fila.add(prod.getNombre());
 			fila.add(prod.getStock());
-			
+			//importantisimo, no entra en ninguno de los dos, hay que mirar porque no devuelve ninguno de los dos
 			if(prod instanceof TProductoPerecedero)
 			{
 				TProductoPerecedero p = (TProductoPerecedero) prod;
 				fila.add(p.getFechaCaducidad());
 				fila.add("---");
-			} else // He creido bien poner else
-			if(prod instanceof TProductoNoPerecedero)
+			}
+			else if(prod instanceof TProductoNoPerecedero)
 			{
 				TProductoNoPerecedero np = (TProductoNoPerecedero) prod;
 				fila.add("---");
@@ -366,30 +356,30 @@ public class VentanaProducto extends JFrame {
 			stock = Integer.parseInt(textFieldStock.getText());
 		}
 		
-		//Crea un tipo de BO u otro en función del tipo que sea el comboBox, pero lo encapsula en BOProducto
+		//Crea un tipo de transfer u otro en función del tipo que sea el comboBox, pero lo encapsula en TProducto
 		TProducto tProducto;
 		
 		if(comboBoxTipo.getSelectedItem().toString().compareTo(EnumTipoProducto.Perecedero.toString()) == 0)
 		{	
-			TProductoPerecedero bo_aux = new TProductoPerecedero();
-			bo_aux.setId_producto(ID);
-			bo_aux.setNombre(textFieldNombre.getText());
-			bo_aux.setStock(stock);
-			bo_aux.setFechaCaducidad(textFieldFecha.getText());
-			bo_aux.setDisponible(true);
+			TProductoPerecedero t_aux = new TProductoPerecedero();
+			t_aux.setId_producto(ID);
+			t_aux.setNombre(textFieldNombre.getText());
+			t_aux.setStock(stock);
+			t_aux.setFechaCaducidad(textFieldFecha.getText());
+			t_aux.setDisponible(true);
 			
-			tProducto = bo_aux;
+			tProducto = t_aux;
 		}
 		else //if (comboBoxTipo.getSelectedItem().toString().compareTo(EnumTipoProducto.NO_Perecedero.toString()) != 0)
 		{
-			TProductoNoPerecedero bo_aux = new TProductoNoPerecedero();
-			bo_aux.setId_producto(ID);
-			bo_aux.setNombre(textFieldNombre.getText());
-			bo_aux.setStock(stock);
-			bo_aux.setRecomendaciones(textFieldRecomendaciones.getText());
-			bo_aux.setDisponible(true);
+			TProductoNoPerecedero t_aux = new TProductoNoPerecedero();
+			t_aux.setId_producto(ID);
+			t_aux.setNombre(textFieldNombre.getText());
+			t_aux.setStock(stock);
+			t_aux.setRecomendaciones(textFieldRecomendaciones.getText());
+			t_aux.setDisponible(true);
 
-			tProducto = bo_aux;
+			tProducto = t_aux;
 		}
 
 		return tProducto;

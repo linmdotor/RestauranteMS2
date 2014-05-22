@@ -12,29 +12,31 @@ import java.util.List;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.proveedor.Proveedor;
+import negocio.proveedor.SAProveedor;
 import negocio.proveedor.TProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
-public class CMDObtenerProveedor implements CMD {
+public class CMDObtenerProveedores implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 		
-		RespuestaCMD respuestaComando = null;
+		SAProveedor serviciosproveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
+		RespuestaCMD respuestaCMD = null;
 		
 		try {
 			
-			List<TProveedor> proveedores = FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores();
+			List<TProveedor> proveedores = serviciosproveedor.obtenerProveedores();
 			
-			respuestaComando = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDORES, proveedores);
+			respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDORES, proveedores);
 			
 		} catch (Exception e) {
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
-		return respuestaComando;
+		return respuestaCMD;
 
 	}
 

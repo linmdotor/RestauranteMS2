@@ -67,9 +67,8 @@ public class VentanaProveedor extends JFrame{
 	{
 		setTitle("Gestion de Proveedores");
 		setResizable(false);
-
-		setSize(798, 390);
 		setVisible(false);
+		setSize(798, 390);	
 		this.setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -161,7 +160,7 @@ public class VentanaProveedor extends JFrame{
 		panelLista.setLayout(null);
 
 		// ------- BAJA PROVEEDOR ----------------------
-		JButton btnEliminarProveedor = new JButton("Dar de baja Proveedor Seleccionado");
+		JButton btnEliminarProveedor = new JButton("Dar de baja Proveedor Seleccionado (Quitar DISPONIBLE)");
 		btnEliminarProveedor.setBounds(0, 310, 564, 26);
 		panelLista.add(btnEliminarProveedor);
 		btnEliminarProveedor.addActionListener(new ActionListener() {

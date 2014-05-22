@@ -37,7 +37,7 @@ import presentacion.controlador.comando.proveedor.CMDBajaProveedor;
 import presentacion.controlador.comando.proveedor.CMDIniciarVistaProveedor;
 import presentacion.controlador.comando.proveedor.CMDModificarFormularioProveedor;
 import presentacion.controlador.comando.proveedor.CMDModificarProveedor;
-import presentacion.controlador.comando.proveedor.CMDObtenerProveedor;
+import presentacion.controlador.comando.proveedor.CMDObtenerProveedores;
 
 public class FactoriaCMDImp extends FactoriaCMD {
 
@@ -63,7 +63,7 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.ALTA_PROVEEDOR, new CMDAltaProveedor());
 		map_cmd.put(EnumComandos.BAJA_PROVEEDOR, new CMDBajaProveedor());
 		map_cmd.put(EnumComandos.MODIFICAR_PROVEEDOR, new CMDModificarProveedor());
-		map_cmd.put(EnumComandos.OBTENER_PROVEEDORES, new CMDObtenerProveedor());
+		map_cmd.put(EnumComandos.OBTENER_PROVEEDORES, new CMDObtenerProveedores());
 		map_cmd.put(EnumComandos.INICIAR_VISTA_PROVEEDOR, new CMDIniciarVistaProveedor());
 		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, new CMDModificarFormularioProveedor());
 		

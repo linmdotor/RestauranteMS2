@@ -21,24 +21,24 @@ public class CMDModificarProveedor implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {
 		
 		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
-		RespuestaCMD respuestaComando = null;
+		RespuestaCMD respuestaCMD = null;
 		
 		if(new ValidarTProveedor().proveedorCorrecto((TProveedor) objeto))
 		{
 			try {
 				if (serviciosProveedor.modificarProveedor((TProveedor) objeto))
-					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito modificando el Proveedor.");
+					respuestaCMD = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito modificando el Proveedor.");
 				else
-					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Proveedor. Error al insertar los datos.");
+					respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Proveedor. Error al insertar los datos.");
 			} catch (Exception e) {
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar proveedor. Los datos no son válidos.");
+			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar proveedor. Los datos no son válidos.");
 			
-		return respuestaComando;
+		return respuestaCMD;
 
 	}
 

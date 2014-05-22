@@ -2,6 +2,7 @@
 package presentacion.controlador.comando.proveedor;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.proveedor.SAProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -10,13 +11,14 @@ public class CMDModificarFormularioProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 				
-		RespuestaCMD respuestaCMD;
+		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
+		RespuestaCMD respuestaCMD = null;
 		
 		try {
 			
-			if(FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedor(FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores().get((int) objeto).getId_proveedor()) != null)
+			if(serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()) != null)
 			{
-				respuestaCMD = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedor(FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedores().get((int) objeto).getId_proveedor()));
+				respuestaCMD = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()));
 			} else {
 				respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Proveedor seleccionado");
 			}
