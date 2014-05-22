@@ -45,7 +45,6 @@ public class DispatcherImp extends Dispatcher {
 		
 			case INICIAR_VISTA_PRODUCTO:
 				vistaProducto.actualizar(respuestaCMD.getObjeto());
-				vistaProducto.setVisible(true);
 				break;
 	
 			case MODIFICAR_FORMULARIO_PRODUCTO:
@@ -66,13 +65,11 @@ public class DispatcherImp extends Dispatcher {
 				
 			case INICIAR_VISTA_PROVEEDOR:
 				vistaProveedor.actualizar(respuestaCMD.getObjeto());
-				vistaProveedor.setVisible(true);
 				break;
 	
 			case MODIFICAR_FORMULARIO_PROVEEDOR:
 				vistaProveedor.modificarFormulario(respuestaCMD.getObjeto());
 				break;
-	
 			
 			case OBTENER_PROVEEDORES:
 				vistaProveedor.actualizar(respuestaCMD.getObjeto());
@@ -87,21 +84,23 @@ public class DispatcherImp extends Dispatcher {
 				
 			case INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR:
 				vistaProductosDeProveedor.actualizar(respuestaCMD.getObjeto());
-				vistaProductosDeProveedor.setVisible(true);
 				break;	
 			
 			case OBTENER_PRODUCTOS_PROVEEDOR:
 				vistaProductosDeProveedor.rellenarTablaProductosActuales(respuestaCMD.getObjeto());
-				vistaProductosDeProveedor.setVisible(true);
 				break;	
+				
+				
+			// PEDIDO	
 				
 			case INICIAR_VISTA_PEDIDO:
 				vistaPedido.actualizar(respuestaCMD.getObjeto());
-				vistaPedido.setVisible(true);
 				break;	
+				
 			case MODIFICAR_FORMULARIO_PEDIDO:
 				vistaPedido.modificarFormulario(respuestaCMD.getObjeto());
 				break;
+				
 			case RELLENAR_TB_PRODUCTOS_PEDIDO:
 				vistaPedido.actualizarTablaProductos(respuestaCMD.getObjeto());
 				break;

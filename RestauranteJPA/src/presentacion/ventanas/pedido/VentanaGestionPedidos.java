@@ -252,6 +252,7 @@ public class VentanaGestionPedidos extends JFrame{
 		else			
 			rellenarTabla((List<Pedido>) object);
 
+		setVisible(true);
 		repaint();
 
 	}

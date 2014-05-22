@@ -545,6 +545,7 @@ public class VentanaProveedor extends JFrame{
 		else			
 			rellenarTabla((List<TProveedor>) object);
 
+		setVisible(true);
 		repaint();
 
 	}

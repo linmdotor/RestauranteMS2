@@ -295,6 +295,7 @@ public class VentanaProducto extends JFrame {
 		else			
 			rellenarTabla((List<TProducto>) object);
 
+		setVisible(true);
 		repaint();
 
 	}
