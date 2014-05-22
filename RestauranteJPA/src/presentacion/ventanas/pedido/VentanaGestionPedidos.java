@@ -27,6 +27,8 @@ import javax.swing.event.ListSelectionListener;
 
 
 
+
+
 import negocio.ComprobadorEnteros;
 import negocio.pedido.Pedido;
 import negocio.pedido.TPedido;
@@ -36,9 +38,13 @@ import negocio.proveedor.Proveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
+import presentacion.ventanas.producto.VentanaProducto;
 
+@SuppressWarnings("serial")
 public class VentanaGestionPedidos extends JFrame{
-	
+
+	private static VentanaGestionPedidos ventana; //instancia singleton
+
 	private JTextField textFieldID;
 	private JTextField textFieldNombre;
 	private JTextField textFieldNif;
@@ -69,7 +75,18 @@ public class VentanaGestionPedidos extends JFrame{
 		this.tbPedidos = tbPedidos;
 	}
 	
-	public VentanaGestionPedidos(Object objeto)
+	//GetInstance
+	public static VentanaGestionPedidos obtenerInstancia() {
+
+		if (ventana == null)
+			ventana = new VentanaGestionPedidos();
+
+		return ventana;
+	}
+				
+	//Constructor
+		
+	public VentanaGestionPedidos()
 	{
 		setTitle("Gestion de Proveedores");
 		setResizable(false);
@@ -235,9 +252,6 @@ public class VentanaGestionPedidos extends JFrame{
 						}
 					}
 				});
-
-
-		actualizar(objeto);
 
 	}
 

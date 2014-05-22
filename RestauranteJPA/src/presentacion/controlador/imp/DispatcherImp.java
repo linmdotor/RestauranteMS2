@@ -13,23 +13,13 @@ import presentacion.controlador.RespuestaCMD;
 import presentacion.ventanas.VentanaCorrecto;
 import presentacion.ventanas.VentanaError;
 import presentacion.ventanas.VentanaPrincipal;
+import presentacion.ventanas.pedido.VentanaAltaPedido;
 import presentacion.ventanas.pedido.VentanaGestionPedidos;
 import presentacion.ventanas.producto.VentanaProducto;
 import presentacion.ventanas.productosDeProveedor.VentanaGestionProductosProveedor;
 import presentacion.ventanas.proveedor.VentanaProveedor;
 
 public class DispatcherImp extends Dispatcher {
-
-	private VentanaGestionPedidos vistaPedido;
-	private VentanaProducto vistaProducto;
-	private VentanaGestionProductosProveedor vistaProductosDeProveedor;
-
-	public DispatcherImp() {
-
-		vistaProducto = new VentanaProducto(null);
-		vistaProductosDeProveedor = new VentanaGestionProductosProveedor(null);
-		vistaPedido = new VentanaGestionPedidos(null);
-	}
 
 	public void despachaRespuesta(RespuestaCMD respuestaCMD) {
 
@@ -42,21 +32,21 @@ public class DispatcherImp extends Dispatcher {
 			// PRODUCTO
 		
 			case INICIAR_VISTA_PRODUCTO:
-				vistaProducto.actualizar(respuestaCMD.getObjeto());
+				VentanaProducto.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
 	
 			case MODIFICAR_FORMULARIO_PRODUCTO:
 				
-				vistaProducto.modificarFormulario(respuestaCMD.getObjeto());
+				VentanaProducto.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());
 				break;
 	
 			case OBTENER_PRODUCTOS:
-				vistaProducto.actualizar(respuestaCMD.getObjeto());
+				VentanaProducto.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;				
 	
 			case CORRECTO_PRODUCTO:
 				new VentanaCorrecto((String) respuestaCMD.getObjeto());
-				vistaProducto.limpiarFormulario();
+				VentanaProducto.obtenerInstancia().limpiarFormulario();
 				break;
 				
 			// PROVEEDOR
@@ -81,26 +71,26 @@ public class DispatcherImp extends Dispatcher {
 			// PRODUCTOS DE PROVEEDOR
 				
 			case INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR:
-				vistaProductosDeProveedor.actualizar(respuestaCMD.getObjeto());
+				VentanaGestionProductosProveedor.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;	
 			
 			case OBTENER_PRODUCTOS_PROVEEDOR:
-				vistaProductosDeProveedor.rellenarTablaProductosActuales(respuestaCMD.getObjeto());
+				VentanaGestionProductosProveedor.obtenerInstancia().rellenarTablaProductosActuales(respuestaCMD.getObjeto());
 				break;	
 				
 				
 			// PEDIDO	
 				
 			case INICIAR_VISTA_PEDIDO:
-				vistaPedido.actualizar(respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;	
 				
 			case MODIFICAR_FORMULARIO_PEDIDO:
-				vistaPedido.modificarFormulario(respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());
 				break;
 				
 			case RELLENAR_TB_PRODUCTOS_PEDIDO:
-				vistaPedido.actualizarTablaProductos(respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
 				break;
 				
 			// GENERICOS

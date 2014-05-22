@@ -27,8 +27,12 @@ import negocio.productosdeproveedor.TProductoDeProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
+import presentacion.ventanas.proveedor.VentanaProveedor;
 
+@SuppressWarnings("serial")
 public class VentanaGestionProductosProveedor extends JFrame {
+	
+	private static VentanaGestionProductosProveedor ventana; //instancia singleton
 	
 	private JTextField textFieldPrecio;
 	private Tabla tabla;
@@ -41,22 +45,6 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	private JScrollPane scrollPanel;
 	
 	//Mutadores y Accedentes
-	
-	public JLabel getIdProveedor() {
-		return idProveedor;
-	}
-
-	public void setIdProveedor(JLabel idProveedor) {
-		this.idProveedor = idProveedor;
-	}
-	
-	public int getProveedor() {
-		return proveedor;
-	}
-
-	public void setProveedor(int proveedor) {
-		this.proveedor = proveedor;
-	}
 	
 	public JTable getTbProveedores()
 	{
@@ -78,7 +66,17 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		this.tbProductosTotales = tbProductos;
 	}
 	
-	public VentanaGestionProductosProveedor(Object objeto)
+	//GetInstance
+		public static VentanaGestionProductosProveedor obtenerInstancia() {
+
+			if (ventana == null)
+				ventana = new VentanaGestionProductosProveedor();
+
+			return ventana;
+		}
+			
+		//Constructor
+	private VentanaGestionProductosProveedor()
 	{
 		setTitle("Gestion Productos de Proveedores");
 		setResizable(false);
@@ -211,8 +209,6 @@ public class VentanaGestionProductosProveedor extends JFrame {
 						}
 					}
 				});
-
-		actualizar(objeto);
 
 	}
 	

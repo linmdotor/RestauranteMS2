@@ -6,11 +6,11 @@ import java.util.Vector;
 import javax.swing.*;
 
 
+@SuppressWarnings("serial")
 public class VentanaAltaPedido extends JFrame{
 	
-	/***/
-	private static final long serialVersionUID = 1L;
-
+	private static VentanaAltaPedido ventana; //instancia singleton
+	
 	/***Tabla Producto**/
 	private JPanel panelListaProd;
 	private JTable tbProductos;
@@ -30,7 +30,17 @@ public class VentanaAltaPedido extends JFrame{
 	private JScrollPane scrollPanelPedido;
 	
 
-	@SuppressWarnings("deprecation")
+	//GetInstance
+	public static VentanaAltaPedido obtenerInstancia() {
+
+		if (ventana == null)
+			ventana = new VentanaAltaPedido();
+
+		return ventana;
+	}
+					
+	//Constructor
+			
 	public VentanaAltaPedido(){
 		super(" Realizar Nuevo Pedido");
 		setResizable(false);

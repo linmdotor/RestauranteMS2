@@ -36,6 +36,7 @@ import negocio.ComprobadorFloat;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
+import presentacion.ventanas.proveedor.VentanaProveedor;
 import negocio.producto.Producto;
 import negocio.producto.ProductoNoPerecedero;
 import negocio.producto.ProductoPerecedero;
@@ -44,7 +45,10 @@ import negocio.producto.TProducto;
 import negocio.producto.TProductoNoPerecedero;
 import negocio.producto.TProductoPerecedero;
 
+@SuppressWarnings("serial")
 public class VentanaProducto extends JFrame {
+
+	private static VentanaProducto ventana; //instancia singleton
 
 	private JTextField textFieldID;
 	private JTextField textFieldNombre;
@@ -73,9 +77,17 @@ public class VentanaProducto extends JFrame {
 		this.tbProductos = tbProductos;
 	}
 
-	// Constructor
+	//GetInstance
+		public static VentanaProducto obtenerInstancia() {
 
-	public VentanaProducto(Object objeto) {
+			if (ventana == null)
+				ventana = new VentanaProducto();
+
+			return ventana;
+		}
+			
+	//Constructor
+	private VentanaProducto() {
 
 		/*
 	 	textFieldID.setText("");
@@ -279,8 +291,6 @@ public class VentanaProducto extends JFrame {
 						}
 					}
 				});
-
-		actualizar(objeto);
 
 	}
 
