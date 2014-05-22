@@ -2,6 +2,7 @@ package presentacion.controlador.comando.proveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import presentacion.controlador.CMD;
+import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
 public class CMDAltaProveedor implements CMD {
@@ -13,7 +14,7 @@ public class CMDAltaProveedor implements CMD {
 		try {
 			res = FactoriaNegocio.obtenerInstancia().generaSAProveedor().altaProveedor(objeto);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		return res;

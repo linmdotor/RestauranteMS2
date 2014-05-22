@@ -3,6 +3,7 @@ package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import presentacion.controlador.CMD;
+import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
 public class CMDEliminarProductoProveedor implements CMD {
@@ -12,7 +13,7 @@ public class CMDEliminarProductoProveedor implements CMD {
 		try {
 			res = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().bajaProductoProveedor(objeto);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		return res;

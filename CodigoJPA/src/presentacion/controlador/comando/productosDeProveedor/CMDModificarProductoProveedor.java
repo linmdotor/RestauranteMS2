@@ -2,7 +2,7 @@
  * 
  * Comando Modificar Producto
  * 
- * @author Marco González, Juan Carlos * @author Martínez Dotor, Jesús * @author Picado Álvarez, María * @author Rojas Morán, Amy Alejandra * @author Serrano Álvarez, José * @author Vargas Paredes, Jhonny
+ * @author Marco Gonzï¿½lez, Juan Carlos * @author Martï¿½nez Dotor, Jesï¿½s * @author Picado ï¿½lvarez, Marï¿½a * @author Rojas Morï¿½n, Amy Alejandra * @author Serrano ï¿½lvarez, Josï¿½ * @author Vargas Paredes, Jhonny
  *  
  */
 
@@ -10,6 +10,7 @@ package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import presentacion.controlador.CMD;
+import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
 public class CMDModificarProductoProveedor implements CMD {
@@ -19,7 +20,7 @@ public class CMDModificarProductoProveedor implements CMD {
 		try {
 			res = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().modificarProductoProveedor(objeto);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		return res;

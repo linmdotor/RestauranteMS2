@@ -17,7 +17,7 @@ public class CMDAltaProducto implements CMD {
 		try {
 			res = FactoriaNegocio.obtenerInstancia().generaSAProducto().altaProducto(objeto);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			res = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 		return res;

@@ -13,7 +13,7 @@ public class CMDObtenerProductosProveedor implements CMD {
 		try {
 			respuestaComando = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().obtenerProductosProveedor(objeto));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();
 		}
 
