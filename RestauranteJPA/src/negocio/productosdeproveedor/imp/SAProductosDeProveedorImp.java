@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
@@ -19,6 +20,7 @@ import negocio.producto.TProducto;
 import negocio.producto.TProductoNoPerecedero;
 import negocio.producto.TProductoPerecedero;
 import negocio.productosdeproveedor.ProductosDeProveedor;
+import negocio.productosdeproveedor.ProductosDeProveedorId;
 import negocio.productosdeproveedor.SAProductosDeProveedor;
 import negocio.productosdeproveedor.TProductoDeProveedor;
 import negocio.proveedor.Proveedor;
@@ -72,22 +74,91 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	}
 
 	@Override
-	public List<ProductosDeProveedor> obtenerProductosProveedor(Object objeto)
+	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID)
 			throws Exception {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		/*EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
 		//cambiar precio por el id del producto del proveedor, en la bbdd se llama proveedor_id_proveedor
 		//pero al ponerlo en la consulta, dice que no puede encontrarlo.
 		TypedQuery query = em.createQuery("select e from ProductosDeProveedor e where e.precio = :arg", ProductosDeProveedor.class);
-		query.setParameter("arg", (int)objeto);
+		query.setParameter("arg", ID);
 		List<ProductosDeProveedor> listaProductos = query.getResultList();
 		
 		em.close();
 		emf.close();
 
-		return listaProductos;
+		List<TProductoDeProveedor> listatransfer = new ArrayList<TProductoDeProveedor>();
+		for(ProductosDeProveedorId pp : listaProductos)
+		{
+			listatransfer.add(new TProductoDeProveedor(pp));
+		}
+		
+		return listatransfer;*/
+		
+		
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		List<ProductosDeProveedor> ppObtenido = null;
+		TypedQuery<ProductosDeProveedor> query = null;
+		try { 
+			em.getTransaction().begin();
+			
+			query = em.createQuery("select e from ProductosDeProveedor e where e.proveedor.id_proveedor = :arg", ProductosDeProveedor.class);
+			
+			query.setParameter("arg", ID);
+			
+			ppObtenido = query.getResultList();
+			
+			em.lock(ppObtenido, LockModeType.OPTIMISTIC);
+			
+			em.getTransaction().commit();
+			
+		}catch(NoResultException ex){
+			
+			em.getTransaction().rollback();
+			
+			throw new Exception("No existe el producto con ID: " + ID);
+			
+		} catch (Exception ex) {
+
+			if (ex instanceof Exception) {
+
+				em.getTransaction().rollback();
+				
+				throw ex;
+
+			} else {
+
+				em.getTransaction().rollback();
+				
+				throw new Exception(ex.getLocalizedMessage());
+
+			}
+			
+		} finally {
+	
+			if (ppObtenido != null)
+				em.detach(ppObtenido); //esta operación, al utilizar Transfer, no es necesaria.
+	
+			em.close();
+	
+		}		
+		
+		List<TProductoDeProveedor> listatransfer = new ArrayList<TProductoDeProveedor>();
+		for(ProductosDeProveedor pp : ppObtenido)
+		{
+			TProductoDeProveedor tpp = new TProductoDeProveedor();
+			tpp.setProducto(pp.getProducto().getId_producto());
+			tpp.setProveedor(pp.getProveedor().getId_proveedor());
+			tpp.setPrecio(pp.getPrecio());
+			listatransfer.add(tpp);
+		}
+		
+		return listatransfer;
 		
 	}
 

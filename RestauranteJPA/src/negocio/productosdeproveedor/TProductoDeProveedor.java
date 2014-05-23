@@ -23,6 +23,14 @@ public class TProductoDeProveedor {
 		this.precio = precio;
 		
 	}
+	
+public TProductoDeProveedor(ProductosDeProveedorId producto_proveedor) {
+		
+		this.producto= producto_proveedor.getProducto();
+		this.proveedor = producto_proveedor.getProveedor();
+		//this.precio = producto_proveedor.getPrecio();
+		
+	}
 		
 	// Mutadores y Accedentes
 

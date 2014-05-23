@@ -9,6 +9,7 @@
 package presentacion.controlador.imp;
 
 import presentacion.controlador.Dispatcher;
+import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 import presentacion.ventanas.VentanaCorrecto;
 import presentacion.ventanas.VentanaError;
@@ -76,7 +77,11 @@ public class DispatcherImp extends Dispatcher {
 			
 			case OBTENER_PRODUCTOS_PROVEEDOR:
 				VentanaGestionProductosProveedor.obtenerInstancia().rellenarTablaProductosActuales(respuestaCMD.getObjeto());
-				break;	
+				break;
+				
+			case OBTENER_PRODUCTOS_TOTALES:
+				VentanaGestionProductosProveedor.obtenerInstancia().rellenarTablaProductosTotales(respuestaCMD.getObjeto());
+				break;
 				
 				
 			// PEDIDO	

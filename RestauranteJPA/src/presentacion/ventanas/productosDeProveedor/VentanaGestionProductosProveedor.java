@@ -22,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.producto.Producto;
+import negocio.producto.TProducto;
 import negocio.productosdeproveedor.ProductosDeProveedor;
 import negocio.productosdeproveedor.TProductoDeProveedor;
 import presentacion.controlador.ApplicationController;
@@ -39,7 +40,8 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	private JTable tbProductosProveedor;
 	private JTable tbProductosTotales;
 	JLabel idProveedor;
-	private int proveedor;
+	
+	private int ID_proveedor; //mantenemos una variable con el ID del proveedor para poder consultarlo cuando queramos
 
 	private Vector fila;
 	private JScrollPane scrollPanel;
@@ -112,22 +114,22 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		btnModiPrecio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 		});
 	
 		
 		// ------- AÑADIR PRODUCTO ----------------------
-		JButton btnAnadirProducto = new JButton("A\u00F1adir Producto");
+		JButton btnAnadirProducto = new JButton("Añadir Producto");
 		btnAnadirProducto.setBounds(9, 270, 192, 26);
 		panelFormulario.add(btnAnadirProducto);
 		btnAnadirProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 
@@ -142,14 +144,15 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		lblIdProveedor.setBounds(44, 25, 76, 16);
 		panelFormulario.add(lblIdProveedor);
 		
-		idProveedor= new JLabel(Integer.toString(proveedor));
+		idProveedor= new JLabel(Integer.toString(ID_proveedor));
 		idProveedor.setBounds(132, 25, 55, 16);
 		panelFormulario.add(idProveedor);
 		btnEliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALTA_PROVEEDOR, obtenerProveedor());
-				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PROVEEDORES, null);
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 		});
 		
@@ -181,7 +184,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 
 						if (getTbProveedores().getSelectedRow() != -1)
 						{
-							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, obtenerProveedor());
+							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
 						}
 					}
 		});
@@ -205,7 +208,8 @@ public class VentanaGestionProductosProveedor extends JFrame {
 
 						if (getTbProveedores().getSelectedRow() != -1)
 						{
-							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, getTbProveedores().getSelectedRow() );	
+							//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, getTbProveedores().getSelectedRow() );	
+						//revisar esto, porque además seguro que no es: EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR
 						}
 					}
 				});
@@ -213,20 +217,16 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	}
 	
 	public void actualizar(Object objeto) {
+
+		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, objeto);
 		
-		if (objeto != null){
+		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 		
-			ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, objeto);
-			
-			//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
-			
-			idProveedor.setText(Integer.toString((int)objeto));
-			
-		}	
+		idProveedor.setText(Integer.toString((int)objeto));
 		
 		setVisible(true);
 		repaint();
-
+			
 	}
 	
 	private TProductoDeProveedor obtenerProductoProveedor() {
@@ -238,26 +238,9 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		else
 			tProductoDeProveedor.setPrecio(0);
 		
-		tProductoDeProveedor.setProveedor(proveedor);
+		tProductoDeProveedor.setProveedor(ID_proveedor);
 		
 		tProductoDeProveedor.setProducto(tbProductosTotales.getSelectedRow());
-		
-		return tProductoDeProveedor;
-		
-	}
-	
-	private TProductoDeProveedor obtenerProveedor() {
-		
-		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
-		
-		if (textFieldPrecio.getText().length() > 0)
-			tProductoDeProveedor.setPrecio(Double.parseDouble(textFieldPrecio.getText()));
-		else
-			tProductoDeProveedor.setPrecio(0);		
-		
-		tProductoDeProveedor.setProveedor(proveedor);
-		
-		tProductoDeProveedor.setProducto(tbProductosProveedor.getSelectedRow());
 		
 		return tProductoDeProveedor;
 		
@@ -267,7 +250,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		if (object != null){
 		
-			List<ProductosDeProveedor> listaProductos = (List<ProductosDeProveedor>) object;
+			List<TProductoDeProveedor> listaProductos = (List<TProductoDeProveedor>) object;
 			
 			tabla = new Tabla();
 			
@@ -277,9 +260,9 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			for (int i = 0; i < listaProductos.size(); i++) {
 		
 				fila = new Vector();
-				ProductosDeProveedor producto = listaProductos.get(i);
-				fila.add(producto.getProducto().getId_producto());
-				fila.add(producto.getPrecio());		
+				TProductoDeProveedor producto_prov = listaProductos.get(i);
+				fila.add(producto_prov.getProducto());
+				fila.add(producto_prov.getPrecio());		
 				
 				tabla.addRow(fila);
 			}
@@ -294,7 +277,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		if (object != null){
 		
-			List<Producto> listaProductos = (List<Producto>) object;
+			List<TProducto> listaProductos = (List<TProducto>) object;
 			
 			tabla = new Tabla();
 			
@@ -304,7 +287,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			for (int i = 0; i < (listaProductos.size()); i++) {
 		
 				fila = new Vector();
-				Producto producto = (listaProductos.get(i));
+				TProducto producto = (listaProductos.get(i));
 				fila.add(producto.getId_producto());
 				fila.add(producto.getNombre());
 				

@@ -26,6 +26,7 @@ import negocio.proveedor.TProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
+import presentacion.ventanas.VentanaError;
 
 @SuppressWarnings("serial")
 public class VentanaProveedor extends JFrame{
@@ -196,6 +197,8 @@ public class VentanaProveedor extends JFrame{
 
 				if ( getTbProveedores().getSelectedRow() != -1 ) //hay alguna fila seleccionada
 					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR, getTbProveedores().getSelectedRow() );
+				else
+					new VentanaError("Debe seleccionar primero un proveedor.");
 			}
 		});
 
