@@ -158,52 +158,6 @@ public class SAProductoImp implements SAProducto {
 	}		
 	
 	public boolean modificarProducto(TProducto tProducto) throws Exception {
-			
-		/*boolean respuesta = false;
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");			
-		EntityManager em = emf.createEntityManager();
-		
-		Producto productoObtenido = null;
-		TypedQuery<Producto> query = null;	
-		
-		
-		try {
-			
-			em.getTransaction().begin();
-
-			query = em.createNamedQuery(Producto.QUERY_OBTENER_PRODUCTO, Producto.class);
-			query.setParameter("arg", tProducto.getId_producto());
-
-			productoObtenido = query.getSingleResult();
-			em.lock(productoObtenido, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-
-			if((tProducto instanceof TProductoPerecedero && productoObtenido instanceof ProductoNoPerecedero)
-					|| (tProducto instanceof TProductoNoPerecedero && productoObtenido instanceof ProductoPerecedero))
-				throw new Exception("No se puede modificar el tipo del Producto");	    	
-
-			if (tProducto instanceof TProductoPerecedero) 
-				productoObtenido = new ProductoPerecedero((TProductoPerecedero) tProducto);
-			else
-				productoObtenido = new ProductoNoPerecedero((TProductoNoPerecedero) tProducto);
-				
-			em.getTransaction().commit();
-			
-			respuesta = true;
-						
-		} catch(OptimisticLockException oe) {
-			throw new Exception("No se pudo modificar el producto, porque está bloqueado");
-		}			
-		catch (Exception e) {
-			throw new Exception("No se pudo modificar el producto.");
-		} finally {
-			 
-			em.close();
-			emf.close();
-			
-		 }	
-		
-		return respuesta;*/
 		
 		boolean resultado = false;
 		
@@ -218,7 +172,11 @@ public class SAProductoImp implements SAProducto {
 				
 			if (producto != null){
 				
-				if (tProducto instanceof TProductoPerecedero) 
+				if((tProducto instanceof TProductoPerecedero && producto instanceof ProductoNoPerecedero)
+						|| (tProducto instanceof TProductoNoPerecedero && producto instanceof ProductoPerecedero))
+					throw new Exception("No se puede modificar el tipo del Producto.");	    	
+
+				if (producto instanceof ProductoPerecedero) 
 					((ProductoPerecedero)producto).setAll(tProducto);
 				else
 					((ProductoNoPerecedero)producto).setAll(tProducto);	
@@ -229,10 +187,8 @@ public class SAProductoImp implements SAProducto {
 				
 		} catch(OptimisticLockException oe) {
 			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
-		}			
-		catch (Exception e) {
-			throw new Exception("No se pudo modificar el proveedor.");
-		} finally {
+		}
+		finally {
 			 
 			em.close();
 			emf.close();
