@@ -87,6 +87,11 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionProductosProveedor.obtenerInstancia().rellenarTablaProductosTotales(respuestaCMD.getObjeto());
 				break;
 				
+			case CORRECTO_PRODUCTO_PROVEEDOR:
+				new VentanaCorrecto((String) respuestaCMD.getObjeto());
+				VentanaGestionProductosProveedor.obtenerInstancia().limpiarFormulario();
+				break;
+				
 				
 			// PEDIDO	
 				

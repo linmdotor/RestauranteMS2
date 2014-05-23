@@ -104,6 +104,16 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		panelFormulario.add(textFieldPrecio);
 		textFieldPrecio.setColumns(10);
 		
+		//-------------- ID PROV -------------------------
+		JLabel lblIdProveedor = new JLabel("ID Proveedor:");
+		lblIdProveedor.setBounds(44, 25, 76, 16);
+		panelFormulario.add(lblIdProveedor);
+		
+		textFieldID_Proveedor = new JTextField();
+		textFieldID_Proveedor.setBounds(130, 25, 40, 20);
+		textFieldID_Proveedor.setEditable(false);
+		panelFormulario.add(textFieldID_Proveedor);
+		textFieldID_Proveedor.setColumns(10);
 		
 		// ------- MODIFICAR PRECIO ----------------------
 		JButton btnModiPrecio = new JButton("Modificar Precio");
@@ -113,8 +123,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
+				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));	
 			}
 		});
 	
@@ -127,8 +136,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
+				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));
 			}
 
 		});
@@ -137,26 +145,11 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		JButton btnEliminarProducto = new JButton("Eliminar Producto");
 		btnEliminarProducto.setBounds(9, 300, 192, 26);
 		panelFormulario.add(btnEliminarProducto);
-		
-		JLabel lblIdProveedor = new JLabel("ID Proveedor:");
-		lblIdProveedor.setBounds(44, 25, 76, 16);
-		panelFormulario.add(lblIdProveedor);
-		
-		textFieldID_Proveedor = new JTextField();
-		textFieldID_Proveedor.setBounds(130, 25, 40, 20);
-		textFieldID_Proveedor.setEditable(false);
-		panelFormulario.add(textFieldID_Proveedor);
-		textFieldID_Proveedor.setColumns(10);
-		
-		/*idProveedor= new JLabel(Integer.toString(ID_proveedor));
-		idProveedor.setBounds(132, 25, 55, 16);
-		panelFormulario.add(idProveedor);*/
 		btnEliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
+				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));
 			}
 		});
 		
@@ -307,6 +300,11 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	public void cambiarPrecio(Object objeto) {
 		
 		textFieldPrecio.setText(Double.toString((double) objeto));
+		
+	}
+
+	public void limpiarFormulario() {
+		textFieldPrecio.setText("");
 		
 	}	
 
