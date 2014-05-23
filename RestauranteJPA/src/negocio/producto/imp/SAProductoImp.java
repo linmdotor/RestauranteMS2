@@ -117,6 +117,38 @@ public class SAProductoImp implements SAProducto {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<TProducto> obtenerProductosDisponibles() throws Exception {		
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		@SuppressWarnings("rawtypes")
+		TypedQuery query = em.createQuery("SELECT e FROM Producto e where e.disponible = 1", Producto.class);
+		
+		List<Producto> listaProductos = query.getResultList();
+		
+		em.close();
+		emf.close();
+		
+		ArrayList<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
+		
+		for(Producto prod : listaProductos)
+		{
+			TProducto tProducto;
+			
+			if(prod instanceof ProductoPerecedero)
+				tProducto = new TProductoPerecedero(prod);
+			else //(prod instanceof ProductoNoPerecedero)
+				tProducto = new TProductoNoPerecedero(prod);
+			
+			listaTProd.add(tProducto);
+		}
+
+		return listaTProd;
+		
+	}
+	
 	public boolean altaProducto(TProducto tProducto) throws Exception {		
 		
 		boolean respuesta = false;

@@ -76,7 +76,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	@Override
 	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID)
 			throws Exception {
-		/*EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
 		@SuppressWarnings("rawtypes")
@@ -90,14 +90,14 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		emf.close();
 
 		List<TProductoDeProveedor> listatransfer = new ArrayList<TProductoDeProveedor>();
-		for(ProductosDeProveedorId pp : listaProductos)
+		/*for(ProductosDeProveedorId pp : listaProductos)
 		{
 			listatransfer.add(new TProductoDeProveedor(pp));
-		}
+		}*/
 		
-		return listatransfer;*/
+		return listatransfer;
 		
-		
+		/* ESTO ES LO QUE ESTABA HACIENDO YO (LIN), PERO NO HE CONSEguIDO NADA, solo hace que explote el JPA
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
@@ -158,7 +158,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			listatransfer.add(tpp);
 		}
 		
-		return listatransfer;
+		return listatransfer;*/
 		
 	}
 

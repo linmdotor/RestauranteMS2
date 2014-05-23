@@ -36,10 +36,10 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	private static VentanaGestionProductosProveedor ventana; //instancia singleton
 	
 	private JTextField textFieldPrecio;
+	private JTextField textFieldID_Proveedor;
 	private Tabla tabla;
 	private JTable tbProductosProveedor;
 	private JTable tbProductosTotales;
-	JLabel idProveedor;
 	
 	private int ID_proveedor; //mantenemos una variable con el ID del proveedor para poder consultarlo cuando queramos
 
@@ -109,7 +109,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		// ------- MODIFICAR PRECIO ----------------------
 		JButton btnModiPrecio = new JButton("Modificar Precio");
-		btnModiPrecio.setBounds(9, 235, 192, 26);
+		btnModiPrecio.setBounds(59, 150, 142, 26);
 		panelFormulario.add(btnModiPrecio);
 		btnModiPrecio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -123,7 +123,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		// ------- AÑADIR PRODUCTO ----------------------
 		JButton btnAnadirProducto = new JButton("Añadir Producto");
-		btnAnadirProducto.setBounds(9, 270, 192, 26);
+		btnAnadirProducto.setBounds(9, 265, 192, 26);
 		panelFormulario.add(btnAnadirProducto);
 		btnAnadirProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -137,16 +137,22 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		// ------- ELIMINAR PRODUCTO ----------------------
 		JButton btnEliminarProducto = new JButton("Eliminar Producto");
-		btnEliminarProducto.setBounds(9, 305, 192, 26);
+		btnEliminarProducto.setBounds(9, 300, 192, 26);
 		panelFormulario.add(btnEliminarProducto);
 		
 		JLabel lblIdProveedor = new JLabel("ID Proveedor:");
 		lblIdProveedor.setBounds(44, 25, 76, 16);
 		panelFormulario.add(lblIdProveedor);
 		
-		idProveedor= new JLabel(Integer.toString(ID_proveedor));
+		textFieldID_Proveedor = new JTextField();
+		textFieldID_Proveedor.setBounds(130, 25, 40, 20);
+		textFieldID_Proveedor.setEditable(false);
+		panelFormulario.add(textFieldID_Proveedor);
+		textFieldID_Proveedor.setColumns(10);
+		
+		/*idProveedor= new JLabel(Integer.toString(ID_proveedor));
 		idProveedor.setBounds(132, 25, 55, 16);
-		panelFormulario.add(idProveedor);
+		panelFormulario.add(idProveedor);*/
 		btnEliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -222,7 +228,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 		
-		idProveedor.setText(Integer.toString((int)objeto));
+		textFieldID_Proveedor.setText(Integer.toString((int)objeto));
 		
 		setVisible(true);
 		repaint();
