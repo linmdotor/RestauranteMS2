@@ -245,7 +245,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		}
 		
 		if (textFieldPrecio.getText().length() > 0)
-			tProductoDeProveedor.setPrecio(Integer.parseInt(textFieldPrecio.getText()));
+			tProductoDeProveedor.setPrecio(Double.parseDouble(textFieldPrecio.getText()));
 		else
 			tProductoDeProveedor.setPrecio(0);
 		

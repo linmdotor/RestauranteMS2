@@ -146,7 +146,6 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			em.getTransaction().begin();			
 
 			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
-			Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 			
 			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			
@@ -180,7 +179,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	@Override
 	public boolean bajaProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception {
 
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un Producto de Proveedor.");
+		boolean resultado = false;
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
@@ -190,32 +189,33 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			em.getTransaction().begin();			
 
 			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
-			Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 			
 			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			
-			// Borramos
+			// Borramos	ese producto en concreto buscando en la lista cual es el que corresponde a ese ID	
+			ProductosDeProveedor productoAeliminar = null;
+			for(ProductosDeProveedor pp : proveedor.getListaProductosProveedor())
+			{
+				if(pp.getProducto().getId_producto() == tProductoDeProveedor.getProducto())
+				{
+					em.remove(pp);
+					productoAeliminar = pp;
+				}
+			}
 			
-			em.remove(proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor)));
-									
-			proveedor.getListaProductosProveedor().remove(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor));
+			proveedor.getListaProductosProveedor().remove(proveedor.getListaProductosProveedor().indexOf(productoAeliminar));
 			
 			em.getTransaction().commit();
 			
-			respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha eliminado Producto de Proveedor.");
+			resultado = true;
 			
-		} catch(OptimisticLockException oe) {
-			
+		} catch(OptimisticLockException oe) {			
 			em.getTransaction().rollback();
-			
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+			throw new Exception("No se pudo eliminar el producto al proveedor, porque está bloqueado");
 		}			
-		catch (Exception e) {
-			
+		catch (Exception e) {		
 			em.getTransaction().rollback();
-			
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar producto de un proveedor. Error al insertar los datos.");
-			
+			throw new Exception("No se pudo eliminar el producto al proveedor.");
 		} finally {
 			 
 			em.close();
@@ -223,8 +223,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 		}
 		
-		//return respuestaComando;
-		return true;
+		return resultado;
 	}
 
 }
