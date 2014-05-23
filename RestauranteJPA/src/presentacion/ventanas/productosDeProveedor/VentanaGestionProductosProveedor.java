@@ -203,7 +203,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
 
-						if (getTbProveedores().getSelectedRow() != -1)
+						if (tbProductosTotales.getSelectedRow() != -1)
 						{							
 							limpiarFormulario();
 						}
