@@ -1,6 +1,10 @@
 package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.producto.SAProducto;
+import negocio.producto.TProducto;
+import negocio.producto.ValidarTProducto;
+import negocio.productosdeproveedor.SAProductosDeProveedor;
 import negocio.productosdeproveedor.TProductoDeProveedor;
 import negocio.productosdeproveedor.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
@@ -10,15 +14,24 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDAnadirProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-		RespuestaCMD respuestaCMD = null;
-		try {
-			if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {	
-				respuestaCMD = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().anadirProductoProveedor(objeto);
-			}	
-		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
+		SAProductosDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
+		RespuestaCMD respuestacomando = null;
+		
+		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {
+
+			try {			
+				if(serviciosProductoProveedor.anadirProductoProveedor((TProductoDeProveedor)objeto))
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO_PROVEEDOR, "Se ha añadido el Producto al Proveedor.");
+				else
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al añadir el producto al proveedor. Error al insertar los datos.");	
+			} catch (Exception e) {
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				e.printStackTrace();
+			}
 		}
-		return respuestaCMD;
+		else
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al añadir el producto al proveedor. Los datos no son válidos.");
+			
+		return respuestacomando;
 	}
 }

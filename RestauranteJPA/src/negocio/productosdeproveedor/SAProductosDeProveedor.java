@@ -6,9 +6,9 @@ import presentacion.controlador.RespuestaCMD;
 
 public interface SAProductosDeProveedor {
 
-	public RespuestaCMD anadirProductoProveedor(Object objeto) throws Exception;
+	public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception;
 	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID) throws Exception;
-	public RespuestaCMD modificarProductoProveedor(Object objeto)throws Exception;
-	public RespuestaCMD bajaProductoProveedor(Object objeto)throws Exception;
+	public boolean modificarProductoProveedor(TProductoDeProveedor tProductoDeProveedor)throws Exception;
+	public boolean bajaProductoProveedor(TProductoDeProveedor tProductoDeProveedor)throws Exception;
 	
 }

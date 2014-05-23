@@ -9,6 +9,7 @@
 package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.productosdeproveedor.SAProductosDeProveedor;
 import negocio.productosdeproveedor.TProductoDeProveedor;
 import negocio.productosdeproveedor.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
@@ -18,15 +19,25 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDModificarProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-		RespuestaCMD respuestaCMD  = null;
-		try {
-			if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {
-				respuestaCMD  = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().modificarProductoProveedor(objeto);
+
+		SAProductosDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
+		RespuestaCMD respuestacomando = null;
+		
+		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto))
+		{
+			try {
+				if(serviciosProductoProveedor.modificarProductoProveedor((TProductoDeProveedor)objeto))
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO_PROVEEDOR, "Se ha modificado el Producto del Proveedor.");
+				else
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar el Producto del Proveedor. Error al insertar los datos.");
+			} catch (Exception e) {
+				respuestacomando  = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			respuestaCMD  = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
 		}
-		return respuestaCMD;
+		else
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar producto del proveedor. Los datos no son válidos.");
+					
+		return respuestacomando;
 	}
 }

@@ -30,20 +30,17 @@ import negocio.proveedor.ValidarTProveedor;
 
 public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
-	public RespuestaCMD anadirProductoProveedor(Object objeto)  throws Exception {
+	public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor)  throws Exception {
 		
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de alta un precio de un producto de proveedor.");				
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
-		
-		TProductoDeProveedor tproductodeproveedor = new TProductoDeProveedor();
-		tproductodeproveedor=(TProductoDeProveedor) objeto;
 
-		Proveedor proveedor = em.find(Proveedor.class, tproductodeproveedor.getProveedor());
-		Producto producto = em.find(Producto.class, tproductodeproveedor.getProducto());
+		Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+		Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 		
-		ProductosDeProveedor precioProductoProveedor = new ProductosDeProveedor(proveedor, producto, tproductodeproveedor.getPrecio());
+		ProductosDeProveedor precioProductoProveedor = new ProductosDeProveedor(proveedor, producto, tProductoDeProveedor.getPrecio());
 
 		try {
 			
@@ -69,13 +66,13 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 		 }			
 		
-		return respuestaComando;		
+		//return respuestaComando;	
+		return true;
 		
 	}
 
 	@Override
-	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID)
-			throws Exception {
+	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
@@ -163,17 +160,11 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	}
 
 	@Override
-	public RespuestaCMD modificarProductoProveedor(Object objeto)
-			throws Exception {
+	public boolean modificarProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception {
 
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto de Proveedor.");
-
-		//Proveedor proveedorObtenido = null;
-
-		TProductoDeProveedor nuevoProductoDeProveedor = new TProductoDeProveedor();
-		nuevoProductoDeProveedor = (TProductoDeProveedor)objeto;
 		
-		if(nuevoProductoDeProveedor.getPrecio() > 0){
+		if(tProductoDeProveedor.getPrecio() > 0){
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");	
 			EntityManager em = emf.createEntityManager();
 			
@@ -181,14 +172,14 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 							
 				em.getTransaction().begin();			
 	
-				Proveedor proveedor = em.find(Proveedor.class, nuevoProductoDeProveedor.getProveedor());
-				Producto producto = em.find(Producto.class, nuevoProductoDeProveedor.getProducto());
+				Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+				Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 				
 				em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 				
 				// Actualizamos
 				
-				proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(nuevoProductoDeProveedor)).setPrecio(nuevoProductoDeProveedor.getPrecio());
+				proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor)).setPrecio(tProductoDeProveedor.getPrecio());
 				
 				em.getTransaction().commit();
 				
@@ -215,17 +206,14 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		} else
 			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "El Precio debe ser entero positivo.");
 		
-		return respuestaComando;
+		//return respuestaComando;
+		return true;
 	}
 
 	@Override
-	public RespuestaCMD bajaProductoProveedor(Object objeto) throws Exception {
+	public boolean bajaProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception {
 
 		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja un Producto de Proveedor.");
-			
-		
-		TProductoDeProveedor tproductodeproveedor = new TProductoDeProveedor();
-		tproductodeproveedor=(TProductoDeProveedor) objeto;
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
@@ -234,16 +222,16 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 			em.getTransaction().begin();			
 
-			Proveedor proveedor = em.find(Proveedor.class, tproductodeproveedor.getProveedor());
-			Producto producto = em.find(Producto.class, tproductodeproveedor.getProducto());
+			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+			Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 			
 			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			
 			// Borramos
 			
-			em.remove(proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tproductodeproveedor)));
+			em.remove(proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor)));
 									
-			proveedor.getListaProductosProveedor().remove(proveedor.getListaProductosProveedor().indexOf(tproductodeproveedor));
+			proveedor.getListaProductosProveedor().remove(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor));
 			
 			em.getTransaction().commit();
 			
@@ -268,7 +256,8 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 		}
 		
-		return respuestaComando;
+		//return respuestaComando;
+		return true;
 	}
 
 }

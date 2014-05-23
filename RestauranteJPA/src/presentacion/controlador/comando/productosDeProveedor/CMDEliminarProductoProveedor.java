@@ -2,6 +2,8 @@
 package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.producto.SAProducto;
+import negocio.productosdeproveedor.SAProductosDeProveedor;
 import negocio.productosdeproveedor.TProductoDeProveedor;
 import negocio.productosdeproveedor.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
@@ -11,13 +13,23 @@ import presentacion.controlador.RespuestaCMD;
 public class CMDEliminarProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
-		RespuestaCMD respuestaCMD = null;
-		try {	
-				respuestaCMD = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor().bajaProductoProveedor(objeto);
-		} catch (Exception e) {
-			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
+		SAProductosDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
+		RespuestaCMD respuestacomando = null;
+		
+		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) 
+		{
+			try {	
+				if(serviciosProductoProveedor.bajaProductoProveedor((TProductoDeProveedor)objeto))
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO_PROVEEDOR, "Se ha quitado el Producto del Proveedor.");
+			} catch (Exception e) {
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				e.printStackTrace();
+			}
+		
 		}
-		return respuestaCMD;
+		else
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al quitar el producto del proveedor. Los datos no son válidos.");
+		
+		return respuestacomando;
 	}
 }
