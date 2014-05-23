@@ -230,6 +230,7 @@ public class VentanaProveedor extends JFrame{
 
 	// Metodos
 
+	@SuppressWarnings("unchecked")
 	public void actualizar(Object object) {
 
 		if (object == null)

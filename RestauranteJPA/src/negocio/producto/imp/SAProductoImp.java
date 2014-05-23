@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import presentacion.controlador.EnumComandos;
-import presentacion.controlador.RespuestaCMD;
-import negocio.producto.EnumTipoProducto;
 import negocio.producto.Producto;
 import negocio.producto.ProductoNoPerecedero;
 import negocio.producto.ProductoPerecedero;
@@ -15,8 +12,7 @@ import negocio.producto.SAProducto;
 import negocio.producto.TProducto;
 import negocio.producto.TProductoNoPerecedero;
 import negocio.producto.TProductoPerecedero;
-import negocio.producto.ValidarTProducto;
-import negocio.proveedor.Proveedor;
+
 
 
 public class SAProductoImp implements SAProducto {

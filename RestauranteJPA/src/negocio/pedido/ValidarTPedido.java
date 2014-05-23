@@ -3,7 +3,7 @@ package negocio.pedido;
 
 
 public class ValidarTPedido {
-	public boolean productoCorrecto(TPedido tPedido) {
+	public boolean pedidoCorrecto(TPedido tPedido) {
 
 		boolean productoCorrecto = false;
 
