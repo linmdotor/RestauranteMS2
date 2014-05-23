@@ -20,6 +20,7 @@ import negocio.proveedor.imp.SAProveedorImp;
 public class SAPedidoImp implements SAPedido {
 	protected EntityManager em;
 
+	///
 	public TPedido obtenerPedido(int ID) throws Exception {
 
 		EntityManagerFactory emf = Persistence

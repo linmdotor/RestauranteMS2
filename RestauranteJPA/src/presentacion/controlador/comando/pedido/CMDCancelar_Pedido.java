@@ -13,6 +13,8 @@ public class CMDCancelar_Pedido implements CMD  {
 	@Override
 	public RespuestaCMD ejecuta(Object objeto) {
 		
+	
+		
 		SAPedido serviciosPedido = FactoriaNegocio.obtenerInstancia().generaSAPedido();
 		RespuestaCMD respuestaComando = null;
 		int ID = -1;
