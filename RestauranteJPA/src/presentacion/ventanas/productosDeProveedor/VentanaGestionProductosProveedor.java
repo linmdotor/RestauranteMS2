@@ -204,9 +204,8 @@ public class VentanaGestionProductosProveedor extends JFrame {
 					public void valueChanged(ListSelectionEvent arg0) {
 
 						if (getTbProveedores().getSelectedRow() != -1)
-						{
-							
-							textFieldPrecio.setText("");
+						{							
+							limpiarFormulario();
 						}
 					}
 				});
