@@ -136,52 +136,45 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	@Override
 	public boolean modificarProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception {
 
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar Producto de Proveedor.");
+		boolean resultado = false;
 		
-		if(tProductoDeProveedor.getPrecio() > 0){
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");	
-			EntityManager em = emf.createEntityManager();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");	
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+						
+			em.getTransaction().begin();			
+
+			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+			Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 			
-			try {
-							
-				em.getTransaction().begin();			
-	
-				Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
-				Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
-				
-				em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-				
-				// Actualizamos
-				
-				proveedor.getListaProductosProveedor().get(proveedor.getListaProductosProveedor().indexOf(tProductoDeProveedor)).setPrecio(tProductoDeProveedor.getPrecio());
-				
-				em.getTransaction().commit();
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO, "Se ha modificado el Producto de Proveedor.");
-				
-			} catch(OptimisticLockException oe) {
-				
-				em.getTransaction().rollback();
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
-			}			
-			catch (Exception e) {
-				
-				em.getTransaction().rollback();
-				
-				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al modificar un producto de un proveedor. Error al insertar los datos.");
-				
-			} finally {
-				 
-				em.close();
-				emf.close();
-				
-			 }
-		} else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "El Precio debe ser entero positivo.");
+			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			
+			// Actualizamos ese producto en concreto buscando en la lista cual es el que corresponde a ese ID			
+			for(ProductosDeProveedor pp : proveedor.getListaProductosProveedor())
+			{
+				if(pp.getProducto().getId_producto() == tProductoDeProveedor.getProducto())
+					pp.setPrecio(tProductoDeProveedor.getPrecio());
+			}
+						
+			em.getTransaction().commit();			
+			resultado = true;
+			
+		} catch(OptimisticLockException oe) {			
+			em.getTransaction().rollback();				
+			throw new Exception("No se pudo modificar el producto al proveedor, porque está bloqueado");
+		}			
+		catch (Exception e) {				
+			em.getTransaction().rollback();
+			throw new Exception("No se pudo modificar el producto al proveedor.");				
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		 }
 		
-		//return respuestaComando;
-		return true;
+		return resultado;
 	}
 
 	@Override
