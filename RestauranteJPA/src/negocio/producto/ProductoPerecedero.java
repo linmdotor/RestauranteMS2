@@ -40,13 +40,13 @@ public class ProductoPerecedero extends Producto{
 	
 	public void setAll(TProducto nuevoTProducto) {
 		
-		TProductoPerecedero boProducto_aux = (TProductoPerecedero) nuevoTProducto;
+		TProductoPerecedero tProducto_aux = (TProductoPerecedero) nuevoTProducto;
 		
-		this.id_producto = boProducto_aux.getId_producto();
-		this.disponible = boProducto_aux.isDisponible();
-		this.stock = boProducto_aux.getStock();
-		this.nombre = boProducto_aux.getNombre();
-		this.fechaCaducidad = boProducto_aux.getFechaCaducidad();
+		this.id_producto = tProducto_aux.getId_producto();
+		this.disponible = tProducto_aux.isDisponible();
+		this.stock = tProducto_aux.getStock();
+		this.nombre = tProducto_aux.getNombre();
+		this.fechaCaducidad = tProducto_aux.getFechaCaducidad();
 		
 	}
 	

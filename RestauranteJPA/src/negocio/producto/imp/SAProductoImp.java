@@ -16,6 +16,7 @@ import negocio.producto.TProducto;
 import negocio.producto.TProductoNoPerecedero;
 import negocio.producto.TProductoPerecedero;
 import negocio.producto.ValidarTProducto;
+import negocio.proveedor.Proveedor;
 
 
 public class SAProductoImp implements SAProducto {
@@ -158,38 +159,38 @@ public class SAProductoImp implements SAProducto {
 	
 	public boolean modificarProducto(TProducto tProducto) throws Exception {
 			
-		boolean respuesta = false;
+		/*boolean respuesta = false;
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");			
 		EntityManager em = emf.createEntityManager();
+		
+		Producto productoObtenido = null;
+		TypedQuery<Producto> query = null;	
 		
 		
 		try {
 			
 			em.getTransaction().begin();
-			// Este producto encontrado, me sirve para saber que no esta vacio, que existe
-			//y que tipo de producto es
-			Producto productoNuevo = em.find(Producto.class, tProducto.getId_producto());
+
+			query = em.createNamedQuery(Producto.QUERY_OBTENER_PRODUCTO, Producto.class);
+			query.setParameter("arg", tProducto.getId_producto());
+
+			productoObtenido = query.getSingleResult();
+			em.lock(productoObtenido, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+
+			if((tProducto instanceof TProductoPerecedero && productoObtenido instanceof ProductoNoPerecedero)
+					|| (tProducto instanceof TProductoNoPerecedero && productoObtenido instanceof ProductoPerecedero))
+				throw new Exception("No se puede modificar el tipo del Producto");	    	
+
+			if (tProducto instanceof TProductoPerecedero) 
+				productoObtenido = new ProductoPerecedero((TProductoPerecedero) tProducto);
+			else
+				productoObtenido = new ProductoNoPerecedero((TProductoNoPerecedero) tProducto);
 				
-			if (productoNuevo != null){
-				
-				if(productoNuevo.getTipoProducto().equals("Perecedero")){
-					
-					ProductoPerecedero producto = (ProductoPerecedero) productoNuevo;	
-					producto.setAll(tProducto);
-					
-				}else{
-					
-					//ProductoNoPerecedero producto = new ProductoNoPerecedero((TProductoNoPerecedero) tproducto);
-					ProductoNoPerecedero producto = (ProductoNoPerecedero) productoNuevo;	
-					producto.setAll(tProducto);
-				}
-					
-				
-				em.getTransaction().commit();		
-				respuesta = true;
-			}									
-				
+			em.getTransaction().commit();
+			
+			respuesta = true;
+						
 		} catch(OptimisticLockException oe) {
 			throw new Exception("No se pudo modificar el producto, porque está bloqueado");
 		}			
@@ -202,7 +203,45 @@ public class SAProductoImp implements SAProducto {
 			
 		 }	
 		
-		return respuesta;
+		return respuesta;*/
+		
+		boolean resultado = false;
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+			
+			em.getTransaction().begin();
+			
+			Producto producto = em.find(Producto.class, (tProducto.getId_producto()));
+				
+			if (producto != null){
+				
+				if (tProducto instanceof TProductoPerecedero) 
+					((ProductoPerecedero)producto).setAll(tProducto);
+				else
+					((ProductoNoPerecedero)producto).setAll(tProducto);	
+				
+				em.getTransaction().commit();		
+				resultado = true;
+			}									
+				
+		} catch(OptimisticLockException oe) {
+			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
+		}			
+		catch (Exception e) {
+			throw new Exception("No se pudo modificar el proveedor.");
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		 }		
+
+		return resultado;
+		
+		
 	}
 	
 	public boolean bajaProducto(int ID)  throws Exception {
