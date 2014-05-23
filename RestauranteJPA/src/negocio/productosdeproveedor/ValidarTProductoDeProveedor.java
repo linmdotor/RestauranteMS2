@@ -6,7 +6,7 @@ public class ValidarTProductoDeProveedor {
 
 		boolean productoCorrecto = false;
 
-		if (tProductoDeProveedor.getPrecio() > 0 && tProductoDeProveedor.getProducto() > 0 && tProductoDeProveedor.getProveedor() >0)
+		if (tProductoDeProveedor.getPrecio() >= 0 && tProductoDeProveedor.getProducto() > 0 && tProductoDeProveedor.getProveedor() >0)
 			productoCorrecto = true;
 
 		return productoCorrecto;
