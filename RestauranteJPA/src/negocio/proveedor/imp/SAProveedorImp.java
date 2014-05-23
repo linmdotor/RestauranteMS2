@@ -70,6 +70,7 @@ public class SAProveedorImp implements SAProveedor {
 				em.detach(proveedorObtenido); //esta operación, al utilizar Transfer, no es necesaria.
 	
 			em.close();
+			emf.close();
 	
 		}		
 		
