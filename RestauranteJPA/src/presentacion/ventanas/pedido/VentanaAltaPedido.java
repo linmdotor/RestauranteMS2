@@ -1,9 +1,24 @@
 package presentacion.ventanas.pedido;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import presentacion.controlador.ApplicationController;
+import presentacion.controlador.EnumComandos;
+import presentacion.ventanas.Tabla;
+import negocio.pedido.Pedido;
+import negocio.pedido.TPedido;
+import negocio.producto.Producto;
+import negocio.producto.TProducto;
+import negocio.producto.TProductoNoPerecedero;
+import negocio.producto.TProductoPerecedero;
+import negocio.proveedor.Proveedor;
 
 
 @SuppressWarnings("serial")
@@ -25,10 +40,15 @@ public class VentanaAltaPedido extends JFrame{
 
 	
 	/***Tabla Pedido**/
-	private JTable tbPedidos;
+	private JTable tbPedidoNuevo;
 	private Vector filaPed;
 	private JScrollPane scrollPanelPedido;
 	
+	private Tabla tabla;
+
+	public JTable getTbProductos() {
+		return tbProductos;
+	}
 
 	//GetInstance
 	public static VentanaAltaPedido obtenerInstancia() {
@@ -78,6 +98,17 @@ public class VentanaAltaPedido extends JFrame{
 		tbProductos = new JTable();
 		scrollPanelProdcuto.setViewportView(tbProductos);
 		tbProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tbProductos.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent arg0) {
+
+						if (getTbProductos().getSelectedRow() != -1) //hay alguna fila seleccionada
+						{
+							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString()));	
+							System.out.println(Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString()));
+						}
+					}
+				});
 		
 		//-------------------- CONSTRUCCIÓN PROVEEDORES  -------------------//
 		
@@ -101,9 +132,9 @@ public class VentanaAltaPedido extends JFrame{
 		scrollPanelPedido.setBounds(690, 60, 300, 350);
 		getContentPane().add(scrollPanelPedido);
 
-		tbPedidos = new JTable();
-		scrollPanelPedido.setViewportView(tbPedidos);
-		tbPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tbPedidoNuevo = new JTable();
+		scrollPanelPedido.setViewportView(tbPedidoNuevo);
+		tbPedidoNuevo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		
 		JLabel lblTotal = new JLabel("Total:");
@@ -118,5 +149,62 @@ public class VentanaAltaPedido extends JFrame{
 		
 		
 	}
+	
+	public void actualizar(Object object) {
+
+		List<TProducto> lista = new ArrayList<TProducto>();
+		
+		if (object == null)
+			rellenarTabla(lista);
+		else			
+			rellenarTabla((List<TProducto>) object);
+
+		setVisible(true);
+		repaint();
+
+	}
+	
+	private void rellenarTabla(List<TProducto> lista) {
+		tabla = new Tabla();
+
+		tabla.addColumn("ID");
+		tabla.addColumn("NOMBRE");
+		tabla.addColumn("STOCK");
+		tabla.addColumn("CADUCIDAD");
+		tabla.addColumn("RECOMENDACIONES");
+		tabla.addColumn("DISPONIBLE");
+
+		for (int i = 0; i < lista.size(); i++) {
+
+			filaProd = new Vector();
+			TProducto prod = lista.get(i);
+			filaProd.add(prod.getId_producto());
+			filaProd.add(prod.getNombre());
+			filaProd.add(prod.getStock());
+			
+			if(prod instanceof TProductoPerecedero)
+			{
+				TProductoPerecedero p = (TProductoPerecedero) prod;
+				filaProd.add(p.getFechaCaducidad());
+				filaProd.add("---");
+			}
+			else if(prod instanceof TProductoNoPerecedero)
+			{
+				TProductoNoPerecedero np = (TProductoNoPerecedero) prod;
+				filaProd.add("---");
+				filaProd.add(np.getRecomendaciones());
+			}
+			filaProd.add(prod.isDisponible());
+
+			tabla.addRow(filaProd);
+		}
+
+		tbProductos.setModel(tabla);
+		
+	}
+	
+
+	
+	
 	
 }

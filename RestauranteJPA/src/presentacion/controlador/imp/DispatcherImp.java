@@ -93,11 +93,13 @@ public class DispatcherImp extends Dispatcher {
 				break;
 				
 				
-			// PEDIDO	
-				
 			case INICIAR_VISTA_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;	
+				
+			case INICIAR_VISTA_ALTA_PEDIDO:
+				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
+				break;
 				
 			case MODIFICAR_FORMULARIO_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());

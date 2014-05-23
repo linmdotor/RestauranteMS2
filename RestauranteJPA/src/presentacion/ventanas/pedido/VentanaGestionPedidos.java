@@ -21,13 +21,24 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 
+
+
+
+
+
+
+
+
+import negocio.ComprobadorEnteros;
 import negocio.pedido.Pedido;
 import negocio.pedido.TPedido;
 import negocio.pedido.TPedidoProducto;
+import negocio.producto.TProducto;
+import negocio.proveedor.Proveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
-
+import presentacion.ventanas.producto.VentanaProducto;
 
 @SuppressWarnings("serial")
 public class VentanaGestionPedidos extends JFrame{
@@ -42,10 +53,9 @@ public class VentanaGestionPedidos extends JFrame{
 	private Tabla tabla;
 	private JTable tbPedidos;
 	private JTable tbProductos;
-	@SuppressWarnings("rawtypes")
 	private Vector fila;
 
-	//private JScrollPane scrollPanel;
+	private JScrollPane scrollPanel;
 
 	// Mutadores y Accedentes
 
@@ -152,7 +162,7 @@ public class VentanaGestionPedidos extends JFrame{
 		btnalmacenarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, objeto);
+				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, obtenerPedido());
 				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
 
 			}
@@ -165,8 +175,8 @@ public class VentanaGestionPedidos extends JFrame{
 		btnCancelarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-			//	ApplicationController.obtenerInstancia().handleRequest(EnumComandos.CANCELAR_PEDIDO, textFieldID.getText());
-			//	ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
+				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.CANCELAR_PEDIDO, obtenerPedido());
+				//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
 
 			}
 		});
@@ -181,7 +191,7 @@ public class VentanaGestionPedidos extends JFrame{
 		JButton btnNuevoPedido = new JButton("Nuevo Pedido");
 		btnNuevoPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, null);
 				
 
 			}
@@ -247,7 +257,6 @@ public class VentanaGestionPedidos extends JFrame{
 
 	// Metodos
 
-	@SuppressWarnings("unchecked")
 	public void actualizar(Object object) {
 
 		List<Pedido> lista = new ArrayList<Pedido>();
@@ -317,7 +326,6 @@ public class VentanaGestionPedidos extends JFrame{
 	return bo;
 }*/
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void rellenarTabla(List<Pedido> lista) {
 		tabla = new Tabla();
 /*
@@ -364,7 +372,6 @@ public class VentanaGestionPedidos extends JFrame{
 
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void actualizarTablaProductos(Object objeto) {
 		
 		List<TPedidoProducto> lista = (List<TPedidoProducto>)objeto;
@@ -398,7 +405,6 @@ public class VentanaGestionPedidos extends JFrame{
 		textFieldTelefono.setText("");
 	}
 	
-	@SuppressWarnings("unused")
 	private boolean mensajeConfirmacionSiNo(String msj, String cabecera) {	
 		return (JOptionPane.showConfirmDialog(this, msj, cabecera, JOptionPane.YES_NO_OPTION) == 0);
 
