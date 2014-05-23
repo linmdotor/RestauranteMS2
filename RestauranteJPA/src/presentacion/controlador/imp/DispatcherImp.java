@@ -73,7 +73,11 @@ public class DispatcherImp extends Dispatcher {
 				
 			case INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR:
 				VentanaGestionProductosProveedor.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
-				break;	
+				break;
+				
+			case MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR:
+				VentanaGestionProductosProveedor.obtenerInstancia().cambiarPrecio(respuestaCMD.getObjeto());
+				break;
 			
 			case OBTENER_PRODUCTOS_PROVEEDOR:
 				VentanaGestionProductosProveedor.obtenerInstancia().rellenarTablaProductosActuales(respuestaCMD.getObjeto());

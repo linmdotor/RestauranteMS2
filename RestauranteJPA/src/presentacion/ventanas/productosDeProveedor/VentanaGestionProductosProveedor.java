@@ -41,8 +41,6 @@ public class VentanaGestionProductosProveedor extends JFrame {
 	private JTable tbProductosProveedor;
 	private JTable tbProductosTotales;
 	
-	private int ID_proveedor; //mantenemos una variable con el ID del proveedor para poder consultarlo cuando queramos
-
 	private Vector fila;
 	private JScrollPane scrollPanel;
 	
@@ -115,7 +113,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 		});
@@ -129,7 +127,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 
@@ -157,7 +155,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, ID_proveedor);				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(textFieldID_Proveedor.getText()));				
 				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 			}
 		});
@@ -190,7 +188,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 
 						if (getTbProveedores().getSelectedRow() != -1)
 						{
-							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, obtenerProductoProveedor());
+							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, Double.parseDouble(tbProductosProveedor.getValueAt(tbProductosProveedor.getSelectedRow(), 1).toString()));
 						}
 					}
 		});
@@ -214,15 +212,15 @@ public class VentanaGestionProductosProveedor extends JFrame {
 
 						if (getTbProveedores().getSelectedRow() != -1)
 						{
-							//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, getTbProveedores().getSelectedRow() );	
-						//revisar esto, porque además seguro que no es: EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR
+							
+							textFieldPrecio.setText("");
 						}
 					}
 				});
 
 	}
 	
-	public void actualizar(Object objeto) {
+	public void actualizar(Object objeto) { //Este objeto será el ID del proveedor
 
 		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, objeto);
 		
@@ -239,14 +237,14 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		
 		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
 		
+		tProductoDeProveedor.setProveedor(Integer.parseInt(textFieldID_Proveedor.getText()));
+
+		tProductoDeProveedor.setProducto(Integer.parseInt(tbProductosTotales.getValueAt(tbProductosTotales.getSelectedRow(), 0).toString()));
+		
 		if (textFieldPrecio.getText().length() > 0)
 			tProductoDeProveedor.setPrecio(Integer.parseInt(textFieldPrecio.getText()));
 		else
 			tProductoDeProveedor.setPrecio(0);
-		
-		tProductoDeProveedor.setProveedor(ID_proveedor);
-		
-		tProductoDeProveedor.setProducto(tbProductosTotales.getSelectedRow());
 		
 		return tProductoDeProveedor;
 		

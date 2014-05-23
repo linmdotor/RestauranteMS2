@@ -12,14 +12,11 @@ public class CMDModificarFormularioProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {	
 
-		TProductoDeProveedor producto = (TProductoDeProveedor)objeto;
-		
-		SAProductosDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
 		RespuestaCMD respuestacomando = null;
 				
 		try {
-			if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {
-				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, serviciosProductoProveedor.obtenerProductosProveedor(producto.getProveedor()).get(producto.getProducto()).getPrecio());
+			if((double)objeto >= 0) {
+				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, (double)objeto);
 			} else {
 				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Producto de Proveedor seleccionado");
 			}

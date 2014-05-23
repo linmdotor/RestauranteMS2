@@ -24,11 +24,11 @@ public class TProductoDeProveedor {
 		
 	}
 	
-public TProductoDeProveedor(ProductosDeProveedorId producto_proveedor) {
+public TProductoDeProveedor(ProductosDeProveedor producto_proveedor) {
 		
-		this.producto= producto_proveedor.getProducto();
-		this.proveedor = producto_proveedor.getProveedor();
-		//this.precio = producto_proveedor.getPrecio();
+		this.producto= producto_proveedor.getProducto().getId_producto();
+		this.proveedor = producto_proveedor.getProveedor().getId_proveedor();
+		this.precio = producto_proveedor.getPrecio();
 		
 	}
 		

@@ -32,8 +32,8 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
 	public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor)  throws Exception {
 		
-		RespuestaCMD respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error dando de alta un precio de un producto de proveedor.");				
-
+		boolean resultado = false;
+		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 
@@ -50,15 +50,13 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 			em.getTransaction().commit();	
 			
-			respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO, "Exito al insertar  precio de un producto de proveedor.");
+			resultado =  true;
 		
 		} catch(OptimisticLockException oe) {
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al acceder los datos de forma concurrente.");
+			throw new Exception("No se pudo añadir el producto al proveedor, porque está bloqueado");
 		}			
 		catch (Exception e) {
-			
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar precio de un producto de proveedor.. Error al insertar los datos.");
-			
+			throw new Exception("No se pudo añadir el producto al proveedor.");
 		} finally {
 			 
 			em.close();
@@ -66,9 +64,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 		 }			
 		
-		//return respuestaComando;	
-		return true;
-		
+		return resultado;
 	}
 
 	@Override
@@ -76,49 +72,28 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
-		@SuppressWarnings("rawtypes")
-		//cambiar precio por el id del producto del proveedor, en la bbdd se llama proveedor_id_proveedor
-		//pero al ponerlo en la consulta, dice que no puede encontrarlo.
-		TypedQuery query = em.createQuery("select e from ProductosDeProveedor e where e.precio = :arg", ProductosDeProveedor.class);
-		query.setParameter("arg", ID);
-		List<ProductosDeProveedor> listaProductos = query.getResultList();
+		Proveedor proveedorObtenido = em.find(Proveedor.class, ID);
+		TypedQuery<Proveedor> query = null;
 		
-		em.close();
-		emf.close();
-
-		List<TProductoDeProveedor> listatransfer = new ArrayList<TProductoDeProveedor>();
-		/*for(ProductosDeProveedorId pp : listaProductos)
-		{
-			listatransfer.add(new TProductoDeProveedor(pp));
-		}*/
-		
-		return listatransfer;
-		
-		/* ESTO ES LO QUE ESTABA HACIENDO YO (LIN), PERO NO HE CONSEguIDO NADA, solo hace que explote el JPA
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
-		EntityManager em = emf.createEntityManager();
-		
-		List<ProductosDeProveedor> ppObtenido = null;
-		TypedQuery<ProductosDeProveedor> query = null;
-		try { 
+		try{
+			
 			em.getTransaction().begin();
 			
-			query = em.createQuery("select e from ProductosDeProveedor e where e.proveedor.id_proveedor = :arg", ProductosDeProveedor.class);
+			query = em.createNamedQuery(Proveedor.QUERY_OBTENER_PROVEEDOR, Proveedor.class);
 			
 			query.setParameter("arg", ID);
 			
-			ppObtenido = query.getResultList();
+			proveedorObtenido = query.getSingleResult();
 			
-			em.lock(ppObtenido, LockModeType.OPTIMISTIC);
+			em.lock(proveedorObtenido, LockModeType.OPTIMISTIC);
 			
 			em.getTransaction().commit();
-			
-		}catch(NoResultException ex){
+							
+		} catch(NoResultException ex){
 			
 			em.getTransaction().rollback();
 			
-			throw new Exception("No existe el producto con ID: " + ID);
+			throw new Exception("No existe el proveedor con ID: " + ID);
 			
 		} catch (Exception ex) {
 
@@ -138,24 +113,23 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 		} finally {
 	
-			if (ppObtenido != null)
-				em.detach(ppObtenido); //esta operación, al utilizar Transfer, no es necesaria.
+			if (proveedorObtenido != null)
+				em.detach(proveedorObtenido); //esta operación, al utilizar Transfer, no es necesaria.
 	
 			em.close();
 	
 		}		
 		
-		List<TProductoDeProveedor> listatransfer = new ArrayList<TProductoDeProveedor>();
-		for(ProductosDeProveedor pp : ppObtenido)
+		List<ProductosDeProveedor> listaproductos = proveedorObtenido.getListaProductosProveedor();
+		
+		List<TProductoDeProveedor> listatProd = new ArrayList<TProductoDeProveedor>();
+		
+		for(ProductosDeProveedor p : listaproductos)
 		{
-			TProductoDeProveedor tpp = new TProductoDeProveedor();
-			tpp.setProducto(pp.getProducto().getId_producto());
-			tpp.setProveedor(pp.getProveedor().getId_proveedor());
-			tpp.setPrecio(pp.getPrecio());
-			listatransfer.add(tpp);
+			listatProd.add(new TProductoDeProveedor(p));
 		}
 		
-		return listatransfer;*/
+		return listatProd;
 		
 	}
 
