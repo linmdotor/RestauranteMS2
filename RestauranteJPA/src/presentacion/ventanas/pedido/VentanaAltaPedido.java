@@ -12,13 +12,17 @@ import javax.swing.event.ListSelectionListener;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
+import negocio.ComprobadorEnteros;
 import negocio.pedido.Pedido;
 import negocio.pedido.TPedido;
+import negocio.producto.EnumTipoProducto;
 import negocio.producto.Producto;
 import negocio.producto.TProducto;
 import negocio.producto.TProductoNoPerecedero;
 import negocio.producto.TProductoPerecedero;
+import negocio.productosdeproveedor.TProductoDeProveedor;
 import negocio.proveedor.Proveedor;
+import negocio.proveedor.TProveedor;
 
 
 @SuppressWarnings("serial")
@@ -104,7 +108,9 @@ public class VentanaAltaPedido extends JFrame{
 
 						if (getTbProductos().getSelectedRow() != -1) //hay alguna fila seleccionada
 						{
-							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString()));	
+							int proveedordelproducto = Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString());
+							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, null/*Producto*/);	
+							
 							System.out.println(Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString()));
 						}
 					}
@@ -164,6 +170,45 @@ public class VentanaAltaPedido extends JFrame{
 
 	}
 	
+	
+	public void actualizarProveedor(Object object) {
+
+		List<TProveedor> lista = new ArrayList<TProveedor>();
+		
+		if (object == null)
+			rellenarTablaProveedor(lista);
+		else			
+			rellenarTablaProveedor((List<TProveedor>) object);
+
+		setVisible(true);
+		repaint();
+
+	}
+	
+	private void rellenarTablaProveedor(List<TProveedor> lista) {
+		tabla = new Tabla();
+
+		tabla.addColumn("ID");
+		tabla.addColumn("NIF");
+		tabla.addColumn("NOMBRE");
+		tabla.addColumn("TELEFONO");
+
+		for (int i = 0; i < lista.size(); i++) {
+
+			filaProv = new Vector();
+			TProveedor prov = lista.get(i);
+			filaProv.add(prov.getId_proveedor());
+			filaProv.add(prov.getNIF());
+			filaProv.add(prov.getNombre());
+			filaProv.add(prov.getTelefono());
+
+			tabla.addRow(filaProv);
+		}
+
+		tbProveedores.setModel(tabla);
+		
+	}
+	
 	private void rellenarTabla(List<TProducto> lista) {
 		tabla = new Tabla();
 
@@ -203,6 +248,21 @@ public class VentanaAltaPedido extends JFrame{
 		
 	}
 	
+	/*public TProveedor obtenerProveedorProducto(TProducto tprod) {
+
+		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
+		
+		tProductoDeProveedor.setProveedor(Integer.parseInt(textFieldID_Proveedor.getText()));
+
+		tProductoDeProveedor.setProducto(Integer.parseInt(tbProductosTotales.getValueAt(tbProductosTotales.getSelectedRow(), 0).toString()));
+		
+		if (textFieldPrecio.getText().length() > 0)
+			tProductoDeProveedor.setPrecio(Integer.parseInt(textFieldPrecio.getText()));
+		else
+			tProductoDeProveedor.setPrecio(0);
+		
+		return tProductoDeProveedor;
+	}*/
 
 	
 	

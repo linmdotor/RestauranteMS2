@@ -92,6 +92,7 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionProductosProveedor.obtenerInstancia().limpiarFormulario();
 				break;
 				
+			// PEDIDO
 				
 			case INICIAR_VISTA_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
@@ -100,6 +101,10 @@ public class DispatcherImp extends Dispatcher {
 			case INICIAR_VISTA_ALTA_PEDIDO:
 				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
+				
+			case OBTENER_PROVEEDOR_PRODUCTO:
+				VentanaAltaPedido.obtenerInstancia().actualizarProveedor(respuestaCMD.getObjeto());
+				break; 
 				
 			case MODIFICAR_FORMULARIO_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());

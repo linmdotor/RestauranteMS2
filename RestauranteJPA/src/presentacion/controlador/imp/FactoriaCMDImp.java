@@ -19,6 +19,7 @@ import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaAltaPedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaPedido;
 import presentacion.controlador.comando.pedido.CMDModificarFormularioPedido;
+import presentacion.controlador.comando.pedido.CMDObtenerProveedorProducto;
 import presentacion.controlador.comando.pedido.CMDRellenarTBProductosPedido;
 import presentacion.controlador.comando.producto.CMDAltaProducto;
 import presentacion.controlador.comando.producto.CMDBajaProducto;
@@ -84,7 +85,7 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, new CMDIniciarVistaAltaPedido());
 		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, new CMDModificarFormularioPedido());
 		map_cmd.put(EnumComandos.RELLENAR_TB_PRODUCTOS_PEDIDO, new CMDRellenarTBProductosPedido());
-		
+		map_cmd.put(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, new CMDObtenerProveedorProducto());
 	
 	}
 
