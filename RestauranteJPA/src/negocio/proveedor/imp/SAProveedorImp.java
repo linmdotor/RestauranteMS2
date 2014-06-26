@@ -123,9 +123,11 @@ public class SAProveedorImp implements SAProveedor {
 			resultado = true;
 		
 		} catch(OptimisticLockException oe) {
+			em.getTransaction().rollback();	
 			throw new Exception("No se pudo añadir el proveedor, porque está bloqueado");
 		}			
 		catch (Exception e) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo añadir el proveedor.");
 		} finally {
 			 
@@ -158,11 +160,17 @@ public class SAProveedorImp implements SAProveedor {
 				em.getTransaction().commit();		
 				resultado = true;
 			}									
+			else
+			{
+				em.getTransaction().rollback();
+			}
 				
 		} catch(OptimisticLockException oe) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
 		}			
 		catch (Exception e) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo modificar el proveedor.");
 		} finally {
 			 
@@ -196,11 +204,17 @@ public class SAProveedorImp implements SAProveedor {
 					respuesta = true;
 					em.getTransaction().commit();		
 				}
+				else
+				{
+					em.getTransaction().rollback();
+				}
 					
 			} catch(OptimisticLockException oe) {
+				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el proveedor, porque está bloqueado");
 			}			
 			catch (Exception e) {
+				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el proveedor.");
 			} finally {
 				 
