@@ -41,24 +41,19 @@ public class SAProductoImp implements SAProducto {
 			
 			em.getTransaction().commit();
 			
-		}catch(NoResultException ex){
-			
-			em.getTransaction().rollback();
-			
+		}catch(NoResultException ex){			
+			em.getTransaction().rollback();			
 			throw new Exception("No existe el producto con ID: " + ID);
 			
 		} catch (Exception ex) {
-
+			em.getTransaction().rollback();
+			
 			if (ex instanceof Exception) {
 
-				em.getTransaction().rollback();
-				
 				throw ex;
 
 			} else {
 
-				em.getTransaction().rollback();
-				
 				throw new Exception(ex.getLocalizedMessage());
 
 			}
@@ -171,8 +166,10 @@ public class SAProductoImp implements SAProducto {
 			respuesta = true;
 		
 		} catch(OptimisticLockException oe) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo añadir el producto, porque está bloqueado");
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo añadir el producto.");
 		} finally {
 			 
@@ -214,6 +211,7 @@ public class SAProductoImp implements SAProducto {
 			}									
 				
 		} catch(OptimisticLockException oe) {
+			em.getTransaction().rollback();
 			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
 		}
 		finally {
@@ -250,9 +248,11 @@ public class SAProductoImp implements SAProducto {
 				}
 					
 			} catch(OptimisticLockException oe) {
+				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el producto, porque está bloqueado");
 			}			
 			catch (Exception e) {
+				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el producto.");
 			} finally {
 				 

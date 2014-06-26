@@ -45,17 +45,21 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		try {
 			
 			em.getTransaction().begin();
+			
 			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			
 			em.persist(precioProductoProveedor);
 			
 			em.getTransaction().commit();	
 			
 			resultado =  true;
 		
-		} catch(OptimisticLockException oe) {
+		} catch(OptimisticLockException oe) {			
+			em.getTransaction().rollback();			
 			throw new Exception("No se pudo añadir el producto al proveedor, porque está bloqueado");
 		}			
-		catch (Exception e) {
+		catch (Exception e) {			
+			em.getTransaction().rollback();			
 			throw new Exception("No se pudo añadir el producto al proveedor.");
 		} finally {
 			 

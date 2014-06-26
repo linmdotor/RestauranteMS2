@@ -44,22 +44,18 @@ public class SAProveedorImp implements SAProveedor {
 			
 		}catch(NoResultException ex){
 			
-			em.getTransaction().rollback();
-			
+			em.getTransaction().rollback();			
 			throw new Exception("No existe el producto con ID: " + ID);
 			
 		} catch (Exception ex) {
-
+			em.getTransaction().rollback();	
+			
 			if (ex instanceof Exception) {
-
-				em.getTransaction().rollback();
-				
+	
 				throw ex;
 
 			} else {
-
-				em.getTransaction().rollback();
-				
+			
 				throw new Exception(ex.getLocalizedMessage());
 
 			}
