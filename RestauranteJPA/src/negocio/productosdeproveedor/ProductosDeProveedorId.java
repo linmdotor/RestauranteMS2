@@ -2,8 +2,6 @@ package negocio.productosdeproveedor;
 
 import java.io.Serializable;
 
-import javax.persistence.Version;
-
 public class ProductosDeProveedorId implements Serializable{
 	
 private static final long serialVersionUID = -4916020350547929977L;
@@ -11,7 +9,7 @@ private static final long serialVersionUID = -4916020350547929977L;
 	private int proveedor;
 	private int producto;
 	
-	@Override
+	/*@Override
     public int hashCode() {
         int hash = 1;
         return hash;
@@ -39,6 +37,6 @@ private static final long serialVersionUID = -4916020350547929977L;
 
 	public void setProducto(int producto) {
 		this.producto = producto;
-	}
+	}*/
 	
 }

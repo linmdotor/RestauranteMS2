@@ -46,7 +46,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			
 			em.getTransaction().begin();
 			
-			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			em.persist(precioProductoProveedor);
 			
@@ -151,7 +151,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
 			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
 			
-			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Actualizamos ese producto en concreto buscando en la lista cual es el que corresponde a ese ID			
 			for(ProductosDeProveedor pp : proveedor.getListaProductosProveedor())
@@ -194,7 +194,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
 			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
 			
-			em.lock(proveedor, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Borramos	ese producto en concreto buscando en la lista cual es el que corresponde a ese ID	
 			ProductosDeProveedor productoAeliminar = null;
