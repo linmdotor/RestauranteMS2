@@ -12,7 +12,7 @@ import negocio.pedido.SAPedido;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
 import negocio.pedido.transfer.TPedidoProducto;
-import negocio.productosdepedido.businessobject.PedidoProducto;
+import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.imp.SAProveedorImp;
 import negocio.proveedor.transfer.TProveedor;

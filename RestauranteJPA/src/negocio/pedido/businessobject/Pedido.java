@@ -18,7 +18,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 import negocio.pedido.transfer.TPedido;
-import negocio.productosdepedido.businessobject.PedidoProducto;
+import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.proveedor.businessobject.Proveedor;
 
 
@@ -52,7 +52,7 @@ public class Pedido{
 	private Proveedor proveedor;
 	
     @OneToMany(mappedBy="pedido", cascade = CascadeType.PERSIST)
-    private List<PedidoProducto> listaProductosPedido;
+    private List<ProductoDePedido> listaProductosPedido;
 
 	public Pedido() {
 		super();
@@ -101,11 +101,11 @@ public class Pedido{
 		this.fecha_cancelado = fecha_cancelado;
 	}
 
-	public List<PedidoProducto> getListaProductosPedido() {
+	public List<ProductoDePedido> getListaProductosPedido() {
 		return listaProductosPedido;
 	}
 
-	public void setListaProductosPedido(List<PedidoProducto> listaProductosPedido) {
+	public void setListaProductosPedido(List<ProductoDePedido> listaProductosPedido) {
 		this.listaProductosPedido = listaProductosPedido;
 	}
 

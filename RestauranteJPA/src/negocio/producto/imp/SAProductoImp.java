@@ -75,7 +75,7 @@ public class SAProductoImp implements SAProducto {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<TProducto> obtenerProductos() throws Exception {		
+	public List<TProducto> obtenerProductos() throws Exception {		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
@@ -88,7 +88,7 @@ public class SAProductoImp implements SAProducto {
 		em.close();
 		emf.close();
 		
-		ArrayList<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
+		List<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
 		
 		for(Producto prod : listaProductos)
 		{
@@ -107,7 +107,7 @@ public class SAProductoImp implements SAProducto {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<TProducto> obtenerProductosDisponibles() throws Exception {		
+	public List<TProducto> obtenerProductosDisponibles() throws Exception {		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
@@ -120,7 +120,7 @@ public class SAProductoImp implements SAProducto {
 		em.close();
 		emf.close();
 		
-		ArrayList<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
+		List<TProducto> listaTProd = new ArrayList<TProducto>(); //se crea una arraylist de tProd para desvincularlo del BO
 		
 		for(Producto prod : listaProductos)
 		{

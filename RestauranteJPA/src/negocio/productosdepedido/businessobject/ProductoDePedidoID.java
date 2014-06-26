@@ -8,7 +8,7 @@ import javax.persistence.Version;
 
 import negocio.producto.businessobject.Producto;
 
-public class PedidoProductoID implements Serializable{
+public class ProductoDePedidoID implements Serializable{
 
 	private static final long serialVersionUID = -4916020350547929977L;
 

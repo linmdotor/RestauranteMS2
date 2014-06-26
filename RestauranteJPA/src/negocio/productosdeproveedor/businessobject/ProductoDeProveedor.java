@@ -6,8 +6,8 @@ import negocio.producto.businessobject.Producto;
 import negocio.proveedor.businessobject.Proveedor;
 
 @Entity
-@IdClass(ProductosDeProveedorId.class)
-public class ProductosDeProveedor {
+@IdClass(ProductoDeProveedorId.class)
+public class ProductoDeProveedor {
 	
 	/*@Version
 	 private long version;*/
@@ -22,12 +22,12 @@ public class ProductosDeProveedor {
 	
 	private double precio;
 
-	public ProductosDeProveedor() {
+	public ProductoDeProveedor() {
 		super();
 		
 	}
 	
-	public ProductosDeProveedor(Proveedor proveedor, Producto producto, double precio) {
+	public ProductoDeProveedor(Proveedor proveedor, Producto producto, double precio) {
 		
 		this.proveedor = proveedor;
 		this.producto = producto;

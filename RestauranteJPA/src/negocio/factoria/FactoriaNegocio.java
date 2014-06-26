@@ -11,7 +11,8 @@ package negocio.factoria;
 import negocio.factoria.imp.FactoriaNegocioImp;
 import negocio.pedido.SAPedido;
 import negocio.producto.SAProducto;
-import negocio.productosdeproveedor.SAProductosDeProveedor;
+import negocio.productosdepedido.SAProductoDePedido;
+import negocio.productosdeproveedor.SAProductoDeProveedor;
 import negocio.proveedor.SAProveedor;
 
 public abstract class FactoriaNegocio {
@@ -36,6 +37,8 @@ public abstract class FactoriaNegocio {
 	
 	public abstract SAPedido generaSAPedido();
 	
-	public abstract SAProductosDeProveedor generaSAProductosDeProveedor();
+	public abstract SAProductoDeProveedor generaSAProductosDeProveedor();
+	
+	public abstract SAProductoDePedido generaSAProductosDePedido();
 
 }

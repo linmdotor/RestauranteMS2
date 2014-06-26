@@ -20,7 +20,7 @@ import javax.persistence.Version;
 
 import negocio.pedido.businessobject.Pedido;
 import negocio.producto.businessobject.Producto;
-import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.transfer.TProveedor;
 
 /**
@@ -65,7 +65,7 @@ public class Proveedor implements Serializable {
     //private List<Producto> listaProductos;
 
 	@OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
-    private List<ProductosDeProveedor> listaProductosProveedor;
+    private List<ProductoDeProveedor> listaProductosProveedor;
 	
 	@OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
 	private List<Pedido> listaPedidos;
@@ -99,11 +99,11 @@ public class Proveedor implements Serializable {
 	}
 	
 	// Mutadores y Accedentes	
-	public List<ProductosDeProveedor> getListaProductosProveedor() {
+	public List<ProductoDeProveedor> getListaProductosProveedor() {
 		return listaProductosProveedor;
 	}
 
-	public void setListaProductosProveedor(List<ProductosDeProveedor> listaProductosProveedor) {
+	public void setListaProductosProveedor(List<ProductoDeProveedor> listaProductosProveedor) {
 		this.listaProductosProveedor = listaProductosProveedor;
 	}
 

@@ -1,6 +1,6 @@
 package negocio.productosdeproveedor.transfer;
 
-import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 
 
 public class TProductoDeProveedor {
@@ -13,9 +13,7 @@ public class TProductoDeProveedor {
 	
 	// Constructores
 	
-	public TProductoDeProveedor() {	
-		
-		
+	public TProductoDeProveedor() {
 	}
 	
 	public TProductoDeProveedor(int producto, int proveedor, float precio) {
@@ -26,7 +24,7 @@ public class TProductoDeProveedor {
 		
 	}
 	
-public TProductoDeProveedor(ProductosDeProveedor producto_proveedor) {
+public TProductoDeProveedor(ProductoDeProveedor producto_proveedor) {
 		
 		this.producto= producto_proveedor.getProducto().getId_producto();
 		this.proveedor = producto_proveedor.getProveedor().getId_proveedor();

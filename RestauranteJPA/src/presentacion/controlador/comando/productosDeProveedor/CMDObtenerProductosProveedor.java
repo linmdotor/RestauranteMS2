@@ -2,7 +2,7 @@ package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.producto.SAProducto;
-import negocio.productosdeproveedor.SAProductosDeProveedor;
+import negocio.productosdeproveedor.SAProductoDeProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -11,7 +11,7 @@ public class CMDObtenerProductosProveedor implements CMD {
 	
 	public RespuestaCMD ejecuta(Object objeto) {
 		
-		SAProductosDeProveedor serviciosProductosDeProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
+		SAProductoDeProveedor serviciosProductosDeProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
 		RespuestaCMD respuestaComando = null;
 		
 		try {

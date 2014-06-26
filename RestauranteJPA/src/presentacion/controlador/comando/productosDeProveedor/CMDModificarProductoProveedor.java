@@ -9,7 +9,7 @@
 package presentacion.controlador.comando.productosDeProveedor;
 
 import negocio.factoria.FactoriaNegocio;
-import negocio.productosdeproveedor.SAProductosDeProveedor;
+import negocio.productosdeproveedor.SAProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
@@ -20,7 +20,7 @@ public class CMDModificarProductoProveedor implements CMD {
 
 	public RespuestaCMD ejecuta(Object objeto) {
 
-		SAProductosDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
+		SAProductoDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
 		RespuestaCMD respuestacomando = null;
 		
 		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto))

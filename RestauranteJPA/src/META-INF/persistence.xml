@@ -8,8 +8,8 @@
 		<class>negocio.producto.businessobject.ProductoPerecedero</class>
 		<class>negocio.proveedor.businessobject.Proveedor</class>
 		<class>negocio.pedido.businessobject.Pedido</class>
-		<class>negocio.productosdepedido.businessobject.PedidoProducto</class>
-		<class>negocio.productosdeproveedor.businessobject.ProductosDeProveedor</class>
+		<class>negocio.productosdepedido.businessobject.ProductoDePedido</class>
+		<class>negocio.productosdeproveedor.businessobject.ProductoDeProveedor</class>
 		
 		
 		<properties>

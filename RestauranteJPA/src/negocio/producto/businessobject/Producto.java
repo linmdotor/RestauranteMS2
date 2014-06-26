@@ -6,9 +6,9 @@ import java.util.List;
 import javax.persistence.*;
 
 import negocio.producto.transfer.TProducto;
-import negocio.productosdepedido.businessobject.PedidoProducto;
+import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.productosdeproveedor.*;
-import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 
 
@@ -53,10 +53,10 @@ public class Producto implements Serializable {
     
 	// Relaciones JPA
     @OneToMany(mappedBy="producto")
-    private List<ProductosDeProveedor> listaProductosProveedor;
+    private List<ProductoDeProveedor> listaProductosProveedor;
     
     @OneToMany(mappedBy="producto")
-    private List<PedidoProducto> listaProductosPedido;
+    private List<ProductoDePedido> listaProductosPedido;
 
 	
 	// Constructores
@@ -87,20 +87,20 @@ public class Producto implements Serializable {
 	
 	// Mutadores y Accedentes
 	
-	public List<ProductosDeProveedor> getListaProductosProveedor() {
+	public List<ProductoDeProveedor> getListaProductosProveedor() {
 		return listaProductosProveedor;
 	}
 
-	public List<PedidoProducto> getListaProductosPedido() {
+	public List<ProductoDePedido> getListaProductosPedido() {
 		return listaProductosPedido;
 	}
 	
-	public void setListaProductosPedido(List<PedidoProducto> listaProductosPedido) {
+	public void setListaProductosPedido(List<ProductoDePedido> listaProductosPedido) {
 		this.listaProductosPedido = listaProductosPedido;
 	}
 
 	public void setListaProductosProveedor(
-			List<ProductosDeProveedor> listaProductosProveedor) {
+			List<ProductoDeProveedor> listaProductosProveedor) {
 		this.listaProductosProveedor = listaProductosProveedor;
 	}
 	

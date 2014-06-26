@@ -4,7 +4,7 @@ package negocio.productosdepedido.businessobject;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedidoProducto;
 import negocio.producto.businessobject.Producto;
-import negocio.productosdeproveedor.businessobject.ProductosDeProveedorId;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedorId;
 
 import javax.persistence.*;
 
@@ -16,8 +16,8 @@ import java.io.Serializable;
  *
  */
 @Entity  
-@IdClass(PedidoProductoID.class) 
-public class PedidoProducto {
+@IdClass(ProductoDePedidoID.class) 
+public class ProductoDePedido {
 
 	//Atributos
 	@Id
@@ -34,12 +34,12 @@ public class PedidoProducto {
 	private int cantidad;
 	private float precio;
 	 
-	 public PedidoProducto ()
+	 public ProductoDePedido ()
 	 {
 		 super();
 	 }
 	 
-	 public PedidoProducto (Producto producto, Pedido pedido, int cantidad, float precio)
+	 public ProductoDePedido (Producto producto, Pedido pedido, int cantidad, float precio)
 	 {
 		 this.cantidad = cantidad;
 		 this.pedido = pedido;
@@ -47,7 +47,7 @@ public class PedidoProducto {
 		 this.producto = producto;
 	 }
 	 
-	 public PedidoProducto (Object objeto)
+	 public ProductoDePedido (Object objeto)
 	 {
 		 TPedidoProducto tProductosPedido = (TPedidoProducto) objeto;
 		 

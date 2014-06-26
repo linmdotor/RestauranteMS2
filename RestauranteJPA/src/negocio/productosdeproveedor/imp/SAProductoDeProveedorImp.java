@@ -12,12 +12,12 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import negocio.producto.businessobject.Producto;
-import negocio.productosdeproveedor.SAProductosDeProveedor;
-import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.SAProductoDeProveedor;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 
-public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
+public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 
 	public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor)  throws Exception {
 		
@@ -29,7 +29,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 		Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
 		Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 		
-		ProductosDeProveedor precioProductoProveedor = new ProductosDeProveedor(proveedor, producto, tProductoDeProveedor.getPrecio());
+		ProductoDeProveedor precioProductoProveedor = new ProductoDeProveedor(proveedor, producto, tProductoDeProveedor.getPrecio());
 
 		try {
 			
@@ -111,11 +111,11 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 	
 		}		
 		
-		List<ProductosDeProveedor> listaproductos = proveedorObtenido.getListaProductosProveedor();
+		List<ProductoDeProveedor> listaproductos = proveedorObtenido.getListaProductosProveedor();
 		
 		List<TProductoDeProveedor> listatProd = new ArrayList<TProductoDeProveedor>();
 		
-		for(ProductosDeProveedor p : listaproductos)
+		for(ProductoDeProveedor p : listaproductos)
 		{
 			listatProd.add(new TProductoDeProveedor(p));
 		}
@@ -141,7 +141,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Actualizamos ese producto en concreto buscando en la lista cual es el que corresponde a ese ID			
-			for(ProductosDeProveedor pp : proveedor.getListaProductosProveedor())
+			for(ProductoDeProveedor pp : proveedor.getListaProductosProveedor())
 			{
 				if(pp.getProducto().getId_producto() == tProductoDeProveedor.getProducto())
 					pp.setPrecio(tProductoDeProveedor.getPrecio());
@@ -184,8 +184,8 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Borramos	ese producto en concreto buscando en la lista cual es el que corresponde a ese ID	
-			ProductosDeProveedor productoAeliminar = null;
-			for(ProductosDeProveedor pp : proveedor.getListaProductosProveedor())
+			ProductoDeProveedor productoAeliminar = null;
+			for(ProductoDeProveedor pp : proveedor.getListaProductosProveedor())
 			{
 				if(pp.getProducto().getId_producto() == tProductoDeProveedor.getProducto())
 				{
