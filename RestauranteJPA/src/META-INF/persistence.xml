@@ -3,13 +3,13 @@
 	<persistence-unit name="UNIDAD_PERSISTENCIA_RESTAURANTE" transaction-type="RESOURCE_LOCAL">
 		
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>negocio.producto.Producto</class>
-		<class>negocio.producto.ProductoNoPerecedero</class>
-		<class>negocio.producto.ProductoPerecedero</class>
-		<class>negocio.proveedor.Proveedor</class>
-		<class>negocio.pedido.Pedido</class>
-		<class>negocio.pedido.PedidoProducto</class>
-		<class>negocio.productosdeproveedor.ProductosDeProveedor</class>
+		<class>negocio.producto.businessobject.Producto</class>
+		<class>negocio.producto.businessobject.ProductoNoPerecedero</class>
+		<class>negocio.producto.businessobject.ProductoPerecedero</class>
+		<class>negocio.proveedor.businessobject.Proveedor</class>
+		<class>negocio.pedido.businessobject.Pedido</class>
+		<class>negocio.productosdepedido.businessobject.PedidoProducto</class>
+		<class>negocio.productosdeproveedor.businessobject.ProductosDeProveedor</class>
 		
 		
 		<properties>
