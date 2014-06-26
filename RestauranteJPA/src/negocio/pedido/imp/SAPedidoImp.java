@@ -218,33 +218,43 @@ public class SAPedidoImp implements SAPedido {
 
 		boolean respuestaComando = false;
 		Calendar fecha = new GregorianCalendar();
+		
+		if (ID >= 0){
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
-		EntityManager em = emf.createEntityManager();
-
-		try {
-			em.getTransaction().begin();
-
-			Pedido pedido = em.find(Pedido.class, ID);
-
-			if (pedido != null) {
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
+			EntityManager em = emf.createEntityManager();
+	
+			try {
+				em.getTransaction().begin();
+	
+				Pedido pedido = em.find(Pedido.class, ID);
+	
+				if (pedido != null) {
+					
+					pedido.setFechaCancelado(fecha.getTime().toString());
+					em.getTransaction().commit();
+					respuestaComando = true;
+	
+				}else
+				{
+					em.getTransaction().rollback();
+				}
+					
 				
-				pedido.setFechaCancelado(fecha.getTime().toString());
-				em.getTransaction().commit();
-				respuestaComando = true;
-
+			} catch (OptimisticLockException oe) {
+				em.getTransaction().rollback();
+				throw new Exception(
+						"Error al acceder los datos de forma concurrente.");
+			} catch (Exception e) {
+				em.getTransaction().rollback();
+				throw new Exception(
+						"Error al cancelar un pedido. Debe seleccionar un Pedido.");
+			} finally {
+				em.close();
+				emf.close();
 			}
-			
-		} catch (OptimisticLockException oe) {
-			throw new Exception(
-					"Error al acceder los datos de forma concurrente.");
-		} catch (Exception e) {
-			throw new Exception(
-					"Error al cancelar un pedido. Debe seleccionar un Pedido.");
-		} finally {
-			em.close();
-			emf.close();
-		}
+		} else
+			throw new Exception("No se pudo eliminar el pedido, el ID debe ser entero positivo.");
 
 		return respuestaComando;
 	}
