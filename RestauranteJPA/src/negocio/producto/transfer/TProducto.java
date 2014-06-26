@@ -1,4 +1,6 @@
-package negocio.producto;
+package negocio.producto.transfer;
+
+import negocio.producto.businessobject.Producto;
 
 public class TProducto  {
 

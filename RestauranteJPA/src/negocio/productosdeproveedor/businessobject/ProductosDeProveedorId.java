@@ -1,4 +1,4 @@
-package negocio.productosdeproveedor;
+package negocio.productosdeproveedor.businessobject;
 
 import java.io.Serializable;
 

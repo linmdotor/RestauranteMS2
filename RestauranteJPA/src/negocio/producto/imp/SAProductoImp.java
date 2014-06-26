@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import negocio.producto.Producto;
-import negocio.producto.ProductoNoPerecedero;
-import negocio.producto.ProductoPerecedero;
 import negocio.producto.SAProducto;
-import negocio.producto.TProducto;
-import negocio.producto.TProductoNoPerecedero;
-import negocio.producto.TProductoPerecedero;
+import negocio.producto.businessobject.Producto;
+import negocio.producto.businessobject.ProductoNoPerecedero;
+import negocio.producto.businessobject.ProductoPerecedero;
+import negocio.producto.transfer.TProducto;
+import negocio.producto.transfer.TProductoNoPerecedero;
+import negocio.producto.transfer.TProductoPerecedero;
 
 
 
@@ -59,11 +59,9 @@ public class SAProductoImp implements SAProducto {
 			}
 			
 		} finally {
-	
-			if (productoObtenido != null)
-				em.detach(productoObtenido);
-	
+
 			em.close();
+			emf.close();
 	
 		}
 		

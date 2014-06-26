@@ -6,7 +6,7 @@
  *  
  */
 
-package negocio.producto;
+package negocio.producto.transfer;
 
 public class ValidarTProducto {
 

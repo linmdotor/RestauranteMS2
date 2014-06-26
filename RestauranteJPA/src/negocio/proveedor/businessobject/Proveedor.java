@@ -1,4 +1,4 @@
-package negocio.proveedor;
+package negocio.proveedor.businessobject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,9 +18,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import negocio.pedido.Pedido;
-import negocio.producto.Producto;
-import negocio.productosdeproveedor.ProductosDeProveedor;
+import negocio.pedido.businessobject.Pedido;
+import negocio.producto.businessobject.Producto;
+import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.proveedor.transfer.TProveedor;
 
 /**
  * Entity implementation class for Entity: Pedido

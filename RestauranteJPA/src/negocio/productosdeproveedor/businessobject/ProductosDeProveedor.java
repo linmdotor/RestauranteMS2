@@ -1,9 +1,9 @@
-package negocio.productosdeproveedor;
+package negocio.productosdeproveedor.businessobject;
 
 import javax.persistence.*;
 
-import negocio.producto.Producto;
-import negocio.proveedor.Proveedor;
+import negocio.producto.businessobject.Producto;
+import negocio.proveedor.businessobject.Proveedor;
 
 @Entity
 @IdClass(ProductosDeProveedorId.class)

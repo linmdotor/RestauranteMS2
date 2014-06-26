@@ -3,8 +3,8 @@ package presentacion.controlador.comando.producto;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.producto.SAProducto;
-import negocio.producto.TProducto;
-import negocio.producto.ValidarTProducto;
+import negocio.producto.transfer.TProducto;
+import negocio.producto.transfer.ValidarTProducto;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;

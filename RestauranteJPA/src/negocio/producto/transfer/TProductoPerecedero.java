@@ -1,7 +1,10 @@
 /**
  * 
  */
-package negocio.producto;
+package negocio.producto.transfer;
+
+import negocio.producto.businessobject.Producto;
+import negocio.producto.businessobject.ProductoPerecedero;
 
 public class TProductoPerecedero extends TProducto{
 

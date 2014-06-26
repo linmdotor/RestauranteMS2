@@ -11,9 +11,9 @@ package presentacion.controlador.comando.proveedor;
 import java.util.List;
 
 import negocio.factoria.FactoriaNegocio;
-import negocio.proveedor.Proveedor;
 import negocio.proveedor.SAProveedor;
-import negocio.proveedor.TProveedor;
+import negocio.proveedor.businessobject.Proveedor;
+import negocio.proveedor.transfer.TProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;

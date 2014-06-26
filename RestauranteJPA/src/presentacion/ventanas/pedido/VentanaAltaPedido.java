@@ -13,16 +13,16 @@ import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
 import negocio.ComprobadorEnteros;
-import negocio.pedido.Pedido;
-import negocio.pedido.TPedido;
+import negocio.pedido.businessobject.Pedido;
+import negocio.pedido.transfer.TPedido;
 import negocio.producto.EnumTipoProducto;
-import negocio.producto.Producto;
-import negocio.producto.TProducto;
-import negocio.producto.TProductoNoPerecedero;
-import negocio.producto.TProductoPerecedero;
-import negocio.productosdeproveedor.TProductoDeProveedor;
-import negocio.proveedor.Proveedor;
-import negocio.proveedor.TProveedor;
+import negocio.producto.businessobject.Producto;
+import negocio.producto.transfer.TProducto;
+import negocio.producto.transfer.TProductoNoPerecedero;
+import negocio.producto.transfer.TProductoPerecedero;
+import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
+import negocio.proveedor.businessobject.Proveedor;
+import negocio.proveedor.transfer.TProveedor;
 
 
 @SuppressWarnings("serial")

@@ -1,43 +1,22 @@
-package negocio.pedido;
+package negocio.pedido.transfer;
 
+import negocio.pedido.businessobject.Pedido;
+import negocio.producto.businessobject.Producto;
 
-import negocio.producto.Producto;
-import negocio.productosdeproveedor.ProductosDeProveedorId;
-
-import javax.persistence.*;
-
-import java.io.Serializable;
-
-
-/**
- * Entity implentation class for Entity: PedidoProducto
- *
- */
-@Entity  
-@IdClass(PedidoProductoID.class) 
-public class PedidoProducto {
-
-	//Atributos
-	@Id
-	@ManyToOne
-	private Pedido pedido;
-	
-	@Id
-	@ManyToOne
-	private Producto producto;
-	
-    @Version
-    private int version;
-	
-	private int cantidad;
-	private float precio;
+public class TPedidoProducto {
+	//Precio(float) y cantidad(int)
 	 
-	 public PedidoProducto ()
+	 private Producto producto;
+	 private Pedido pedido;
+	 private float precio;
+	 private int cantidad;
+	 
+	 public TPedidoProducto()
 	 {
-		 super();
+		 
 	 }
 	 
-	 public PedidoProducto (Producto producto, Pedido pedido, int cantidad, float precio)
+	 public TPedidoProducto (Producto producto, Pedido pedido, int cantidad, float precio)
 	 {
 		 this.cantidad = cantidad;
 		 this.pedido = pedido;
@@ -45,7 +24,7 @@ public class PedidoProducto {
 		 this.producto = producto;
 	 }
 	 
-	 public PedidoProducto (Object objeto)
+	 public TPedidoProducto (Object objeto)
 	 {
 		 TPedidoProducto tProductosPedido = (TPedidoProducto) objeto;
 		 

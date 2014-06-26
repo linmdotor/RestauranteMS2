@@ -1,4 +1,7 @@
-package negocio.pedido;
+package negocio.pedido.transfer;
+
+import negocio.pedido.businessobject.Pedido;
+
 
 
 

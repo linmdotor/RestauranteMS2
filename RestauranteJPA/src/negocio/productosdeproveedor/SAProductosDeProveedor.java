@@ -2,6 +2,7 @@ package negocio.productosdeproveedor;
 
 import java.util.List;
 
+import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import presentacion.controlador.RespuestaCMD;
 
 public interface SAProductosDeProveedor {

@@ -1,4 +1,4 @@
-package negocio.pedido;
+package negocio.pedido.businessobject;
 
 import java.util.List;
 
@@ -17,8 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import negocio.proveedor.Proveedor;
-import negocio.pedido.PedidoProducto;;
+import negocio.pedido.transfer.TPedido;
+import negocio.productosdepedido.businessobject.PedidoProducto;
+import negocio.proveedor.businessobject.Proveedor;
 
 
 
@@ -60,10 +61,10 @@ public class Pedido{
 	public Pedido(Object objeto){
 		TPedido tpedido= (TPedido) objeto;
 		
-		this.id_pedido=tpedido.id_pedido;
-		this.fecha_realizado=tpedido.fecha_realizado;
-		this.fecha_entregado=tpedido.fecha_entregado;
-		this.fecha_cancelado=tpedido.fecha_cancelado;
+		this.id_pedido=tpedido.getId_pedido();
+		this.fecha_realizado=tpedido.getFechaRealizado();
+		this.fecha_entregado=tpedido.getFechaEntregado();
+		this.fecha_cancelado=tpedido.getFechaCancelado();
 		
 	}
 	

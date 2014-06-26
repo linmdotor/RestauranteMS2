@@ -1,13 +1,15 @@
-package negocio.producto;
+package negocio.producto.businessobject;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
 
-import negocio.pedido.PedidoProducto;
+import negocio.producto.transfer.TProducto;
+import negocio.productosdepedido.businessobject.PedidoProducto;
 import negocio.productosdeproveedor.*;
-import negocio.proveedor.Proveedor;
+import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.proveedor.businessobject.Proveedor;
 
 
 /**

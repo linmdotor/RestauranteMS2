@@ -1,4 +1,6 @@
-package negocio.productosdeproveedor;
+package negocio.productosdeproveedor.transfer;
+
+import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
 
 
 public class TProductoDeProveedor {

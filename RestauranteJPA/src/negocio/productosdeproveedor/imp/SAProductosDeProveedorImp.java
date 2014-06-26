@@ -11,11 +11,11 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import negocio.producto.Producto;
-import negocio.productosdeproveedor.ProductosDeProveedor;
+import negocio.producto.businessobject.Producto;
 import negocio.productosdeproveedor.SAProductosDeProveedor;
-import negocio.productosdeproveedor.TProductoDeProveedor;
-import negocio.proveedor.Proveedor;
+import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
+import negocio.proveedor.businessobject.Proveedor;
 
 public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 
@@ -105,10 +105,7 @@ public class SAProductosDeProveedorImp implements SAProductosDeProveedor{
 			}
 			
 		} finally {
-	
-			if (proveedorObtenido != null)
-				em.detach(proveedorObtenido); //esta operación, al utilizar Transfer, no es necesaria.
-	
+
 			em.close();
 			emf.close();
 	

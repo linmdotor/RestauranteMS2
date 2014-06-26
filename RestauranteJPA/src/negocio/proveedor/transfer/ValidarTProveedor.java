@@ -6,7 +6,7 @@
  *  
  */
 
-package negocio.proveedor;
+package negocio.proveedor.transfer;
 
 public class ValidarTProveedor {
 

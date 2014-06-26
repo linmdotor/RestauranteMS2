@@ -29,12 +29,18 @@ import javax.swing.event.ListSelectionListener;
 
 
 
+
+
+
+
+
+
 import negocio.ComprobadorEnteros;
-import negocio.pedido.Pedido;
-import negocio.pedido.TPedido;
-import negocio.pedido.TPedidoProducto;
-import negocio.producto.TProducto;
-import negocio.proveedor.Proveedor;
+import negocio.pedido.businessobject.Pedido;
+import negocio.pedido.transfer.TPedido;
+import negocio.pedido.transfer.TPedidoProducto;
+import negocio.producto.transfer.TProducto;
+import negocio.proveedor.businessobject.Proveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;

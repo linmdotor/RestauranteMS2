@@ -1,7 +1,10 @@
-package negocio.producto;
+package negocio.producto.businessobject;
 
 import javax.persistence.Entity;
 import javax.persistence.Version;
+
+import negocio.producto.transfer.TProducto;
+import negocio.producto.transfer.TProductoNoPerecedero;
 
 @Entity
 public class ProductoNoPerecedero extends Producto{

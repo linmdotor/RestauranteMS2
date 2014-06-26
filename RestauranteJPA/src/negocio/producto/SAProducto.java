@@ -3,6 +3,7 @@ package negocio.producto;
 import java.util.ArrayList;
 import java.util.List;
 
+import negocio.producto.transfer.TProducto;
 import presentacion.controlador.RespuestaCMD;
 
 public interface SAProducto {

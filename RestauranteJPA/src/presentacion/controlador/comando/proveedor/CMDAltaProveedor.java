@@ -2,8 +2,8 @@ package presentacion.controlador.comando.proveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.proveedor.SAProveedor;
-import negocio.proveedor.TProveedor;
-import negocio.proveedor.ValidarTProveedor;
+import negocio.proveedor.transfer.TProveedor;
+import negocio.proveedor.transfer.ValidarTProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;

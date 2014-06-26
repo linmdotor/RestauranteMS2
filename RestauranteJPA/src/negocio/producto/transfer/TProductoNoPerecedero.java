@@ -1,4 +1,7 @@
-package negocio.producto;
+package negocio.producto.transfer;
+
+import negocio.producto.businessobject.Producto;
+import negocio.producto.businessobject.ProductoNoPerecedero;
 
 public class TProductoNoPerecedero extends TProducto{
 	

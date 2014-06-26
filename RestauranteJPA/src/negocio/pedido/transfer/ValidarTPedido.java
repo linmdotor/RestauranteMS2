@@ -1,4 +1,4 @@
-package negocio.pedido;
+package negocio.pedido.transfer;
 
 
 

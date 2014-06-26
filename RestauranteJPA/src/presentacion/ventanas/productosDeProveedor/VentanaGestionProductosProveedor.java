@@ -21,10 +21,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import negocio.factoria.FactoriaNegocio;
-import negocio.producto.Producto;
-import negocio.producto.TProducto;
-import negocio.productosdeproveedor.ProductosDeProveedor;
-import negocio.productosdeproveedor.TProductoDeProveedor;
+import negocio.producto.businessobject.Producto;
+import negocio.producto.transfer.TProducto;
+import negocio.productosdeproveedor.businessobject.ProductosDeProveedor;
+import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;

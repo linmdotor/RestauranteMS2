@@ -2,6 +2,9 @@ package negocio.pedido;
 
 import java.util.List;
 
+import negocio.pedido.businessobject.Pedido;
+import negocio.pedido.transfer.TPedido;
+import negocio.pedido.transfer.TPedidoProducto;
 import presentacion.controlador.RespuestaCMD;
 
 public interface SAPedido {

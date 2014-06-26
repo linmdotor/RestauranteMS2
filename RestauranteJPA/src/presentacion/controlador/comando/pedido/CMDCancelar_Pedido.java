@@ -2,8 +2,8 @@ package presentacion.controlador.comando.pedido;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.pedido.SAPedido;
-import negocio.pedido.TPedido;
-import negocio.pedido.ValidarTPedido;
+import negocio.pedido.transfer.TPedido;
+import negocio.pedido.transfer.ValidarTPedido;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;

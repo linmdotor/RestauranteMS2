@@ -1,4 +1,6 @@
-package negocio.proveedor;
+package negocio.proveedor.transfer;
+
+import negocio.proveedor.businessobject.Proveedor;
 
 public class TProveedor  {
 

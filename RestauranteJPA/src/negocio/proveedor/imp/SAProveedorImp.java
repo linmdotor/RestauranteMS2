@@ -11,11 +11,11 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import negocio.producto.Producto;
-import negocio.proveedor.Proveedor;
+import negocio.producto.businessobject.Producto;
 import negocio.proveedor.SAProveedor;
-import negocio.proveedor.TProveedor;
-import negocio.proveedor.ValidarTProveedor;
+import negocio.proveedor.businessobject.Proveedor;
+import negocio.proveedor.transfer.TProveedor;
+import negocio.proveedor.transfer.ValidarTProveedor;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 import principal.Principal;
@@ -61,10 +61,7 @@ public class SAProveedorImp implements SAProveedor {
 			}
 			
 		} finally {
-	
-			if (proveedorObtenido != null)
-				em.detach(proveedorObtenido); //esta operación, al utilizar Transfer, no es necesaria.
-	
+
 			em.close();
 			emf.close();
 	

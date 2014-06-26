@@ -37,13 +37,13 @@ import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
 import presentacion.ventanas.proveedor.VentanaProveedor;
-import negocio.producto.Producto;
-import negocio.producto.ProductoNoPerecedero;
-import negocio.producto.ProductoPerecedero;
 import negocio.producto.EnumTipoProducto;
-import negocio.producto.TProducto;
-import negocio.producto.TProductoNoPerecedero;
-import negocio.producto.TProductoPerecedero;
+import negocio.producto.businessobject.Producto;
+import negocio.producto.businessobject.ProductoNoPerecedero;
+import negocio.producto.businessobject.ProductoPerecedero;
+import negocio.producto.transfer.TProducto;
+import negocio.producto.transfer.TProductoNoPerecedero;
+import negocio.producto.transfer.TProductoPerecedero;
 
 @SuppressWarnings("serial")
 public class VentanaProducto extends JFrame {

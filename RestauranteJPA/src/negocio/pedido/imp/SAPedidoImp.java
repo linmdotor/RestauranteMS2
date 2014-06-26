@@ -8,14 +8,14 @@ import javax.persistence.*;
 
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
-import negocio.pedido.Pedido;
-import negocio.pedido.PedidoProducto;
 import negocio.pedido.SAPedido;
-import negocio.pedido.TPedido;
-import negocio.pedido.TPedidoProducto;
-import negocio.proveedor.Proveedor;
-import negocio.proveedor.TProveedor;
+import negocio.pedido.businessobject.Pedido;
+import negocio.pedido.transfer.TPedido;
+import negocio.pedido.transfer.TPedidoProducto;
+import negocio.productosdepedido.businessobject.PedidoProducto;
+import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.imp.SAProveedorImp;
+import negocio.proveedor.transfer.TProveedor;
 
 public class SAPedidoImp implements SAPedido {
 	protected EntityManager em;
@@ -69,10 +69,8 @@ public class SAPedidoImp implements SAPedido {
 
 		} finally {
 
-			if (pedidoobtenido != null)
-				em.detach(pedidoobtenido);
-
 			em.close();
+			emf.close();
 
 		}
 
@@ -209,6 +207,7 @@ public class SAPedidoImp implements SAPedido {
 		} finally {
 
 			em.close();
+			emf.close();
 		}
 
 		return respuestaComando;
