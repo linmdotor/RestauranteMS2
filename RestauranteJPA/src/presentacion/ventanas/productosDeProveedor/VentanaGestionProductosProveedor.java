@@ -219,7 +219,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_TOTALES, null);	
 		
 		textFieldID_Proveedor.setText(Integer.toString((int)objeto));
-		
+
 		setVisible(true);
 		repaint();
 			
@@ -277,6 +277,8 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			tbProductosProveedor.setModel(tabla);
 		
 		}
+		
+		repaint();
 	
 	}	
 	
@@ -304,6 +306,8 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			tbProductosTotales.setModel(tabla);
 		
 		}
+		
+		repaint();
 	
 	}
 
