@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -32,15 +31,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import negocio.ComprobadorEnteros;
-import negocio.ComprobadorFloat;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
-import presentacion.ventanas.proveedor.VentanaProveedor;
 import negocio.producto.EnumTipoProducto;
-import negocio.producto.businessobject.Producto;
-import negocio.producto.businessobject.ProductoNoPerecedero;
-import negocio.producto.businessobject.ProductoPerecedero;
 import negocio.producto.transfer.TProducto;
 import negocio.producto.transfer.TProductoNoPerecedero;
 import negocio.producto.transfer.TProductoPerecedero;

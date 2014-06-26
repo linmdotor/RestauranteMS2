@@ -20,31 +20,13 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import negocio.ComprobadorEnteros;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
 import negocio.pedido.transfer.TPedidoProducto;
-import negocio.producto.transfer.TProducto;
-import negocio.proveedor.businessobject.Proveedor;
+import negocio.proveedor.transfer.TProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
-import presentacion.ventanas.producto.VentanaProducto;
 
 @SuppressWarnings("serial")
 public class VentanaGestionPedidos extends JFrame{
@@ -197,8 +179,8 @@ public class VentanaGestionPedidos extends JFrame{
 		JButton btnNuevoPedido = new JButton("Nuevo Pedido");
 		btnNuevoPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, null);
 				
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, null);
 
 			}
 		});
@@ -228,7 +210,9 @@ public class VentanaGestionPedidos extends JFrame{
 
 						if (getTbPedidos().getSelectedRow() != -1)
 						{
+							//Añade en el formulario los datos del Proveedor del pedido actual
 							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, getTbPedidos().getValueAt(getTbPedidos().getSelectedRow(),0) );
+							//Añade los datos de la tabla de productos (lista de productos del pedido actual)
 							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.RELLENAR_TB_PRODUCTOS_PEDIDO, getTbPedidos().getValueAt(getTbPedidos().getSelectedRow(),0) );
 						}
 					}
@@ -248,16 +232,7 @@ public class VentanaGestionPedidos extends JFrame{
 		tbProductos = new JTable();
 		scrollPane2.setViewportView(tbProductos);
 		tbProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbProductos.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent arg0) {
-
-						if (getTbProductos().getSelectedRow() != -1)
-						{
-							//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, getTbProductos().getSelectedRow() );	
-						}
-					}
-				});
+		//LA TABLA DE PRODUCTOS NO DEBE TENER UN ACTION LISTENER, PUES NO SE PRODUCE NINGUNA ACCIÓN AL CLICKARSE
 
 	}
 
@@ -268,84 +243,23 @@ public class VentanaGestionPedidos extends JFrame{
 		List<Pedido> lista = new ArrayList<Pedido>();
 		
 		if (object == null)
-			rellenarTabla(lista);
+			rellenarTablaPedidos(lista);
 		else			
-			rellenarTabla((List<Pedido>) object);
+			rellenarTablaPedidos((List<Pedido>) object);
 
 		setVisible(true);
 		repaint();
 
 	}
 	
-	/*public void rellenarTabla(List<BOProveedor> lista) {
-	
-	tabla = new Tabla();
-	
-	tabla.addColumn("ID");
-	tabla.addColumn("NOMBRE");
-	tabla.addColumn("NIF");
-	tabla.addColumn("TELEFONO");
-	
-	for (int i = 0; i < lista.size(); i++) {
-
-		fila = new Vector();
-		BOProveedor bo = lista.get(i);
-		fila.add(bo.getId_proveedor());
-		fila.add(bo.getNombre());
-		fila.add(bo.getNif());
-		fila.add(bo.getTelefono());
-		
-		fila.add(bo.isDisponible());
-		
-		tabla.addRow(fila);
-	}
-
-	tbProductos.setModel(tabla);
-
-}*/
-	
-	/*public BOProveedor obtenerProducto() {
-
-	int ID = -1;
-
-
-	ComprobadorEnteros comprobadorEntero = new ComprobadorEnteros();
-
-	if (comprobadorEntero.isNumeric(textFieldID.getText())) {
-		ID = Integer.parseInt(textFieldID.getText());
-	}
-
-	
-	//Crea un tipo de BO u otro en función del tipo que sea el comboBox, pero lo encapsula en BOProducto
-	BOProducto bo;
-	
-	
-
-	bo.setId_proveedor(ID);
-	bo.setNombre(textFieldNombre.getText());
-	bo.setNif(textFieldNif.getText());
-	bo.setTelefono(textFieldTelefono.getText());
-	bo.setDisponible(true);
-	
-
-	
-	return bo;
-}*/
-	
-	private void rellenarTabla(List<Pedido> lista) {
+	private void rellenarTablaPedidos(List<Pedido> lista) {
 		tabla = new Tabla();
-/*
- * 	protected int id_pedido;
-	protected int id_proveedor;
-	protected String fecha_realizado;
-	protected String fecha_entregado;
-	protected String fecha_cancelado;
- */
-		tabla.addColumn("ID_PEDIDO");
-		tabla.addColumn("ID_PROVEEDOR");
-		tabla.addColumn("FECHA_REALIZADO");
-		tabla.addColumn("FECHA_ENTREGADO");
-		tabla.addColumn("FECHA_CANCELADO");
+
+		tabla.addColumn("ID_PED");
+		tabla.addColumn("ID_PROV");
+		tabla.addColumn("REALIZ.");
+		tabla.addColumn("ENTREG.");
+		tabla.addColumn("CANCEL.");
 
 		for (int i = 0; i < lista.size(); i++) {
 
@@ -364,20 +278,6 @@ public class VentanaGestionPedidos extends JFrame{
 		
 	}
 
-	public void modificarFormulario(Object objeto) {
-
-		TPedido pedido = (TPedido) objeto;
-		
-		textFieldID.setText(Integer.toString(pedido.getId_proveedor()));
-		/*
-		textFieldNombre.setText(boProveedor.getNombre());
-		textFieldStock.setText(Integer.toString(boProveedor.getStock()));
-		textFieldNif.setText(boProveedor.getNif());
-		textFieldTelefono.setText(boProveedor.getTelefono());
-	*/
-
-	}
-	
 	public void actualizarTablaProductos(Object objeto) {
 		
 		List<TPedidoProducto> lista = (List<TPedidoProducto>)objeto;
@@ -401,6 +301,60 @@ public class VentanaGestionPedidos extends JFrame{
 
 				tbProductos.setModel(tabla);
 		
+	}
+	
+	/*
+	 * Este método recibe un TransferProveedor, encapsulado en un Object, y coge de él el ID del proveedor
+	 */
+	public void modificarFormulario(Object objeto) {
+
+		TProveedor proveedor = (TProveedor) objeto;
+		
+		textFieldID.setText(Integer.toString(proveedor.getId_proveedor()));
+		textFieldNombre.setText(proveedor.getNombre());
+		textFieldNif.setText(proveedor.getNIF());
+		textFieldTelefono.setText(proveedor.getTelefono());
+		
+		/*
+		 * TODO
+		 * 
+		 * 
+		 * SI VEMOS QUE HACER ESTO ES MUY COMPLICADO o CREA ACOPLAMIENTOS INNECESARIOS (Que puede ser)
+		 * PODEMOS OPTAR POR MOSTRAR SIMPLEMENTE EL ID_PROV DEL PEDIDO
+		 * ELIMINANDO EL RESTO DEL FORMULARIO
+		 * 
+		 * Así que el método cambiaría a pasarle un TPedido, en vez de Tproveedor
+		 * public void modificarFormulario(Object objeto) {
+
+				TPedido pedido = (TPedido) objeto;
+				
+				textFieldID.setText(Integer.toString(pedido.getId_proveedor()));
+		 * 
+		 */
+	}
+	
+	public TPedido obtenerPedido() {
+
+		TPedido pedido = new TPedido();
+	
+		//TODO
+		
+		/*
+		 * ESTE METODO LO ÚNICO QUE TIENE QUE HACER ES SACAR LOS DATOS DE LA TABLAPEDIDO y FORMULARIO,
+		 * DE LA FILA QUE ESTÉ SELECCIONADA, Y METERLOS DENTRO DE UN TRANSFER TAL CUAL,
+		 * id_pedido
+		 * id_producto
+		 * fechas...
+		 * SIN VALIDAR NI NADA, PORQUE SUPONEMOS QUE LO QUE ESTÁ EN LA TABLA ES CORRECTO
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		
+		return pedido;
 	}
 	
 	public void limpiarFormulario()

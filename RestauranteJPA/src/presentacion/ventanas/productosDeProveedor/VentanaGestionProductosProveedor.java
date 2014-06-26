@@ -1,10 +1,8 @@
 package presentacion.ventanas.productosDeProveedor;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,15 +18,11 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import negocio.factoria.FactoriaNegocio;
-import negocio.producto.businessobject.Producto;
 import negocio.producto.transfer.TProducto;
-import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
-import presentacion.ventanas.proveedor.VentanaProveedor;
 
 @SuppressWarnings("serial")
 public class VentanaGestionProductosProveedor extends JFrame {

@@ -1,5 +1,5 @@
 
-package presentacion.controlador.comando.productosDeProveedor;
+package presentacion.controlador.comando.productosdeproveedor;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.producto.SAProducto;
