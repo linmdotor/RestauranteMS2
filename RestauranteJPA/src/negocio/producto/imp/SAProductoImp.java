@@ -202,93 +202,40 @@ public class SAProductoImp implements SAProducto {
 		
 		em.getTransaction().begin();
 		
-		//Realiza todas las validaciones del transfer
-		if(tProducto == null)
-		{
-			em.getTransaction().rollback();
-			throw new Exception("Producto nulo");
-		}
+		try {
 		
-		if(!tProducto.isDisponible())
-		{
-			em.getTransaction().rollback();
-			throw new Exception("Se debe insertar el producto como 'disponible'");
-		}
-		
-		if(tProducto.getStock() < 0)
-		{
-			em.getTransaction().rollback();
-			throw new Exception("El Stock del producto no puede ser negativo");
-		}
-		
-		if(tProducto.getNombre().length() <= 0)
-		{
-			em.getTransaction().rollback();
-			throw new Exception("Debe ponerle un nombre al producto");
-			
-		}
-		
-		if(obtenerProductoPorNombre(tProducto.getNombre()) != null)
-		{
-			em.getTransaction().rollback();
-			throw new Exception("Ya existe un producto con ese nombre");
-		}
-		
-		if(tProducto instanceof TProductoPerecedero){
-			//Validación de la fecha
-
-			int dia = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[0]);
-			int mes = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[1]);
-			int ano = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[2]);
-			
-			if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) 
-			{//meses 31
-			
-				if(dia<1 ||dia >31)
-				{
-					em.getTransaction().rollback();
-					throw new Exception("El dia no puede ser mayor de 31");
-				}
-			} 
-			else 
-			{//meses 30 o menos
-				if (mes == 4 || mes == 6 || mes == 9 || mes == 11) 
-				{//meses 30
-					if(dia >30)
-					{
-						em.getTransaction().rollback();
-						throw new Exception("El dia no puede ser mayor de 30");
-					}
-				} 
-				else if(mes == 2)
-				{//febrero
-					if ((ano%4 == 0 && ano % 100 != 0) || ano % 400 == 0) 
-					{//es bisiesto
-						if(dia >29)
-						{
-							em.getTransaction().rollback();
-							throw new Exception("El dia no puede ser mayor de 29");
-						}
-					}
-					else
-					{//no bisiesto
-						if(dia >28)
-						{
-							em.getTransaction().rollback();
-							throw new Exception("El dia no puede ser mayor de 28");
-						}
-					}
-				}
-				else
-				{
-					em.getTransaction().rollback();
-					throw new Exception("El mes tiene que ser del 1 al 12");
-				}
+			//Realiza todas las validaciones del transfer
+			if(tProducto == null)
+			{
+				throw new Exception("Producto nulo");
 			}
 			
-		} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
+			if(!tProducto.isDisponible())
+			{
+				throw new Exception("Se debe insertar el producto como 'disponible'");
+			}
+			
+			if(tProducto.getStock() < 0)
+			{
+				throw new Exception("El Stock del producto no puede ser negativo");
+			}
+			
+			if(tProducto.getNombre().length() <= 0)
+			{
+				throw new Exception("Debe ponerle un nombre al producto");			
+			}
+			
+			if(obtenerProductoPorNombre(tProducto.getNombre()) != null)
+			{
+				throw new Exception("Ya existe un producto con ese nombre");
+			}
+			
+			if(tProducto instanceof TProductoPerecedero)
+			{	
+				validarFecha(((TProductoPerecedero) tProducto).getFechaCaducidad());	
+			} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
 		
-		try {
+		
 			
 			//Como todo es correcto, lo inserta
 			if(tProducto instanceof TProductoPerecedero){
@@ -311,7 +258,7 @@ public class SAProductoImp implements SAProducto {
 			throw new Exception("No se pudo añadir el producto, porque está bloqueado");
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo añadir el producto.");
+			throw e;
 		} finally {
 			 
 			em.close();
@@ -409,8 +356,70 @@ public class SAProductoImp implements SAProducto {
 		
 	}
 	
-	boolean validarFecha()
-	{
+	/*
+	 * Valida una fecha en formato: DD:MM:YYYY
+	 */
+	boolean validarFecha(String fecha) throws Exception	{
+		
+		int dia;
+		int mes;
+		int ano;
+		
+		try{
+			dia = Integer.parseInt(fecha.split("-")[0]);
+			mes = Integer.parseInt(fecha.split("-")[1]);
+			ano = Integer.parseInt(fecha.split("-")[2]);
+		}
+		catch(Exception e)
+		{
+			throw new Exception("El formato de fecha debe ser: DD-MM-YYYY");
+		}
+		
+		if(dia <= 0 || mes <= 0 || ano <= 1000)
+		{
+			throw new Exception("La fecha debe ser mayor que 0");
+		}
+		
+		if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) 
+		{//meses de 31 dias
+		
+			if(dia >31)
+			{
+				throw new Exception("El mes " + mes + " no tiene más de 31 días");
+			}
+		} 
+		else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) 
+		{//meses 30
+			if(dia >30)
+			{
+				throw new Exception("El mes " + mes + " no tiene más de 30 días");
+			}
+		}
+		else if(mes == 2)
+		{//febrero
+			if ((ano%4 == 0 && ano % 100 != 0) || ano % 400 == 0) 
+			{//es bisiesto
+				if(dia >29)
+				{
+					
+					throw new Exception("El dia en Febrero no puede ser mayor de 29 (ese año es bisiesto)");
+				}
+			}
+			else
+			{//no bisiesto
+				if(dia >28)
+				{
+					
+					throw new Exception("El dia en Febrero no puede ser mayor de 28 (ese año no es bisiesto)");
+				}
+			}
+		}
+		else
+		{
+			throw new Exception("Los meses son hasta 12");
+		}
+		
+		
 		return true;
 	}
 
