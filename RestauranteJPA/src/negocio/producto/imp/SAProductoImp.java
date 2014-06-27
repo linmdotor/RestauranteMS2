@@ -277,18 +277,51 @@ public class SAProductoImp implements SAProducto {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
-		try {
+		em.getTransaction().begin();
 			
-			em.getTransaction().begin();
+		try {
 			
 			Producto producto = em.find(Producto.class, (tProducto.getId_producto()));
 				
 			if (producto != null){
 				
+				//Realiza todas las validaciones del transfer
+				if(tProducto == null)
+				{
+					throw new Exception("Producto nulo");
+				}
+				
+				if(!tProducto.isDisponible())
+				{
+					throw new Exception("Se debe insertar el producto como 'disponible'");
+				}
+				
+				if(tProducto.getStock() < 0)
+				{
+					throw new Exception("El Stock del producto no puede ser negativo");
+				}
+				
+				if(tProducto.getNombre().length() <= 0)
+				{
+					throw new Exception("Debe ponerle un nombre al producto");			
+				}
+				
+				//Comprueba que el nuevo nombre no se repite
+				if(obtenerProductoPorNombre(tProducto.getNombre()) != null && !tProducto.getNombre().equals(producto.getNombre()))
+				{
+					throw new Exception("Ya existe un producto con ese nombre");
+				}
+				
+				if(tProducto instanceof TProductoPerecedero)
+				{	
+					validarFecha(((TProductoPerecedero) tProducto).getFechaCaducidad());	
+				} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
+			
 				if((tProducto instanceof TProductoPerecedero && producto instanceof ProductoNoPerecedero)
 						|| (tProducto instanceof TProductoNoPerecedero && producto instanceof ProductoPerecedero))
 					throw new Exception("No se puede modificar el tipo del Producto.");	    	
-
+				
+				//Como todo es correcto, lo modifica
 				if (producto instanceof ProductoPerecedero) 
 					((ProductoPerecedero)producto).setAll(tProducto);
 				else
@@ -296,11 +329,18 @@ public class SAProductoImp implements SAProducto {
 				
 				em.getTransaction().commit();		
 				resultado = true;
-			}									
+			}
+			else
+			{
+				throw new Exception("No existe el producto con ese ID");
+			}
 				
 		} catch(OptimisticLockException oe) {
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo modificar el proveedor, porque está bloqueado");
+			throw new Exception("No se pudo modificar el producto, porque está bloqueado");
+		} catch(Exception e) {
+			em.getTransaction().rollback();
+			throw e;
 		}
 		finally {
 			 
