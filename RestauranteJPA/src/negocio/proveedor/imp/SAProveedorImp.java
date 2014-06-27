@@ -160,21 +160,49 @@ public class SAProveedorImp implements SAProveedor {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
+		em.getTransaction().begin();
+		
 		try {
-			
-			em.getTransaction().begin();
 			
 			Proveedor proveedor = em.find(Proveedor.class, (tProveedor.getId_proveedor()));
 				
 			if (proveedor != null){
 				
+				//Realiza todas las validaciones del transfer
+				if(tProveedor == null)
+				{
+					throw new Exception("Proveedor nulo");
+				}
+				
+				if(tProveedor.getNombre().length() <= 0)
+				{
+					throw new Exception("Debe ponerle un nombre al proveedor");			
+				}
+				
+				if(!tProveedor.isDisponible())
+				{
+					throw new Exception("Se debe insertar el proveedor como 'disponible'");
+				}
+				
+				validarNIF(tProveedor.getNIF());
+				
+				for(int i = 0; i < tProveedor.getTelefono().length();i++)
+				{	
+					if(tProveedor.getTelefono().charAt(i)<'0' ||  tProveedor.getTelefono().charAt(i)>'9')
+					{
+						throw new Exception("el teléfono sólo debe contener numeros");
+					}
+
+				}
+				
+				//Como todo es correcto, lo inserta
 				proveedor.setAll(tProveedor);					
 				em.getTransaction().commit();		
 				resultado = true;
 			}									
 			else
 			{
-				em.getTransaction().rollback();
+				throw new Exception("No existe el proveedor con ese ID");
 			}
 				
 		} catch(OptimisticLockException oe) {
@@ -183,7 +211,7 @@ public class SAProveedorImp implements SAProveedor {
 		}			
 		catch (Exception e) {
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo modificar el proveedor.");
+			throw e;
 		} finally {
 			 
 			em.close();
