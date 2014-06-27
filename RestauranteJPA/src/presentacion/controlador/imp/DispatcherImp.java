@@ -17,11 +17,17 @@ import presentacion.ventanas.VentanaPrincipal;
 import presentacion.ventanas.pedido.VentanaAltaPedido;
 import presentacion.ventanas.pedido.VentanaGestionPedidos;
 import presentacion.ventanas.producto.VentanaProducto;
-import presentacion.ventanas.productosDeProveedor.VentanaGestionProductosProveedor;
+import presentacion.ventanas.productosdeproveedor.VentanaGestionProductosProveedor;
 import presentacion.ventanas.proveedor.VentanaProveedor;
 
 public class DispatcherImp extends Dispatcher {
 
+	/*
+	 * Las respuestas del comando en ningún caso tienen que ser acciones compuestas.
+	 * Generalmente serán una llamada al actualizar de la ventana correspondiente.
+	 * 
+	 * Si se necesita alguna acción más compleja, se hacrá desde una nueva llamada a comando en la ventana.
+	 */
 	public void despachaRespuesta(RespuestaCMD respuestaCMD) {
 
 		switch (respuestaCMD.getEvento()) {

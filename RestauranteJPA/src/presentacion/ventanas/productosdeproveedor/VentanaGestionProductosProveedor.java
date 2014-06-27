@@ -1,4 +1,4 @@
-package presentacion.ventanas.productosDeProveedor;
+package presentacion.ventanas.productosdeproveedor;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
