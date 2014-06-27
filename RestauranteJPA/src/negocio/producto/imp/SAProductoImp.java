@@ -74,6 +74,61 @@ public class SAProductoImp implements SAProducto {
 		
 	}
 	
+	public TProducto obtenerProductoPorNombre(String nombre) throws Exception {
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		TProducto tProducto;
+		Producto productoObtenido = null;
+		TypedQuery<Producto> query = null;
+		
+		try { 
+			em.getTransaction().begin();
+			
+			query = em.createNamedQuery(Producto.QUERY_OBTENER_PRODUCTO_NOMBRE, Producto.class);
+			
+			query.setParameter("arg", nombre);
+			
+			productoObtenido = query.getSingleResult();
+			
+			em.lock(productoObtenido, LockModeType.OPTIMISTIC);
+			
+			em.getTransaction().commit();
+			
+		}catch(NoResultException ex){			
+			em.getTransaction().rollback();			
+			return null;
+			
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			
+			if (ex instanceof Exception) {
+
+				throw ex;
+
+			} else {
+
+				throw new Exception(ex.getLocalizedMessage());
+
+			}
+			
+		} finally {
+
+			em.close();
+			emf.close();
+	
+		}
+		
+		if(productoObtenido instanceof ProductoPerecedero)
+			tProducto = new TProductoPerecedero(productoObtenido);
+		else //(productoObtenido instanceof ProductoNoPerecedero)
+			tProducto = new TProductoNoPerecedero(productoObtenido);
+		
+		return tProducto;
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<TProducto> obtenerProductos() throws Exception {		
 		
@@ -145,9 +200,97 @@ public class SAProductoImp implements SAProducto {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
-		try {
-			em.getTransaction().begin();
+		em.getTransaction().begin();
+		
+		//Realiza todas las validaciones del transfer
+		if(tProducto == null)
+		{
+			em.getTransaction().rollback();
+			throw new Exception("Producto nulo");
+		}
+		
+		if(!tProducto.isDisponible())
+		{
+			em.getTransaction().rollback();
+			throw new Exception("Se debe insertar el producto como 'disponible'");
+		}
+		
+		if(tProducto.getStock() < 0)
+		{
+			em.getTransaction().rollback();
+			throw new Exception("El Stock del producto no puede ser negativo");
+		}
+		
+		if(tProducto.getNombre().length() <= 0)
+		{
+			em.getTransaction().rollback();
+			throw new Exception("Debe ponerle un nombre al producto");
 			
+		}
+		
+		if(obtenerProductoPorNombre(tProducto.getNombre()) != null)
+		{
+			em.getTransaction().rollback();
+			throw new Exception("Ya existe un producto con ese nombre");
+		}
+		
+		if(tProducto instanceof TProductoPerecedero){
+			//Validación de la fecha
+
+			int dia = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[0]);
+			int mes = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[1]);
+			int ano = Integer.parseInt(((TProductoPerecedero) tProducto).getFechaCaducidad().split("-")[2]);
+			
+			if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) 
+			{//meses 31
+			
+				if(dia<1 ||dia >31)
+				{
+					em.getTransaction().rollback();
+					throw new Exception("El dia no puede ser mayor de 31");
+				}
+			} 
+			else 
+			{//meses 30 o menos
+				if (mes == 4 || mes == 6 || mes == 9 || mes == 11) 
+				{//meses 30
+					if(dia >30)
+					{
+						em.getTransaction().rollback();
+						throw new Exception("El dia no puede ser mayor de 30");
+					}
+				} 
+				else if(mes == 2)
+				{//febrero
+					if ((ano%4 == 0 && ano % 100 != 0) || ano % 400 == 0) 
+					{//es bisiesto
+						if(dia >29)
+						{
+							em.getTransaction().rollback();
+							throw new Exception("El dia no puede ser mayor de 29");
+						}
+					}
+					else
+					{//no bisiesto
+						if(dia >28)
+						{
+							em.getTransaction().rollback();
+							throw new Exception("El dia no puede ser mayor de 28");
+						}
+					}
+				}
+				else
+				{
+					em.getTransaction().rollback();
+					throw new Exception("El mes tiene que ser del 1 al 12");
+				}
+			}
+			
+		} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
+		
+		try {
+			
+			//Como todo es correcto, lo inserta
 			if(tProducto instanceof TProductoPerecedero){
 				
 				ProductoPerecedero producto = new ProductoPerecedero((TProductoPerecedero) tProducto);
@@ -244,7 +387,7 @@ public class SAProductoImp implements SAProducto {
 					respuesta = true;
 					em.getTransaction().commit();		
 				}
-					
+				
 			} catch(OptimisticLockException oe) {
 				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el producto, porque está bloqueado");
@@ -264,6 +407,11 @@ public class SAProductoImp implements SAProducto {
 			
 		return respuesta;
 		
+	}
+	
+	boolean validarFecha()
+	{
+		return true;
 	}
 
 }

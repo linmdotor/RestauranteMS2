@@ -8,6 +8,8 @@ public interface SAProducto {
 
 	public TProducto obtenerProducto(int ID) throws Exception;
 	
+	public TProducto obtenerProductoPorNombre(String nombre) throws Exception;
+	
 	public List<TProducto> obtenerProductos() throws Exception;
 	
 	public List<TProducto> obtenerProductosDisponibles() throws Exception;

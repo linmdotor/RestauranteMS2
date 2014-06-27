@@ -14,7 +14,7 @@ public class ValidarTProducto {
 
 		boolean productoCorrecto = false;
 
-		if (tProducto.getNombre().length() > 0 && tProducto.getStock() > 0)
+		if (tProducto.getNombre().length() > 0 && tProducto.getStock() >= 0)
 			productoCorrecto = true;
 
 		return productoCorrecto;

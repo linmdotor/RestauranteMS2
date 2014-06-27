@@ -21,6 +21,7 @@ import negocio.proveedor.businessobject.Proveedor;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 	@NamedQuery(name = "negocio.producto.objetoNegocio.Producto.findProductoById_producto", query = "select e from Producto e where e.id_producto = :arg"),
+	@NamedQuery(name = "negocio.producto.objetoNegocio.Producto.findProductoByNombre", query = "select e from Producto e where e.nombre = :arg"),
 	@NamedQuery(name = "negocio.producto.objetoNegocio.Producto.buscarTodosProductos", query = "select obj from Producto obj order by obj.id_producto"),
 })
 
@@ -32,6 +33,7 @@ public class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	// Atributos
 	public static final String QUERY_OBTENER_PRODUCTO = "negocio.producto.objetoNegocio.Producto.findProductoById_producto";
+	public static final String QUERY_OBTENER_PRODUCTO_NOMBRE = "negocio.producto.objetoNegocio.Producto.findProductoByNombre";
 	public static final String QUERY_OBTENER_TODOS_PRODUCTOS = "negocio.producto.objetoNegocio.Producto.buscarTodosProductos";
 	
 	/*@Version

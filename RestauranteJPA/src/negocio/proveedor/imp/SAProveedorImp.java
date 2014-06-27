@@ -201,7 +201,7 @@ public class SAProveedorImp implements SAProveedor {
 				{
 					em.getTransaction().rollback();
 				}
-					
+
 			} catch(OptimisticLockException oe) {
 				em.getTransaction().rollback();
 				throw new Exception("No se pudo eliminar el proveedor, porque está bloqueado");
