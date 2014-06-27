@@ -49,16 +49,7 @@ public class SAProveedorImp implements SAProveedor {
 			
 		} catch (Exception ex) {
 			em.getTransaction().rollback();	
-			
-			if (ex instanceof Exception) {
-	
-				throw ex;
-
-			} else {
-			
-				throw new Exception(ex.getLocalizedMessage());
-
-			}
+			throw ex;
 			
 		} finally {
 
@@ -99,15 +90,43 @@ public class SAProveedorImp implements SAProveedor {
 	public boolean altaProveedor(TProveedor tproveedor) throws Exception{		
 			
 		boolean resultado = false;
-		
-		Proveedor proveedor = new Proveedor(tproveedor);
-							
+						
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
 		
+		em.getTransaction().begin();
+		
 		try {
 			
-			em.getTransaction().begin();
+			//Realiza todas las validaciones del transfer
+			if(tproveedor == null)
+			{
+				throw new Exception("Proveedor nulo");
+			}
+			
+			if(tproveedor.getNombre().length() <= 0)
+			{
+				throw new Exception("Debe ponerle un nombre al proveedor");			
+			}
+			
+			if(!tproveedor.isDisponible())
+			{
+				throw new Exception("Se debe insertar el proveedor como 'disponible'");
+			}
+			
+			validarNIF(tproveedor.getNIF());
+			
+			for(int i = 0; i < tproveedor.getTelefono().length();i++)
+			{	
+				if(tproveedor.getTelefono().charAt(i)<'0' ||  tproveedor.getTelefono().charAt(i)>'9')
+				{
+					throw new Exception("el teléfono sólo debe contener numeros");
+				}
+
+			}
+			
+			//Como todo es correcto, lo inserta
+			Proveedor proveedor = new Proveedor(tproveedor);
 				
 			em.persist(proveedor);
 			
@@ -121,7 +140,7 @@ public class SAProveedorImp implements SAProveedor {
 		}			
 		catch (Exception e) {
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo añadir el proveedor.");
+			throw e;
 		} finally {
 			 
 			em.close();
@@ -221,6 +240,36 @@ public class SAProveedorImp implements SAProveedor {
 			
 		return respuesta;
 		
+	}
+	
+	boolean validarNIF(String nif) throws Exception
+	{
+		if(nif.length() <8 ||  nif.length() >9)
+		{
+			throw new Exception("El NIF no tiene la longitud necesaria");		
+		}
+		else
+		{
+			for(int i = 0; i < nif.length();i++)
+			{
+				if(i==nif.length()-1)
+				{
+					if(nif.toUpperCase().charAt(i)<'A' || nif.toUpperCase().charAt(i)>'Z')
+					{
+						throw new Exception("el NIF no contiene una letra al final");
+					}
+				}
+				else
+				{
+					if(nif.charAt(i)<'0' ||  nif.charAt(i)>'9')
+					{
+						throw new Exception("el NIF debe contener numeros");
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 	
 }

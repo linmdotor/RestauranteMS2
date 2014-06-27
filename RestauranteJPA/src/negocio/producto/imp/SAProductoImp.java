@@ -17,8 +17,6 @@ import negocio.producto.transfer.TProductoPerecedero;
 
 public class SAProductoImp implements SAProducto {
 
-	protected EntityManager em;
-		
 	public TProducto obtenerProducto(int ID) throws Exception {
 				
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
@@ -47,17 +45,8 @@ public class SAProductoImp implements SAProducto {
 			
 		} catch (Exception ex) {
 			em.getTransaction().rollback();
-			
-			if (ex instanceof Exception) {
+			throw ex;
 
-				throw ex;
-
-			} else {
-
-				throw new Exception(ex.getLocalizedMessage());
-
-			}
-			
 		} finally {
 
 			em.close();
@@ -102,16 +91,7 @@ public class SAProductoImp implements SAProducto {
 			
 		} catch (Exception ex) {
 			em.getTransaction().rollback();
-			
-			if (ex instanceof Exception) {
-
-				throw ex;
-
-			} else {
-
-				throw new Exception(ex.getLocalizedMessage());
-
-			}
+			throw ex;
 			
 		} finally {
 

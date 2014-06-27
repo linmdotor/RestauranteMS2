@@ -21,9 +21,9 @@ public class CMDBajaProveedor implements CMD {
 			try {
 				ID = serviciosProveedor.obtenerProveedores().get((Integer) objeto).getId_proveedor();
 				if(serviciosProveedor.bajaProveedor(ID))
-					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito eliminando Proveedor.");
+					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PROVEEDOR, "Exito dando de baja Proveedor.");
 				else
-					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el Proveedor.");
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja el Proveedor.");
 				
 			} catch (Exception e) {
 				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
@@ -31,7 +31,7 @@ public class CMDBajaProveedor implements CMD {
 			}
 		}
 		else
-			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al eliminar el proveedor, debe seleccionar un proveedor.");
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al dar de baja el proveedor, debe seleccionar un proveedor.");
 			
 		return respuestacomando;
 	}

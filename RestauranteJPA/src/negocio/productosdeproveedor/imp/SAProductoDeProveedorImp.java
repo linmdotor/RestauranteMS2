@@ -89,20 +89,8 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 			throw new Exception("No existe el proveedor con ID: " + ID);
 			
 		} catch (Exception ex) {
-
-			if (ex instanceof Exception) {
-
-				em.getTransaction().rollback();
-				
-				throw ex;
-
-			} else {
-
-				em.getTransaction().rollback();
-				
-				throw new Exception(ex.getLocalizedMessage());
-
-			}
+			em.getTransaction().rollback();
+			throw ex;
 			
 		} finally {
 
