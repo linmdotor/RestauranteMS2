@@ -363,9 +363,9 @@ public class SAProductoImp implements SAProducto {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
+			em.getTransaction().begin();
+			
 			try {
-				
-				em.getTransaction().begin();
 				
 				Producto producto = em.find(Producto.class, ID);
 					
@@ -374,6 +374,10 @@ public class SAProductoImp implements SAProducto {
 					respuesta = true;
 					em.getTransaction().commit();		
 				}
+				else
+				{
+					throw new Exception("No existe el producto con ese ID.");
+				}
 				
 			} catch(OptimisticLockException oe) {
 				em.getTransaction().rollback();
@@ -381,7 +385,7 @@ public class SAProductoImp implements SAProducto {
 			}			
 			catch (Exception e) {
 				em.getTransaction().rollback();
-				throw new Exception("No se pudo eliminar el producto.");
+				throw e;
 			} finally {
 				 
 				em.close();
@@ -390,7 +394,7 @@ public class SAProductoImp implements SAProducto {
 			}	
 			
 		} else
-			throw new Exception("No se pudo eliminar el producto. No existe el ID " + ID);
+			throw new Exception("No se pudo eliminar el producto. El ID debe ser positivo");
 			
 		return respuesta;
 		
