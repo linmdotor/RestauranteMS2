@@ -233,9 +233,9 @@ public class SAProveedorImp implements SAProveedor {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 			EntityManager em = emf.createEntityManager();
 			
+			em.getTransaction().begin();
+			
 			try {
-				
-				em.getTransaction().begin();
 				
 				Proveedor proveedor = em.find(Proveedor.class, ID);
 					
@@ -246,7 +246,7 @@ public class SAProveedorImp implements SAProveedor {
 				}
 				else
 				{
-					em.getTransaction().rollback();
+					throw new Exception("No existe el proveedor con ese ID.");
 				}
 
 			} catch(OptimisticLockException oe) {
@@ -255,7 +255,7 @@ public class SAProveedorImp implements SAProveedor {
 			}			
 			catch (Exception e) {
 				em.getTransaction().rollback();
-				throw new Exception("No se pudo eliminar el proveedor.");
+				throw e;
 			} finally {
 				 
 				em.close();
@@ -264,7 +264,7 @@ public class SAProveedorImp implements SAProveedor {
 			}	
 			
 		} else
-			throw new Exception("No se pudo eliminar el proveedor, el ID debe ser entero positivo.");
+			throw new Exception("No se pudo eliminar el proveedor, el ID debe ser positivo.");
 			
 		return respuesta;
 		
