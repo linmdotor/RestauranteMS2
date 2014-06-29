@@ -32,7 +32,8 @@ import negocio.proveedor.transfer.TProveedor;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 	@NamedQuery(name = "negocio.proveedor.objetoNegocio.Proveedor.findProveedor", query = "select e from Proveedor e where e.id_proveedor = :arg"),
-	@NamedQuery(name = "negocio.proveedor.objetoNegocio.Proveedor.buscarTodosProveedores", query = "select obj from Proveedor obj order by obj.id_proveedor"),
+	@NamedQuery(name = "negocio.proveedor.objetoNegocio.Proveedor.buscarTodosProveedores", query = "select obj from Proveedor obj order by obj.id_proveedor")
+	
 })
 
 public class Proveedor implements Serializable {

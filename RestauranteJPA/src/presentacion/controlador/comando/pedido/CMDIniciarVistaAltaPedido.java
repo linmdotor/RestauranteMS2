@@ -12,7 +12,7 @@ public class CMDIniciarVistaAltaPedido implements CMD{
 		RespuestaCMD respuestacomando = null;
 		
 		try {
-			respuestacomando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, FactoriaNegocio.obtenerInstancia().generaSAProducto().obtenerProductosDisponibles());
+			respuestacomando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedor((int) objeto));
 		} catch (Exception e) {
 			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 		}

@@ -12,10 +12,12 @@ import negocio.pedido.SAPedido;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
 import negocio.pedido.transfer.TPedidoProducto;
+import negocio.producto.businessobject.Producto;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.imp.SAProveedorImp;
 import negocio.proveedor.transfer.TProveedor;
+import negocio.pedido.businessobject.Pedido;
 
 public class SAPedidoImp implements SAPedido {
 	protected EntityManager em;
@@ -75,7 +77,7 @@ public class SAPedidoImp implements SAPedido {
 		EntityManager em = emf.createEntityManager();
 
 		@SuppressWarnings("rawtypes")
-		TypedQuery query = em.createQuery("SELECT e FROM PedidoProducto e",
+		TypedQuery query = em.createQuery("SELECT e FROM ProductoDePedido e",
 				Pedido.class);
 
 		@SuppressWarnings("unchecked")
@@ -137,7 +139,7 @@ public class SAPedidoImp implements SAPedido {
 				TProveedor tprov = new SAProveedorImp()
 						.obtenerProveedor(IDprov);
 				ped.setProveedor(new Proveedor(tprov));
-				ped.setFechaRealizado(fecha.toString());
+				
 				ped.setId_pedido(ultimo_id_usado);
 
 				em.persist(ped);
@@ -220,7 +222,7 @@ public class SAPedidoImp implements SAPedido {
 	
 				if (pedido != null) {
 					
-					pedido.setFechaCancelado(fecha.getTime().toString());
+					
 					em.getTransaction().commit();
 					respuestaComando = true;
 	
@@ -248,8 +250,54 @@ public class SAPedidoImp implements SAPedido {
 		return respuestaComando;
 	}
 
+	
+	
+	public TProveedor obtenerProveedor(int ID) throws Exception{
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		Proveedor proveedorObtenido = null;
+		TypedQuery<Proveedor> query = null;
+		try { 
+			em.getTransaction().begin();
+			
+			query = em.createNamedQuery(Proveedor.QUERY_OBTENER_PROVEEDOR, Proveedor.class);
+			
+			query.setParameter("arg", ID);
+			
+			proveedorObtenido = query.getSingleResult();
+			
+			em.lock(proveedorObtenido, LockModeType.OPTIMISTIC);
+			
+			em.getTransaction().commit();
+			
+		}catch(NoResultException ex){
+			
+			em.getTransaction().rollback();			
+			throw new Exception("No existe el producto con ID: " + ID);
+			
+		} catch (Exception ex) {
+			em.getTransaction().rollback();	
+			throw ex;
+			
+		} finally {
+
+			em.close();
+			emf.close();
+	
+		}		
+		
+		return new TProveedor(proveedorObtenido);
+		
+	}
+	
+	
 	public boolean almacenarPedido(TPedido tpedido) throws Exception {
 
+		TypedQuery<Proveedor> queryProveedor = null;
+		Proveedor proveedorObtenido = null;
+		
 		boolean respuesta = true;
 
 		EntityManagerFactory emf = Persistence
@@ -257,14 +305,33 @@ public class SAPedidoImp implements SAPedido {
 		EntityManager em = emf.createEntityManager();
 
 		try {
+			
+			//obtenemos proveedor
+			
+			em.getTransaction().begin();
+			
+			queryProveedor = em.createNamedQuery(Proveedor.QUERY_OBTENER_PROVEEDOR, Proveedor.class);
+			
+			queryProveedor.setParameter("arg", tpedido.getId_proveedor());
+			
+			proveedorObtenido = queryProveedor.getSingleResult();
+			
+			em.lock(proveedorObtenido, LockModeType.OPTIMISTIC);
+			
+			em.getTransaction().commit();			
+			
+			//añadimos pedido
+			
 			em.getTransaction().begin();
 
 			// No deberia encontrar un pedido con el mismo ID
 			Pedido pedido = em.find(Pedido.class, tpedido.getId_pedido());
-
+			
+			
 			// Si lo encuentra no deberia almacenarlo
 			if (pedido == null) {
-				Pedido nuevoPedido = new Pedido(tpedido);
+							
+				Pedido nuevoPedido = new Pedido(proveedorObtenido,tpedido.getPrecio());
 
 				em.persist(nuevoPedido);
 
@@ -274,11 +341,65 @@ public class SAPedidoImp implements SAPedido {
 
 			} else
 				respuesta = false;
+			
+			
+			
+			//añadimos los productos de pedido		
+			
+			for ( ProductoDePedido productoPedido: tpedido.getListaProductosPedido()){
+				
+				//obtenemos producto
+				
+				em.getTransaction().begin();
+				
+				TypedQuery<Producto> queryProducto = em.createNamedQuery(Producto.QUERY_OBTENER_PRODUCTO, Producto.class);
+				
+				queryProducto.setParameter("arg", productoPedido.getProducto().getId_producto());
+				
+				Producto productoObtenido = queryProducto.getSingleResult();
+				
+				em.lock(productoObtenido, LockModeType.OPTIMISTIC);
+				
+				em.getTransaction().commit();	
+				
+				//obtenemos pedido
+				
+				
+				@SuppressWarnings("rawtypes")
+				TypedQuery query = em.createQuery("SELECT e FROM Pedido e",
+						Pedido.class);
+
+				@SuppressWarnings("unchecked")
+				List<TPedidoProducto> listaPedido = query.getResultList();				
+				
+				
+				em.getTransaction().begin();
+				
+				TypedQuery<Pedido> queryPedido = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
+				System.out.println(listaPedido.size());
+				queryPedido.setParameter("arg", listaPedido.size());
+				
+				Pedido pedidoObtenido = queryPedido.getSingleResult();
+				
+				em.lock(pedidoObtenido, LockModeType.OPTIMISTIC);
+				
+				em.getTransaction().commit();
+				
+				// añadimos producto
+				
+				em.getTransaction().begin();
+				
+				em.persist(new ProductoDePedido(productoObtenido, pedidoObtenido, productoPedido.getCantidad()));
+				
+				em.getTransaction().commit();								
+				
+			}
 
 		} catch (OptimisticLockException oe) {
 			throw new Exception(
 					"No se almacenar el pedido, porque está bloqueado");
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new Exception("No se pudo almacenar el pedido.");
 		} finally {
 			em.close();

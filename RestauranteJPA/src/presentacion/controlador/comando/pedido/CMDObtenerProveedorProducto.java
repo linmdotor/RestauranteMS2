@@ -1,6 +1,7 @@
 package presentacion.controlador.comando.pedido;
 
 import negocio.factoria.FactoriaNegocio;
+import negocio.pedido.transfer.TPedido;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
@@ -12,7 +13,7 @@ public class CMDObtenerProveedorProducto implements CMD{
 		RespuestaCMD respuestacomando = null;
 		
 		try {
-			respuestacomando = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedor((Integer) objeto ));
+			respuestacomando = new RespuestaCMD(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, FactoriaNegocio.obtenerInstancia().generaSAProveedor().obtenerProveedor((int) objeto));
 		} catch (Exception e) {
 			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 		}

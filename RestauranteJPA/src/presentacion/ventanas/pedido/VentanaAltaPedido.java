@@ -1,52 +1,56 @@
 package presentacion.ventanas.pedido;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.eclipse.persistence.jpa.jpql.parser.NewValueBNF;
+
+import negocio.ComprobadorDouble;
+import negocio.pedido.businessobject.Pedido;
+import negocio.pedido.transfer.TPedido;
+import negocio.producto.businessobject.Producto;
+import negocio.productosdepedido.businessobject.ProductoDePedido;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
+import negocio.proveedor.businessobject.Proveedor;
+import negocio.proveedor.transfer.TProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
-import negocio.producto.transfer.TProducto;
-import negocio.producto.transfer.TProductoNoPerecedero;
-import negocio.producto.transfer.TProductoPerecedero;
-import negocio.proveedor.transfer.TProveedor;
 
 
-@SuppressWarnings("serial")
-public class VentanaAltaPedido extends JFrame{
+public class VentanaAltaPedido extends JFrame {
 	
 	private static VentanaAltaPedido ventana; //instancia singleton
 	
-	/***Tabla Producto**/
-	private JPanel panelListaProd;
-	private JTable tbProductos;
-	private Vector filaProd;
-	private JScrollPane scrollPanelProdcuto;
-	
-
-	/***Tabla Proveedor**/
-	private JTable tbProveedores;
-	private Vector filaProv;
-	private JScrollPane scrollPanelProveedor;
-
-	
-	/***Tabla Pedido**/
-	private JTable tbPedidoNuevo;
-	private Vector filaPed;
-	private JScrollPane scrollPanelPedido;
-	
+	private JTextField textFieldCantidad;
 	private Tabla tabla;
-
-	public JTable getTbProductos() {
-		return tbProductos;
-	}
-
+	private JTable tbProductosProveedor;
+	private JTable tbProductosPedido;
+	private JLabel txtIDProveedor;
+	private JLabel txtPrecioTotal;
+	private Vector fila;
+	private JScrollPane scrollPanel;
+	
+	private Pedido pedido;
+	
+	//Mutadores y Accedentes	
+	
 	//GetInstance
 	public static VentanaAltaPedido obtenerInstancia() {
 
@@ -55,209 +59,364 @@ public class VentanaAltaPedido extends JFrame{
 
 		return ventana;
 	}
-					
-	//Constructor
+	
+	//Mutadores y Accedentes		
+	
+		public JTable getTbProveedores()
+		{
+			return tbProductosProveedor;
+		}
+		
+		public JTextField getTextFieldCantidad() {
+			return textFieldCantidad;
+		}
+
+		public void setTextFieldCantidad(JTextField textFieldCantidad) {
+			this.textFieldCantidad = textFieldCantidad;
+		}
+
+		public JTable getTbProductosPedido() {
+			return tbProductosPedido;
+		}
+
+		public void setTbProductosPedido(JTable tbProductosPedido) {
+			this.tbProductosPedido = tbProductosPedido;
+		}
+
+		public Pedido getPedido() {
+			return pedido;
+		}
+
+		public void setPedido(Pedido pedido) {
+			this.pedido = pedido;
+		}
+
+		public void setTbProveedores(JTable tbProveedores)
+		{
+			this.tbProductosProveedor = tbProveedores;
+		}
+		
+		public JTable getTbProductosProveedor() {
+			return tbProductosProveedor;
+		}
+
+		public void setTbProductosProveedor(JTable tbProductosProveedor) {
+			this.tbProductosProveedor = tbProductosProveedor;
+		}
+		
+		public VentanaAltaPedido(){
+			setTitle("Gestion Productos de Pedido");
+			setResizable(false);
 			
-	public VentanaAltaPedido(){
-		super(" Realizar Nuevo Pedido");
-		setResizable(false);
-		
-		setSize(1030, 500);
-		setVisible(true);
-		this.setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		Font myFont = new Font("Courier",Font.BOLD,26);
-		
-		//-------------------- -------------------------- -------------------//
-		
-		JButton btnAgregar = new JButton("+");
-		btnAgregar.setBounds(590, 50, 50, 50);
-		btnAgregar.setFont(myFont);
-		getContentPane().add(btnAgregar);
-		
-		JButton btnElimina = new JButton("-");
-		btnElimina.setBounds(590, 130, 50, 50);
-		btnElimina.setFont(myFont);
-		getContentPane().add(btnElimina);
-		
-		JButton btnFin = new JButton("FIN");
-		btnFin.setBounds(570, 330, 100, 50);
-		btnFin.setFont(myFont);
-		getContentPane().add(btnFin);
+			setSize(773, 423);
+			setVisible(true);
+			this.setLocationRelativeTo(null);
+			getContentPane().setLayout(null);
+			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			
+			
+			JPanel panelLista = new JPanel();
+			panelLista.setBounds(12, 48, 743, 328);
+			getContentPane().add(panelLista);
+			panelLista.setLayout(null);
+			
+			// --------- CONSTRUCCIÓN TABLA PRODUCTOS PROVEEDOR-------------
+			JScrollPane scrollPanePProv = new JScrollPane();
+			scrollPanePProv.setBounds(0, 35, 280, 291);
+			panelLista.add(scrollPanePProv);
 
-		//-------------------- CONSTRUCCIÓN PRODUCTOS  -------------------//
-		scrollPanelProdcuto = new JScrollPane();
-		scrollPanelProdcuto.setBounds(30, 30, 250, 400);
-		//panelListaProd.add(scrollPanelProdcuto);
-		getContentPane().add(scrollPanelProdcuto);
+			JLabel lblPedidos = new JLabel("Productos del pedido actuales");
+			lblPedidos.setFont(new Font("Dialog", Font.BOLD, 13));
+			lblPedidos.setBounds(32, 12, 213, 18);
+			panelLista.add(lblPedidos);
+			lblPedidos.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			tbProductosPedido = new JTable();
+			scrollPanePProv.setViewportView(tbProductosPedido);
+			tbProductosPedido.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tbProductosPedido.getSelectionModel().addListSelectionListener(
+					new ListSelectionListener() {
+						public void valueChanged(ListSelectionEvent arg0) {
 
-		tbProductos = new JTable();
-		scrollPanelProdcuto.setViewportView(tbProductos);
-		tbProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbProductos.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent arg0) {
-
-						if (getTbProductos().getSelectedRow() != -1) //hay alguna fila seleccionada
-						{
-							int proveedordelproducto = Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString());
-							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, null/*Producto*/);	
-							
-							System.out.println(Integer.parseInt(getTbProductos().getModel().getValueAt(getTbProductos().getSelectedRow(), 0).toString()));
+							if (tbProductosPedido.getSelectedRow() != -1)
+							{							
+								cambiarCantidad(pedido.getListaProductosPedido().get(tbProductosPedido.getSelectedRow()).getCantidad());							
+								
+							}
 						}
-					}
-				});
-		
-		//-------------------- CONSTRUCCIÓN PROVEEDORES  -------------------//
-		
-		scrollPanelProveedor = new JScrollPane();
-		scrollPanelProveedor.setBounds(300, 30, 250, 400);
-		getContentPane().add(scrollPanelProveedor);
+			});
+			// --------- CONSTRUCCIÓN TABLA TODOS LOS PRODUCTOS-------------
+			JScrollPane scrollPaneProd = new JScrollPane();
+			scrollPaneProd.setBounds(455, 35, 280, 291);
+			panelLista.add(scrollPaneProd);
 
-		tbProveedores = new JTable();
-		scrollPanelProveedor.setViewportView(tbProveedores);
-		tbProveedores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	
-	
-		//-------------------- CONSTRUCCIÓN PEDIDOS  -------------------//
-		
-		JLabel lblMiPedido = new JLabel("Mi Pedido");
-		lblMiPedido.setBounds(750, 10, 300, 50);
-		lblMiPedido.setFont(myFont);
-		getContentPane().add(lblMiPedido);
-		
-		scrollPanelPedido = new JScrollPane();
-		scrollPanelPedido.setBounds(690, 60, 300, 350);
-		getContentPane().add(scrollPanelPedido);
-
-		tbPedidoNuevo = new JTable();
-		scrollPanelPedido.setViewportView(tbPedidoNuevo);
-		tbPedidoNuevo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		
-		JLabel lblTotal = new JLabel("Total:");
-		lblTotal.setBounds(800, 400, 100, 50);
-		lblTotal.setFont(new Font("Courier",Font.BOLD,18));
-		getContentPane().add(lblTotal);
-		
-		JTextField txtTotal = new JTextField();
-		txtTotal.setBounds(870, 410, 120, 30);
-		txtTotal.setFont(new Font("Courier",Font.BOLD,18));
-		getContentPane().add(txtTotal);
-		
-		
-	}
-	
-	public void actualizar(Object object) {
-
-		List<TProducto> lista = new ArrayList<TProducto>();
-		
-		if (object == null)
-			rellenarTabla(lista);
-		else			
-			rellenarTabla((List<TProducto>) object);
-
-		setVisible(true);
-		repaint();
-
-	}
-	
-	
-	public void actualizarProveedor(Object object) {
-
-		List<TProveedor> lista = new ArrayList<TProveedor>();
-		
-		if (object == null)
-			rellenarTablaProveedor(lista);
-		else			
-			rellenarTablaProveedor((List<TProveedor>) object);
-
-		setVisible(true);
-		repaint();
-
-	}
-	
-	private void rellenarTablaProveedor(List<TProveedor> lista) {
-		tabla = new Tabla();
-
-		tabla.addColumn("ID");
-		tabla.addColumn("NIF");
-		tabla.addColumn("NOMBRE");
-		tabla.addColumn("TELEFONO");
-
-		for (int i = 0; i < lista.size(); i++) {
-
-			filaProv = new Vector();
-			TProveedor prov = lista.get(i);
-			filaProv.add(prov.getId_proveedor());
-			filaProv.add(prov.getNIF());
-			filaProv.add(prov.getNombre());
-			filaProv.add(prov.getTelefono());
-
-			tabla.addRow(filaProv);
-		}
-
-		tbProveedores.setModel(tabla);
-		
-	}
-	
-	private void rellenarTabla(List<TProducto> lista) {
-		tabla = new Tabla();
-
-		tabla.addColumn("ID");
-		tabla.addColumn("NOMBRE");
-		tabla.addColumn("STOCK");
-		tabla.addColumn("CADUCIDAD");
-		tabla.addColumn("RECOMENDACIONES");
-		tabla.addColumn("DISPONIBLE");
-
-		for (int i = 0; i < lista.size(); i++) {
-
-			filaProd = new Vector();
-			TProducto prod = lista.get(i);
-			filaProd.add(prod.getId_producto());
-			filaProd.add(prod.getNombre());
-			filaProd.add(prod.getStock());
+			JLabel lblProductos = new JLabel("Productos del Proveedor disponibles");
+			lblProductos.setFont(new Font("Dialog", Font.BOLD, 13));
+			lblProductos.setBounds(472, 12, 233, 18);
+			panelLista.add(lblProductos);
+			lblProductos.setHorizontalAlignment(SwingConstants.CENTER);
 			
-			if(prod instanceof TProductoPerecedero)
-			{
-				TProductoPerecedero p = (TProductoPerecedero) prod;
-				filaProd.add(p.getFechaCaducidad());
-				filaProd.add("---");
-			}
-			else if(prod instanceof TProductoNoPerecedero)
-			{
-				TProductoNoPerecedero np = (TProductoNoPerecedero) prod;
-				filaProd.add("---");
-				filaProd.add(np.getRecomendaciones());
-			}
-			filaProd.add(prod.isDisponible());
+			tbProductosProveedor = new JTable();
+			scrollPaneProd.setViewportView(tbProductosProveedor);
+			tbProductosProveedor.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			// ------- AÑADIR PRODUCTO ----------------------
+			JButton btnAnadirProducto = new JButton("A\u00F1adir Producto");
+			btnAnadirProducto.setBounds(292, 87, 151, 26);
+			panelLista.add(btnAnadirProducto);
+			
+			// ------- ELIMINAR PRODUCTO ----------------------
+			JButton btnEliminarProducto = new JButton("Eliminar Producto");
+			btnEliminarProducto.setBounds(292, 213, 151, 26);
+			panelLista.add(btnEliminarProducto);
+			
+			// ------- MODIFICAR CANTIDAD ----------------------
+			JButton btnModiCantidad = new JButton("Modificar Cantidad");
+			btnModiCantidad.setBounds(292, 159, 151, 26);
+			panelLista.add(btnModiCantidad);
+			
+			textFieldCantidad = new JTextField();
+			textFieldCantidad.setBounds(312, 127, 118, 20);
+			panelLista.add(textFieldCantidad);
+			textFieldCantidad.setEditable(true);
+			textFieldCantidad.setColumns(10);
+			
+			JLabel lblPrecioActual = new JLabel("Importe del Pedido Actual:");
+			lblPrecioActual.setBounds(295, 261, 148, 16);
+			panelLista.add(lblPrecioActual);
+			
+			txtPrecioTotal = new JLabel("0");
+			txtPrecioTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+			txtPrecioTotal.setBounds(267, 289, 110, 16);
+			panelLista.add(txtPrecioTotal);
+			
+			JLabel label_1 = new JLabel("\u20AC");
+			label_1.setBounds(381, 289, 32, 16);
+			panelLista.add(label_1);
+			
+			JButton btnAlmacenarPedido = new JButton("Almacenar Pedido");
+			btnAlmacenarPedido.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, pedido);
+					setVisible(false);
+					
+				}
+			});
+			btnAlmacenarPedido.setBounds(290, 32, 155, 23);
+			panelLista.add(btnAlmacenarPedido);
+			btnModiCantidad.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
 
-			tabla.addRow(filaProd);
+					pedido.getListaProductosPedido().get((tbProductosPedido.getSelectedRow())).setCantidad(obtenerCantidad());;
+					
+					actualizarTablas();
+					
+				}
+
+			});
+			btnEliminarProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+									
+					pedido.getListaProductosPedido().remove(tbProductosPedido.getSelectedRow());
+					
+					actualizarTablas();
+					
+				}
+			});
+			btnAnadirProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					boolean yaEstaProducto = false;
+					
+					Producto producto = pedido.getProveedor().getListaProductosProveedor().get(tbProductosProveedor.getSelectedRow()).getProducto();
+							
+					for ( ProductoDePedido productoPedido: pedido.getListaProductosPedido()){
+						
+						if (productoPedido.getProducto().getId_producto() == producto.getId_producto())
+							yaEstaProducto = true;						
+						
+					}
+					
+					if (!yaEstaProducto)
+						pedido.getListaProductosPedido().add(new ProductoDePedido(producto, pedido, obtenerCantidad()));
+					
+					actualizarTablas();					
+					
+				}
+
+			});
+			
+			JLabel lblIdProveedor = new JLabel("ID Proveedor:");
+			lblIdProveedor.setBounds(315, 21, 76, 16);
+			getContentPane().add(lblIdProveedor);
+			
+			txtIDProveedor = new JLabel("");
+			txtIDProveedor.setBounds(401, 21, 55, 16);
+			getContentPane().add(txtIDProveedor);
+			tbProductosProveedor.getSelectionModel().addListSelectionListener(
+					new ListSelectionListener() {
+						public void valueChanged(ListSelectionEvent arg0) {
+
+							if (getTbProveedores().getSelectedRow() != -1)
+							{
+								
+								
+							}
+						}
+					});
+
+		}
+		
+		// Metodos
+		
+		private ProductoDePedido obtenerProductoProveedor() {
+					
+			return new ProductoDePedido(new Producto(getTbProductosProveedor().getSelectedRow() + 1, false, -1, "", null),this.pedido,obtenerCantidad());
+			
+		}
+		
+		private ProductoDePedido obtenerProductoPedido() {
+							
+			return new ProductoDePedido(new Producto(this.pedido.getListaProductosPedido().get(tbProductosPedido.getSelectedRow()).getProducto().getId_producto(), false, -1, "", null),this.pedido,obtenerCantidad());
+			
 		}
 
-		tbProductos.setModel(tabla);
+		public int obtenerCantidad(){
+			
+			int cantidad = -1;
+			
+			ComprobadorDouble comprobadorDouble = new ComprobadorDouble();
+			
+			if (comprobadorDouble.isNumeric(textFieldCantidad.getText()))
+				cantidad = Integer.parseInt(this.textFieldCantidad.getText());		
+			
+			return cantidad;
+			
+		}
 		
+		public void rellenarTablaProductosPedido() {
+			
+			if (pedido.getListaProductosPedido() != null){
+			
+				tabla = new Tabla();
+				
+				tabla.addColumn("ID");
+				tabla.addColumn("NOMBRE");
+				tabla.addColumn("CANTIDAD");
+			
+				for (ProductoDePedido productoPedido: pedido.getListaProductosPedido()){
+					
+					fila = new Vector();
+					fila.add(productoPedido.getProducto().getId_producto());
+					fila.add(productoPedido.getProducto().getNombre());
+					fila.add(productoPedido.getCantidad());
+					
+					tabla.addRow(fila);
+					
+				}		
+								
+				tbProductosPedido.setModel(tabla);				
+
+				calcularTotal();
+			
+			}
+			
+		}
+		
+		public void rellenarTablaProductosProveedor() {
+				
+			if (pedido.getProveedor().getListaProductosProveedor() != null){
+				
+				tabla = new Tabla();
+				
+				tabla.addColumn("ID");
+				tabla.addColumn("NOMBRE");
+				tabla.addColumn("PRECIO");
+				
+				for (ProductoDeProveedor productoDeProveedor: pedido.getProveedor().getListaProductosProveedor()){
+					
+					fila = new Vector();
+					fila.add(productoDeProveedor.getProducto().getId_producto());
+					fila.add(productoDeProveedor.getProducto().getNombre());	
+					fila.add(productoDeProveedor.getPrecio());	
+					
+					tabla.addRow(fila);
+					
+				}
+			
+				tbProductosProveedor.setModel(tabla);
+			
+			}
+		
+		}
+		
+		public void cambiarCantidad(int cantidad) {
+			
+			textFieldCantidad.setText(Integer.toString(cantidad));
+			
+		}	
+		
+		public void calcularTotal(){
+			
+			double precioTotal = 0;
+			
+			int contadorPedido = 0;
+			int contadorProveedor = 0;
+			
+			while ( contadorPedido < pedido.getListaProductosPedido().size() ){
+				
+				contadorProveedor = 0;
+				
+				while ( contadorProveedor < pedido.getProveedor().getListaProductosProveedor().size() && contadorPedido < pedido.getListaProductosPedido().size() ){
+				
+					if ( pedido.getListaProductosPedido().get(contadorPedido).getProducto().getId_producto() == pedido.getProveedor().getListaProductosProveedor().get(contadorProveedor).getProducto().getId_producto() ){
+						precioTotal = precioTotal + (pedido.getProveedor().getListaProductosProveedor().get(contadorProveedor).getPrecio()*pedido.getListaProductosPedido().get(contadorPedido).getCantidad());
+						contadorPedido++;
+					} else {
+						contadorProveedor++;				
+					}		
+				
+				}
+				
+			}
+					
+			txtPrecioTotal.setText(Double.toString(precioTotal));
+			
+			pedido.setPrecio(precioTotal);
+			
+		}
+
+		public void actualizar(Object objeto) {
+			
+			pedido = new Pedido();
+			
+			pedido.setProveedor(new Proveedor());	
+			
+			List<ProductoDePedido> lista = new ArrayList<ProductoDePedido>();
+			
+			pedido.setListaProductosPedido(lista);
+			
+			pedido.getProveedor().setId_proveedor(  ((TProveedor)objeto).getId_proveedor()       );
+			
+			pedido.getProveedor().setListaProductosProveedor( ((TProveedor)objeto).getListaProductosProveedor());
+			
+			txtIDProveedor.setText(Integer.toString(pedido.getProveedor().getId_proveedor()));
+					
+			actualizarTablas();
+			
+			
+		}
+
+		private void actualizarTablas() {
+			
+			rellenarTablaProductosProveedor();
+			
+			rellenarTablaProductosPedido();		
+						
+			//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO, null );
+			
+			setVisible(true);			
+			
+		}
 	}
-	
-	/*public TProveedor obtenerProveedorProducto(TProducto tprod) {
-
-		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
-		
-		tProductoDeProveedor.setProveedor(Integer.parseInt(textFieldID_Proveedor.getText()));
-
-		tProductoDeProveedor.setProducto(Integer.parseInt(tbProductosTotales.getValueAt(tbProductosTotales.getSelectedRow(), 0).toString()));
-		
-		if (textFieldPrecio.getText().length() > 0)
-			tProductoDeProveedor.setPrecio(Integer.parseInt(textFieldPrecio.getText()));
-		else
-			tProductoDeProveedor.setPrecio(0);
-		
-		return tProductoDeProveedor;
-	}*/
-
-	
-	
-	
-}

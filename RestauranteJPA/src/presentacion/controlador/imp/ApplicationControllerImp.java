@@ -22,8 +22,7 @@ public class ApplicationControllerImp extends ApplicationController {
 
 		FactoriaCMD factoriaComandos = FactoriaCMD.obtenerInstancia();
 
-		CMD comando = factoriaComandos.generaComando(nombreComando);
-	
+		CMD comando = factoriaComandos.generaComando(nombreComando);	
 		
 		Dispatcher.obtenerInstancia().despachaRespuesta(comando.ejecuta(objeto));
 

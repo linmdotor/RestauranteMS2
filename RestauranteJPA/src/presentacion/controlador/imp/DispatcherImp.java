@@ -101,24 +101,28 @@ public class DispatcherImp extends Dispatcher {
 			// PEDIDO
 				
 			case INICIAR_VISTA_PEDIDO:
-				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizarVentana();
 				break;	
+				
+			case OBTENER_PEDIDOS_PROVEEDOR:
+				VentanaGestionPedidos.obtenerInstancia().actualizarProveedores(respuestaCMD.getObjeto());
+				break; 
+				
+			case OBTENER_PEDIDOS:
+				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
+				break;
 				
 			case INICIAR_VISTA_ALTA_PEDIDO:
 				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
 				
-			case OBTENER_PROVEEDOR_PRODUCTO:
-				VentanaAltaPedido.obtenerInstancia().actualizarProveedor(respuestaCMD.getObjeto());
-				break; 
-				
-			case MODIFICAR_FORMULARIO_PEDIDO:
-				VentanaGestionPedidos.obtenerInstancia().modificarFormulario(respuestaCMD.getObjeto());
-				break;
-				
+			case ALMACENAR_PEDIDO:
+				VentanaGestionPedidos.obtenerInstancia().actualizarVentana();
+			break;
+			
 			case RELLENAR_TB_PRODUCTOS_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
-				break;
+			break;
 				
 			// GENERICOS
 			

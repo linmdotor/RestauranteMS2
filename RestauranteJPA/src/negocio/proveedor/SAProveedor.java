@@ -2,6 +2,8 @@ package negocio.proveedor;
 
 import java.util.List;
 
+import negocio.producto.businessobject.Producto;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.transfer.TProveedor;
 import presentacion.controlador.RespuestaCMD;
 
@@ -16,5 +18,7 @@ public interface SAProveedor {
 	public boolean modificarProveedor(TProveedor tproveedor) throws Exception;
 
 	public boolean bajaProveedor(int ID)throws Exception;
+
+	public List<ProductoDeProveedor> obtenerProductosProveedor(int id_proveedor);
 	
 }

@@ -54,10 +54,10 @@ public class Producto implements Serializable {
     private TipoProducto tipoProducto;
     
 	// Relaciones JPA
-    @OneToMany(mappedBy="producto")
+    @OneToMany(mappedBy="producto", cascade = CascadeType.PERSIST)
     private List<ProductoDeProveedor> listaProductosProveedor;
     
-    @OneToMany(mappedBy="producto")
+    @OneToMany(mappedBy="producto", cascade = CascadeType.PERSIST)
     private List<ProductoDePedido> listaProductosPedido;
 
 	

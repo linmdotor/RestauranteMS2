@@ -1,6 +1,9 @@
 package negocio.pedido.transfer;
 
+import java.util.List;
+
 import negocio.pedido.businessobject.Pedido;
+import negocio.productosdepedido.businessobject.ProductoDePedido;
 
 
 
@@ -12,6 +15,8 @@ public class TPedido {
 	protected String fecha_realizado;
 	protected String fecha_entregado;
 	protected String fecha_cancelado;
+	protected double precio;
+	private List<ProductoDePedido> listaProductosPedido;
 
 	public TPedido(){
 		
@@ -20,11 +25,10 @@ public class TPedido {
 	public TPedido(Pedido pedido) {
 		this.id_pedido = pedido.getId_pedido();
 		this.id_proveedor = pedido.getProveedor().getId_proveedor();
-		this.fecha_cancelado = pedido.getFechaCancelado();
-		this.fecha_entregado = pedido.getFechaEntregado();
-		this.fecha_realizado = pedido.getFechaRealizado();
+		this.listaProductosPedido = pedido.getListaProductosPedido();
+		this.precio = pedido.getPrecio();
 	}
-	
+
 	public int getId_pedido() {
 		return id_pedido;
 	}
@@ -35,6 +39,14 @@ public class TPedido {
 	
 	public int getId_proveedor() {
 		return id_proveedor;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
 	}
 
 	public void setId_proveedor(int id_proveedor) {
@@ -64,5 +76,14 @@ public class TPedido {
 	public void setFechaCancelado(String fecha_cancelado){
 		this.fecha_cancelado=fecha_cancelado;
 	}
+
+	public List<ProductoDePedido> getListaProductosPedido() {
+		return listaProductosPedido;
+	}
+
+	public void setListaProductosPedido(List<ProductoDePedido> listaProductosPedido) {
+		this.listaProductosPedido = listaProductosPedido;
+	}
+
 	
 }

@@ -1,5 +1,8 @@
 package negocio.proveedor.transfer;
 
+import java.util.List;
+
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 
 public class TProveedor  {
@@ -9,6 +12,7 @@ public class TProveedor  {
 	protected String NIF;
 	protected String telefono;
 	public boolean disponible;
+	private List<ProductoDeProveedor> listaProductosProveedor;
 	
 	// Constructores
    	
@@ -33,6 +37,7 @@ public class TProveedor  {
 		this.NIF = proveedor.getNIF();
 		this.nombre = proveedor.getNombre();
 		this.telefono = proveedor.getTelefono();
+		this.setListaProductosProveedor(proveedor.getListaProductosProveedor());
 		
 	}
 
@@ -76,6 +81,14 @@ public class TProveedor  {
 
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
+	}
+
+	public List<ProductoDeProveedor> getListaProductosProveedor() {
+		return listaProductosProveedor;
+	}
+
+	public void setListaProductosProveedor(List<ProductoDeProveedor> listaProductosProveedor) {
+		this.listaProductosProveedor = listaProductosProveedor;
 	}
 	
 }

@@ -16,10 +16,13 @@ import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.FactoriaCMD;
 import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
+import presentacion.controlador.comando.pedido.CMDAlmacenarPedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaAltaPedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaPedido;
 import presentacion.controlador.comando.pedido.CMDModificarFormularioPedido;
+import presentacion.controlador.comando.pedido.CMDObtenerPedidos;
 import presentacion.controlador.comando.pedido.CMDObtenerProveedorProducto;
+import presentacion.controlador.comando.pedido.CMDObtenerProveedoresPedidos;
 import presentacion.controlador.comando.pedido.CMDRellenarTBProductosPedido;
 import presentacion.controlador.comando.producto.CMDAltaProducto;
 import presentacion.controlador.comando.producto.CMDBajaProducto;
@@ -86,6 +89,11 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, new CMDModificarFormularioPedido());
 		map_cmd.put(EnumComandos.RELLENAR_TB_PRODUCTOS_PEDIDO, new CMDRellenarTBProductosPedido());
 		map_cmd.put(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, new CMDObtenerProveedorProducto());
+		map_cmd.put(EnumComandos.OBTENER_PEDIDOS, new CMDObtenerPedidos());
+		map_cmd.put(EnumComandos.OBTENER_PEDIDOS_PROVEEDOR, new CMDObtenerProveedoresPedidos());
+		map_cmd.put(EnumComandos.ALMACENAR_PEDIDO, new CMDAlmacenarPedido());
+		map_cmd.put(EnumComandos.AÑADIR_PRODUCTO_PEDIDO, new CMDAlmacenarPedido());
+		
 	
 	}
 

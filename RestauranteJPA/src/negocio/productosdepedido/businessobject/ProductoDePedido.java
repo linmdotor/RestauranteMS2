@@ -4,6 +4,7 @@ package negocio.productosdepedido.businessobject;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedidoProducto;
 import negocio.producto.businessobject.Producto;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.productosdeproveedor.businessobject.ProductoDeProveedorId;
 
 import javax.persistence.*;
@@ -32,7 +33,6 @@ public class ProductoDePedido {
     private int version;
 	
 	private int cantidad;
-	private float precio;
 	 
 	 public ProductoDePedido ()
 	 {
@@ -43,7 +43,6 @@ public class ProductoDePedido {
 	 {
 		 this.cantidad = cantidad;
 		 this.pedido = pedido;
-		 this.precio = precio;
 		 this.producto = producto;
 	 }
 	 
@@ -53,10 +52,17 @@ public class ProductoDePedido {
 		 
 		 this.producto = tProductosPedido.getProducto();
 		 this.pedido = tProductosPedido.getPedido();
-		 this.precio = tProductosPedido.getPrecio();
 		 this.cantidad = tProductosPedido.getCantidad();
 	 }
 	 
+		public ProductoDePedido(Producto producto, Pedido pedido, int cantidad) {
+			
+			this.pedido = pedido;
+			this.producto = producto;
+			this.cantidad = cantidad;
+			
+		}
+
 	// Mutadores y Accedentes
 	 public Producto getProducto() {		
 		 return producto;	
@@ -73,14 +79,6 @@ public class ProductoDePedido {
 	 public void setPedido(Pedido pedido) {
 		 this.pedido = pedido;
 	 }  
-	
-	 public float getPrecio() {
-		 return precio;
-	 }
-	 
-	 public void setPrecio(float precio) {
-		this.precio = precio;
-	 }
 	 
 	 public int getCantidad() {
 		 return cantidad;

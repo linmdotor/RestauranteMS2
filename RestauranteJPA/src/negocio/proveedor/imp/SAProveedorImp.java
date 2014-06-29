@@ -12,6 +12,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import negocio.producto.businessobject.Producto;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.SAProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.transfer.TProveedor;
@@ -298,6 +299,16 @@ public class SAProveedorImp implements SAProveedor {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public List<ProductoDeProveedor> obtenerProductosProveedor(int id_proveedor) {
+		
+		
+		
+		return null;
+		
+		
 	}
 	
 }

@@ -27,7 +27,6 @@ public TProductoDePedido(ProductoDePedido producto_pedido) {
 		
 		this.producto= producto_pedido.getProducto().getId_producto();
 		this.pedido = producto_pedido.getPedido().getId_pedido();
-		this.precio = producto_pedido.getPrecio();
 		
 	}
 		
