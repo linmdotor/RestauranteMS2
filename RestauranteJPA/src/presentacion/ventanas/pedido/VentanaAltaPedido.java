@@ -19,9 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.eclipse.persistence.jpa.jpql.parser.NewValueBNF;
-
-import negocio.ComprobadorDouble;
+import negocio.ComprobadorEnteros;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
 import negocio.producto.businessobject.Producto;
@@ -286,9 +284,9 @@ public class VentanaAltaPedido extends JFrame {
 			
 			int cantidad = -1;
 			
-			ComprobadorDouble comprobadorDouble = new ComprobadorDouble();
+			ComprobadorEnteros comprobadorEntero = new ComprobadorEnteros();
 			
-			if (comprobadorDouble.isNumeric(textFieldCantidad.getText()))
+			if (comprobadorEntero.isNumeric(textFieldCantidad.getText()))
 				cantidad = Integer.parseInt(this.textFieldCantidad.getText());		
 			
 			return cantidad;
