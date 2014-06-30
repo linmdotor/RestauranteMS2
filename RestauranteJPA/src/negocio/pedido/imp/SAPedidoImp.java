@@ -90,7 +90,7 @@ public class SAPedidoImp implements SAPedido {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Pedido> obtenerPedidos() {
+	public List<TPedido> obtenerPedidos() {
 
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
@@ -100,7 +100,7 @@ public class SAPedidoImp implements SAPedido {
 		TypedQuery query = em.createQuery("SELECT e FROM Pedido e",
 				Pedido.class);
 
-		List<Pedido> listaPedido = query.getResultList();
+		List<TPedido> listaPedido = query.getResultList();
 
 		em.close();
 		emf.close();
@@ -124,7 +124,7 @@ public class SAPedidoImp implements SAPedido {
 				em.getTransaction().begin();
 
 				// sacamos el pedido con id mayor
-				List<Pedido> lista_pedidos = obtenerPedidos();
+				List<TPedido> lista_pedidos = obtenerPedidos();
 
 				int ultimo_id_usado = -1;
 				if (lista_pedidos != null)

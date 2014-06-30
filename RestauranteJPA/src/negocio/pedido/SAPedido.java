@@ -8,7 +8,7 @@ import negocio.pedido.transfer.TPedidoProducto;
 public interface SAPedido {
 	public TPedido obtenerPedido(int ID) throws Exception;
 	
-	public List<Pedido> obtenerPedidos() throws Exception;
+	public List<TPedido> obtenerPedidos() throws Exception;
 	
 	public boolean altaPedido(int IDprov) throws Exception;
 		
