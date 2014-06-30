@@ -376,7 +376,7 @@ public class SAPedidoImp implements SAPedido {
 				em.getTransaction().begin();
 				
 				TypedQuery<Pedido> queryPedido = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
-				System.out.println(listaPedido.size());
+				//System.out.println(listaPedido.size());
 				queryPedido.setParameter("arg", listaPedido.size());
 				
 				Pedido pedidoObtenido = queryPedido.getSingleResult();

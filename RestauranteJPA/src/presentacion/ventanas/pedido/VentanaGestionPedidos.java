@@ -497,7 +497,7 @@ public class VentanaGestionPedidos extends JFrame{
 
 		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
 		
-		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PROVEEDORES_ACTIVOS, null);
+		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PROVEEDORES_DISPONIBLES, null);
 
 		setVisible(true);
 		repaint();
@@ -638,7 +638,6 @@ public class VentanaGestionPedidos extends JFrame{
 	}
 
 	private int obtenerProveedor() {
-		System.out.println(boxProveedores.getSelectedItem());
 		return ((int)boxProveedores.getSelectedItem());			
 	}
 	

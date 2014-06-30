@@ -87,6 +87,29 @@ public class SAProveedorImp implements SAProveedor {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<TProveedor> obtenerProveedoresDisponibles() throws Exception{		
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+		
+		@SuppressWarnings("rawtypes")
+		TypedQuery query = em.createQuery("SELECT e FROM Proveedor e WHERE e.disponible = 1", Proveedor.class);
+		
+		List<Proveedor> listaProveedores = query.getResultList();
+		
+		em.close();
+		emf.close();
+
+		List<TProveedor> listaTprov = new ArrayList<TProveedor>();
+		for(Proveedor prov : listaProveedores)
+		{
+			listaTprov.add(new TProveedor(prov));
+		}
+		
+		return listaTprov;
+		
+	}
 	
 	public boolean altaProveedor(TProveedor tproveedor) throws Exception{		
 			
@@ -299,16 +322,6 @@ public class SAProveedorImp implements SAProveedor {
 		}
 		
 		return true;
-	}
-
-	@Override
-	public List<ProductoDeProveedor> obtenerProductosProveedor(int id_proveedor) {
-		
-		
-		
-		return null;
-		
-		
 	}
 	
 }

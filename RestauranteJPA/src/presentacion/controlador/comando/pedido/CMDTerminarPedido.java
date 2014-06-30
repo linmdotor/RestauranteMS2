@@ -9,7 +9,7 @@ import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
-public class CMDAlmacenarPedido implements CMD{
+public class CMDTerminarPedido implements CMD{
 
 	@Override
 	public RespuestaCMD ejecuta(Object objeto) {
@@ -20,7 +20,7 @@ public class CMDAlmacenarPedido implements CMD{
 
 		try {
 			if(serviciosPedido.almacenarPedido(tPedido)){
-				respuestaComando = new RespuestaCMD(EnumComandos.ALMACENAR_PEDIDO,"Se ha almacenado el nuevo Pedido");
+				respuestaComando = new RespuestaCMD(EnumComandos.TERMINAR_PEDIDO,"Se ha almacenado el nuevo Pedido");
 			}else
 				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al almacenar nuevo pedido. Error al insertar los datos.");	
 		

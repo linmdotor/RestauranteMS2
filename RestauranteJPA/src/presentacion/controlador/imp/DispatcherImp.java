@@ -104,7 +104,7 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionPedidos.obtenerInstancia().actualizar();
 				break;	
 				
-			case OBTENER_PROVEEDORES_ACTIVOS:
+			case OBTENER_PROVEEDORES_DISPONIBLES:
 				VentanaGestionPedidos.obtenerInstancia().actualizarListaProveedores(respuestaCMD.getObjeto());
 				break; 
 				
@@ -122,7 +122,23 @@ public class DispatcherImp extends Dispatcher {
 				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
 				
-			case ALMACENAR_PEDIDO:
+			case OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO:
+				VentanaAltaPedido.obtenerInstancia().rellenarTablaProductosProveedor(respuestaCMD.getObjeto());
+				break;
+				
+			case ANADIR_PRODUCTO_A_PEDIDO:
+				VentanaAltaPedido.anadirProducto(respuestaCMD.getObjeto());
+				break;
+				
+			case QUITAR_PRODUCTO_DE_PEDIDO: 
+				VentanaAltaPedido.quitarProducto(respuestaCMD.getObjeto());
+				break;
+			
+			case MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO: 
+				VentanaAltaPedido.modificarCantidadProducto(respuestaCMD.getObjeto());
+				break;
+				
+			case TERMINAR_PEDIDO:
 				new VentanaCorrecto((String) respuestaCMD.getObjeto());
 				VentanaGestionPedidos.obtenerInstancia().actualizar();			
 				break;

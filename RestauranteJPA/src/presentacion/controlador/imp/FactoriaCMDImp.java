@@ -16,13 +16,17 @@ import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.FactoriaCMD;
 import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
-import presentacion.controlador.comando.pedido.CMDAlmacenarPedido;
+import presentacion.controlador.comando.pedido.CMDTerminarPedido;
+import presentacion.controlador.comando.pedido.CMDAnadirProductoAPedido;
+import presentacion.controlador.comando.pedido.CMDModificarCantidadProductoDePedido;
+import presentacion.controlador.comando.pedido.CMDQuitarProductoDePedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaAltaPedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaPedido;
 import presentacion.controlador.comando.pedido.CMDModificarFormularioPedido;
 import presentacion.controlador.comando.pedido.CMDObtenerPedidos;
+import presentacion.controlador.comando.pedido.CMDObtenerProductosProveedorPedido;
 import presentacion.controlador.comando.pedido.CMDObtenerProveedorProducto;
-import presentacion.controlador.comando.pedido.CMDObtenerProveedoresID;
+import presentacion.controlador.comando.pedido.CMDObtenerProveedoresDisponibles;
 import presentacion.controlador.comando.pedido.CMDObtenerProductosPedido;
 import presentacion.controlador.comando.producto.CMDAltaProducto;
 import presentacion.controlador.comando.producto.CMDBajaProducto;
@@ -88,11 +92,15 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, new CMDIniciarVistaAltaPedido());
 		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, new CMDModificarFormularioPedido());
 		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PEDIDO, new CMDObtenerProductosPedido());
+		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO, new CMDObtenerProductosProveedorPedido());
 		map_cmd.put(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, new CMDObtenerProveedorProducto());
 		map_cmd.put(EnumComandos.OBTENER_PEDIDOS, new CMDObtenerPedidos());
-		map_cmd.put(EnumComandos.OBTENER_PROVEEDORES_ACTIVOS, new CMDObtenerProveedoresID());
-		map_cmd.put(EnumComandos.ALMACENAR_PEDIDO, new CMDAlmacenarPedido());
-		map_cmd.put(EnumComandos.AÑADIR_PRODUCTO_PEDIDO, new CMDAlmacenarPedido());
+		map_cmd.put(EnumComandos.OBTENER_PROVEEDORES_DISPONIBLES, new CMDObtenerProveedoresDisponibles());
+		map_cmd.put(EnumComandos.ANADIR_PRODUCTO_A_PEDIDO, new CMDAnadirProductoAPedido());
+		map_cmd.put(EnumComandos.QUITAR_PRODUCTO_DE_PEDIDO, new CMDQuitarProductoDePedido());
+		map_cmd.put(EnumComandos.MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO, new CMDModificarCantidadProductoDePedido());
+		map_cmd.put(EnumComandos.TERMINAR_PEDIDO, new CMDTerminarPedido());
+		map_cmd.put(EnumComandos.AÑADIR_PRODUCTO_PEDIDO, new CMDTerminarPedido());
 		
 	
 	}
