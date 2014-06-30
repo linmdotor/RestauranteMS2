@@ -24,7 +24,7 @@ public class TProductoDeProveedor {
 		
 	}
 	
-public TProductoDeProveedor(ProductoDeProveedor producto_proveedor) {
+	public TProductoDeProveedor(ProductoDeProveedor producto_proveedor) {
 		
 		this.producto= producto_proveedor.getProducto().getId_producto();
 		this.proveedor = producto_proveedor.getProveedor().getId_proveedor();

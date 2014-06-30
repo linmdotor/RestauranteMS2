@@ -12,7 +12,7 @@ public class TProveedor  {
 	protected String NIF;
 	protected String telefono;
 	public boolean disponible;
-	private List<ProductoDeProveedor> listaProductosProveedor;
+	//private List<ProductoDeProveedor> listaProductosProveedor;
 	
 	// Constructores
    	
@@ -37,7 +37,7 @@ public class TProveedor  {
 		this.NIF = proveedor.getNIF();
 		this.nombre = proveedor.getNombre();
 		this.telefono = proveedor.getTelefono();
-		this.setListaProductosProveedor(proveedor.getListaProductosProveedor());
+		//this.setListaProductosProveedor(proveedor.getListaProductosProveedor());
 		
 	}
 
@@ -83,12 +83,12 @@ public class TProveedor  {
 		this.disponible = disponible;
 	}
 
-	public List<ProductoDeProveedor> getListaProductosProveedor() {
+	/*public List<ProductoDeProveedor> getListaProductosProveedor() {
 		return listaProductosProveedor;
 	}
 
 	public void setListaProductosProveedor(List<ProductoDeProveedor> listaProductosProveedor) {
 		this.listaProductosProveedor = listaProductosProveedor;
-	}
+	}*/
 	
 }

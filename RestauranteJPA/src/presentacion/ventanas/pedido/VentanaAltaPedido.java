@@ -24,6 +24,7 @@ import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
 import negocio.producto.businessobject.Producto;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
+import negocio.productosdepedido.transfer.TProductoDePedido;
 import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.transfer.TProveedor;
@@ -162,66 +163,6 @@ public class VentanaAltaPedido extends JFrame {
 			JButton btnAnadirProducto = new JButton("A\u00F1adir Producto");
 			btnAnadirProducto.setBounds(292, 87, 151, 26);
 			panelLista.add(btnAnadirProducto);
-			
-			// ------- ELIMINAR PRODUCTO ----------------------
-			JButton btnEliminarProducto = new JButton("Eliminar Producto");
-			btnEliminarProducto.setBounds(292, 213, 151, 26);
-			panelLista.add(btnEliminarProducto);
-			
-			// ------- MODIFICAR CANTIDAD ----------------------
-			JButton btnModiCantidad = new JButton("Modificar Cantidad");
-			btnModiCantidad.setBounds(292, 159, 151, 26);
-			panelLista.add(btnModiCantidad);
-			
-			textFieldCantidad = new JTextField();
-			textFieldCantidad.setBounds(312, 127, 118, 20);
-			panelLista.add(textFieldCantidad);
-			textFieldCantidad.setEditable(true);
-			textFieldCantidad.setColumns(10);
-			
-			JLabel lblPrecioActual = new JLabel("Importe del Pedido Actual:");
-			lblPrecioActual.setBounds(295, 261, 148, 16);
-			panelLista.add(lblPrecioActual);
-			
-			txtPrecioTotal = new JLabel("0");
-			txtPrecioTotal.setHorizontalAlignment(SwingConstants.TRAILING);
-			txtPrecioTotal.setBounds(267, 289, 110, 16);
-			panelLista.add(txtPrecioTotal);
-			
-			JLabel label_1 = new JLabel("\u20AC");
-			label_1.setBounds(381, 289, 32, 16);
-			panelLista.add(label_1);
-			
-			JButton btnAlmacenarPedido = new JButton("Almacenar Pedido");
-			btnAlmacenarPedido.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, pedido);
-					setVisible(false);
-					
-				}
-			});
-			btnAlmacenarPedido.setBounds(290, 32, 155, 23);
-			panelLista.add(btnAlmacenarPedido);
-			btnModiCantidad.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-
-					pedido.getListaProductosPedido().get((tbProductosPedido.getSelectedRow())).setCantidad(obtenerCantidad());;
-					
-					actualizarTablas();
-					
-				}
-
-			});
-			btnEliminarProducto.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-									
-					pedido.getListaProductosPedido().remove(tbProductosPedido.getSelectedRow());
-					
-					actualizarTablas();
-					
-				}
-			});
 			btnAnadirProducto.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
@@ -237,7 +178,7 @@ public class VentanaAltaPedido extends JFrame {
 					}
 					
 					if (!yaEstaProducto)
-						pedido.getListaProductosPedido().add(new ProductoDePedido(producto, pedido, obtenerCantidad()));
+						//pedido.getListaProductosPedido().add(new ProductoDePedido(producto, pedido, obtenerCantidad()));
 					
 					actualizarTablas();					
 					
@@ -245,14 +186,79 @@ public class VentanaAltaPedido extends JFrame {
 
 			});
 			
-			JLabel lblIdProveedor = new JLabel("ID Proveedor:");
-			lblIdProveedor.setBounds(315, 21, 76, 16);
-			getContentPane().add(lblIdProveedor);
+			// ------- ELIMINAR PRODUCTO ----------------------
+			JButton btnEliminarProducto = new JButton("Eliminar Producto");
+			btnEliminarProducto.setBounds(292, 213, 151, 26);
+			panelLista.add(btnEliminarProducto);
+			btnEliminarProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+									
+					pedido.getListaProductosPedido().remove(tbProductosPedido.getSelectedRow());
+					
+					actualizarTablas();
+					
+				}
+			});
+			
+			// ------- MODIFICAR CANTIDAD ----------------------
+			JButton btnModiCantidad = new JButton("Modificar Cantidad");
+			btnModiCantidad.setBounds(292, 159, 151, 26);
+			panelLista.add(btnModiCantidad);
+			btnModiCantidad.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+
+					pedido.getListaProductosPedido().get((tbProductosPedido.getSelectedRow())).setCantidad(obtenerCantidad());;
+					
+					actualizarTablas();
+					
+				}
+
+			});			
+			
+			// -------- CANTIDAD ----------------------------
+			textFieldCantidad = new JTextField();
+			textFieldCantidad.setBounds(312, 127, 118, 20);
+			panelLista.add(textFieldCantidad);
+			textFieldCantidad.setEditable(true);
+			textFieldCantidad.setColumns(10);
+			
+			// ---------- PRECIO TOTAL ----------------------
+			JLabel lblPrecioTotal = new JLabel("Importe del Pedido Actual:");
+			lblPrecioTotal.setBounds(295, 261, 148, 16);
+			panelLista.add(lblPrecioTotal);
+			
+			txtPrecioTotal = new JLabel("0");
+			txtPrecioTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+			txtPrecioTotal.setBounds(267, 289, 110, 16);
+			panelLista.add(txtPrecioTotal);
+			
+			// ------ ¿? -----------
+			
+			JLabel label_1 = new JLabel("\u20AC");
+			label_1.setBounds(381, 289, 32, 16);
+			panelLista.add(label_1);
+			
+			// ----- ALMACENAR PEDIDO -------------
+			JButton btnAlmacenarPedido = new JButton("Almacenar Pedido");
+			btnAlmacenarPedido.setBounds(290, 32, 155, 23);
+			panelLista.add(btnAlmacenarPedido);
+			btnAlmacenarPedido.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, pedido);
+					cerrar();				
+				}
+			});
+			
+			// ------- ID PROVEEDOR ----------------
+			JLabel lblIDProveedor = new JLabel("ID Proveedor:");
+			lblIDProveedor.setBounds(315, 21, 76, 16);
+			getContentPane().add(lblIDProveedor);
 			
 			txtIDProveedor = new JLabel("");
 			txtIDProveedor.setBounds(401, 21, 55, 16);
 			getContentPane().add(txtIDProveedor);
-			tbProductosProveedor.getSelectionModel().addListSelectionListener(
+			/*tbProductosProveedor.getSelectionModel().addListSelectionListener(
 					new ListSelectionListener() {
 						public void valueChanged(ListSelectionEvent arg0) {
 
@@ -262,22 +268,22 @@ public class VentanaAltaPedido extends JFrame {
 								
 							}
 						}
-					});
+					});*/
 
 		}
 		
 		// Metodos
 		
-		private ProductoDePedido obtenerProductoProveedor() {
+		private TProductoDePedido obtenerProductoProveedor() {
 					
-			return new ProductoDePedido(new Producto(getTbProductosProveedor().getSelectedRow() + 1, false, -1, "", null),this.pedido,obtenerCantidad());
-			
+			//return new ProductoDePedido(new Producto(getTbProductosProveedor().getSelectedRow() + 1, false, -1, "", null),this.pedido,obtenerCantidad());
+			return new TProductoDePedido();
 		}
 		
-		private ProductoDePedido obtenerProductoPedido() {
+		private TProductoDePedido obtenerProductoPedido() {
 							
-			return new ProductoDePedido(new Producto(this.pedido.getListaProductosPedido().get(tbProductosPedido.getSelectedRow()).getProducto().getId_producto(), false, -1, "", null),this.pedido,obtenerCantidad());
-			
+			//return new ProductoDePedido(new Producto(this.pedido.getListaProductosPedido().get(tbProductosPedido.getSelectedRow()).getProducto().getId_producto(), false, -1, "", null),this.pedido,obtenerCantidad());
+			return new TProductoDePedido();
 		}
 
 		public int obtenerCantidad(){
@@ -381,7 +387,7 @@ public class VentanaAltaPedido extends JFrame {
 					
 			txtPrecioTotal.setText(Double.toString(precioTotal));
 			
-			pedido.setPrecio(precioTotal);
+			//pedido.setPrecio(precioTotal);
 			
 		}
 
@@ -397,7 +403,7 @@ public class VentanaAltaPedido extends JFrame {
 			
 			pedido.getProveedor().setId_proveedor(  ((TProveedor)objeto).getId_proveedor()       );
 			
-			pedido.getProveedor().setListaProductosProveedor( ((TProveedor)objeto).getListaProductosProveedor());
+			//pedido.getProveedor().setListaProductosProveedor( ((TProveedor)objeto).getListaProductosProveedor());
 			
 			txtIDProveedor.setText(Integer.toString(pedido.getProveedor().getId_proveedor()));
 					
@@ -416,5 +422,18 @@ public class VentanaAltaPedido extends JFrame {
 			
 			setVisible(true);			
 			
+		}
+
+		private void limpiarFormulario()
+		{
+			textFieldCantidad.setText("");
+			txtIDProveedor.setText("");
+			txtPrecioTotal.setText("");
+
+		}
+		
+		public void cerrar() {		
+			this.setVisible(false);
+			limpiarFormulario();
 		}
 	}

@@ -1,9 +1,9 @@
 package negocio.pedido;
 
 import java.util.List;
-import negocio.pedido.businessobject.Pedido;
+
 import negocio.pedido.transfer.TPedido;
-import negocio.pedido.transfer.TPedidoProducto;
+import negocio.productosdepedido.transfer.TProductoDePedido;
 
 public interface SAPedido {
 	public TPedido obtenerPedido(int ID) throws Exception;
@@ -12,7 +12,7 @@ public interface SAPedido {
 	
 	public boolean altaPedido(int IDprov) throws Exception;
 		
-	public boolean cerrarPedido(List<TPedidoProducto> lista) throws Exception;
+	public boolean cerrarPedido(List<TProductoDePedido> lista) throws Exception;
 		
 	public boolean cancelarPedido(int ID) throws Exception;
 	

@@ -40,12 +40,13 @@ public class Pedido{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id_pedido;
+	protected String fecha_realizado;
+	protected String fecha_entregado;
+	protected String fecha_cancelado;
 
 	@Version
 	private int version;
-	
-	private double precio;
-		
+
 	// Relaciones JPA	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Proveedor proveedor;
@@ -57,22 +58,21 @@ public class Pedido{
 		super();
 	}
 	
-	public Pedido(Proveedor proveedor, double precio){
-		
-		this.proveedor = proveedor;
-		this.setPrecio(precio);
-		
-	}
-	
 	public Pedido(int ID_Pedido, String fecha_realizado, String fecha_entregado, String fecha_cancelado){
 		
 		this.id_pedido=ID_Pedido;
-		
+		this.fecha_realizado=fecha_realizado;
+		this.fecha_entregado=fecha_entregado;
+		this.fecha_cancelado=fecha_cancelado;	
 	}
 
-	public Pedido(Proveedor proveedorObtenido, List<ProductoDePedido> listaProductosPedido) {
-		this.proveedor = proveedorObtenido;
-		this.listaProductosPedido = listaProductosPedido;
+	public Pedido(Object objeto){
+		TPedido tpedido= (TPedido) objeto;
+		
+		this.id_pedido=tpedido.getId_pedido();
+		this.fecha_realizado=tpedido.getFechaRealizado();
+		this.fecha_entregado=tpedido.getFechaEntregado();
+		this.fecha_cancelado=tpedido.getFechaCancelado();		
 	}
 
 	public List<ProductoDePedido> getListaProductosPedido() {
@@ -99,11 +99,35 @@ public class Pedido{
 		this.proveedor = proveedor;
 	}
 
-	public double getPrecio() {
-		return precio;
+	public String getFechaRealizado() {
+		return fecha_realizado;
 	}
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
+	public void setFechaRealizado(String fecha_realizado) {
+		this.fecha_realizado = fecha_realizado;
+	}
+
+	public String getFechaEntregado() {
+		return fecha_entregado;
+	}
+
+	public void setFechaEntregado(String fecha_entregado) {
+		this.fecha_entregado = fecha_entregado;
+	}
+
+	public String getFechaCancelado() {
+		return fecha_cancelado;
+	}
+
+	public void setFechaCancelado(String fecha_cancelado) {
+		this.fecha_cancelado = fecha_cancelado;
+	}
+	
+	public void setAll(TPedido tpedido)
+	{
+		this.id_pedido=tpedido.getId_pedido();
+		this.fecha_realizado=tpedido.getFechaRealizado();
+		this.fecha_entregado=tpedido.getFechaEntregado();
+		this.fecha_cancelado=tpedido.getFechaCancelado();				
 	}
 }

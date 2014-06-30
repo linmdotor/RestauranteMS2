@@ -15,7 +15,7 @@ public class CMDIniciarVistaPedido implements CMD
 		RespuestaCMD respuestaComando = null;
 		
 		try {
-			respuestaComando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PEDIDO, serviciosPedido.obtenerPedidos());
+			respuestaComando = new RespuestaCMD(EnumComandos.INICIAR_VISTA_PEDIDO, null);
 		} catch (Exception e) {
 			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();

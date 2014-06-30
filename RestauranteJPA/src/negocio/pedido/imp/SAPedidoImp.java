@@ -11,9 +11,9 @@ import presentacion.controlador.RespuestaCMD;
 import negocio.pedido.SAPedido;
 import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
-import negocio.pedido.transfer.TPedidoProducto;
 import negocio.producto.businessobject.Producto;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
+import negocio.productosdepedido.transfer.TProductoDePedido;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.imp.SAProveedorImp;
 import negocio.proveedor.transfer.TProveedor;
@@ -71,7 +71,7 @@ public class SAPedidoImp implements SAPedido {
 
 	}
 
-	public List<TPedidoProducto> obtenerPedidoProductos(int IDPedido) {
+	public List<TProductoDePedido> obtenerPedidoProductos(int IDPedido) {
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
@@ -81,7 +81,7 @@ public class SAPedidoImp implements SAPedido {
 				Pedido.class);
 
 		@SuppressWarnings("unchecked")
-		List<TPedidoProducto> listaPedido = query.getResultList();
+		List<TProductoDePedido> listaPedido = query.getResultList();
 
 		em.close();
 		emf.close();
@@ -166,7 +166,7 @@ public class SAPedidoImp implements SAPedido {
 	}
 
 	@SuppressWarnings("unused")
-	public boolean cerrarPedido(List<TPedidoProducto> lista) throws Exception {
+	public boolean cerrarPedido(List<TProductoDePedido> lista) throws Exception {
 		boolean respuestaComando = false;
 		Calendar fecha = new GregorianCalendar();
 
@@ -331,8 +331,8 @@ public class SAPedidoImp implements SAPedido {
 			// Si lo encuentra no deberia almacenarlo
 			if (pedido == null) {
 							
-				Pedido nuevoPedido = new Pedido(proveedorObtenido,tpedido.getPrecio());
-
+				//Pedido nuevoPedido = new Pedido(proveedorObtenido,tpedido.getPrecio());
+				Pedido nuevoPedido = new Pedido();
 				em.persist(nuevoPedido);
 
 				em.getTransaction().commit();
@@ -346,7 +346,7 @@ public class SAPedidoImp implements SAPedido {
 			
 			//añadimos los productos de pedido		
 			
-			for ( ProductoDePedido productoPedido: tpedido.getListaProductosPedido()){
+			/*for ( ProductoDePedido productoPedido: tpedido.getListaProductosPedido()){
 				
 				//obtenemos producto
 				
@@ -370,7 +370,7 @@ public class SAPedidoImp implements SAPedido {
 						Pedido.class);
 
 				@SuppressWarnings("unchecked")
-				List<TPedidoProducto> listaPedido = query.getResultList();				
+				List<TProductoDePedido> listaPedido = query.getResultList();				
 				
 				
 				em.getTransaction().begin();
@@ -393,7 +393,7 @@ public class SAPedidoImp implements SAPedido {
 				
 				em.getTransaction().commit();								
 				
-			}
+			}*/
 
 		} catch (OptimisticLockException oe) {
 			throw new Exception(

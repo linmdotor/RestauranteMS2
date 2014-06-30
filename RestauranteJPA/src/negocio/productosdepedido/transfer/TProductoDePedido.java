@@ -9,25 +9,27 @@ public class TProductoDePedido {
 	private int producto;
 	private int pedido;
 	private double precio;
+	private int cantidad;
 	
 	// Constructores
 	
 	public TProductoDePedido() {	
 	}
 	
-	public TProductoDePedido(int producto, int pedido, float precio) {
+	public TProductoDePedido(int producto, int pedido, float precio, int cantidad) {
 		
 		this.producto= producto;
 		this.pedido = pedido;
 		this.precio = precio;
-		
+		this.cantidad = cantidad;
 	}
 	
-public TProductoDePedido(ProductoDePedido producto_pedido) {
+	public TProductoDePedido(ProductoDePedido producto_pedido) {
 		
 		this.producto= producto_pedido.getProducto().getId_producto();
 		this.pedido = producto_pedido.getPedido().getId_pedido();
-		
+		this.precio = producto_pedido.getPrecio();
+		this.cantidad = producto_pedido.getCantidad();
 	}
 		
 	// Mutadores y Accedentes
@@ -63,6 +65,18 @@ public TProductoDePedido(ProductoDePedido producto_pedido) {
 	public void setPrecio(double precio) {
 		
 		this.precio = precio;
+	
+	}
+	
+	public int getCantidad() {
+		
+		return cantidad;
+	
+	}
+
+	public void setCantidad(int cantidad) {
+		
+		this.cantidad = cantidad;
 	
 	}
 }

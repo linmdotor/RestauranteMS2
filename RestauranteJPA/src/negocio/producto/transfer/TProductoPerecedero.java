@@ -8,6 +8,8 @@ import negocio.producto.businessobject.ProductoPerecedero;
 
 public class TProductoPerecedero extends TProducto{
 
+	private String fechaCaducidad;
+	
 	public TProductoPerecedero() {
 		
 	}
@@ -29,8 +31,6 @@ public class TProductoPerecedero extends TProducto{
 		this.fechaCaducidad = productoPerecedero.getFechaCaducidad();
 		
 	}
-
-	private String fechaCaducidad;
 
 	public String getFechaCaducidad() {
 		return fechaCaducidad;

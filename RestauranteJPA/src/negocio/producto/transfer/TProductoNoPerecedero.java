@@ -5,6 +5,8 @@ import negocio.producto.businessobject.ProductoNoPerecedero;
 
 public class TProductoNoPerecedero extends TProducto{
 	
+	private String recomendaciones;
+	
 	public TProductoNoPerecedero() {
 		
 	}
@@ -27,8 +29,6 @@ public class TProductoNoPerecedero extends TProducto{
 		
 	}
 	
-	private String recomendaciones;
-
 	public String getRecomendaciones() {
 		return recomendaciones;
 	}

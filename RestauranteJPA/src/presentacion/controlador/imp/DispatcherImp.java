@@ -98,31 +98,36 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionProductosProveedor.obtenerInstancia().limpiarFormulario();
 				break;
 				
-			// PEDIDO
+			// GESTIÓN DE PEDIDOS
 				
 			case INICIAR_VISTA_PEDIDO:
-				VentanaGestionPedidos.obtenerInstancia().actualizarVentana();
+				VentanaGestionPedidos.obtenerInstancia().actualizar();
 				break;	
 				
-			case OBTENER_PEDIDOS_PROVEEDOR:
-				VentanaGestionPedidos.obtenerInstancia().actualizarProveedores(respuestaCMD.getObjeto());
+			case OBTENER_PROVEEDORES_ACTIVOS:
+				VentanaGestionPedidos.obtenerInstancia().actualizarListaProveedores(respuestaCMD.getObjeto());
 				break; 
 				
 			case OBTENER_PEDIDOS:
-				VentanaGestionPedidos.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().rellenarTablaPedidos(respuestaCMD.getObjeto());
 				break;
+				
+			case OBTENER_PRODUCTOS_PEDIDO:
+				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
+				break;
+				
+			// NUEVO PEDIDO	
 				
 			case INICIAR_VISTA_ALTA_PEDIDO:
 				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
 				
 			case ALMACENAR_PEDIDO:
-				VentanaGestionPedidos.obtenerInstancia().actualizarVentana();
-			break;
+				new VentanaCorrecto((String) respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizar();			
+				break;
 			
-			case RELLENAR_TB_PRODUCTOS_PEDIDO:
-				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
-			break;
+			
 				
 			// GENERICOS
 			
