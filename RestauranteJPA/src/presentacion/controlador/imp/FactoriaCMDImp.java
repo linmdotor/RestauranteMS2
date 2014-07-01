@@ -16,6 +16,8 @@ import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.FactoriaCMD;
 import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
+import presentacion.controlador.comando.pedido.CMDAlmacenarPedido;
+import presentacion.controlador.comando.pedido.CMDCancelarPedido;
 import presentacion.controlador.comando.pedido.CMDTerminarPedido;
 import presentacion.controlador.comando.pedido.CMDAnadirProductoAPedido;
 import presentacion.controlador.comando.pedido.CMDModificarCantidadProductoDePedido;
@@ -101,6 +103,8 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO, new CMDModificarCantidadProductoDePedido());
 		map_cmd.put(EnumComandos.TERMINAR_PEDIDO, new CMDTerminarPedido());
 		map_cmd.put(EnumComandos.AÑADIR_PRODUCTO_PEDIDO, new CMDTerminarPedido());
+		map_cmd.put(EnumComandos.ALMACENAR_PEDIDO, new CMDAlmacenarPedido());
+		map_cmd.put(EnumComandos.CANCELAR_PEDIDO, new CMDCancelarPedido());
 		
 	
 	}

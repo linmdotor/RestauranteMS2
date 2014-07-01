@@ -182,60 +182,107 @@ public class SAPedidoImp implements SAPedido {
 	}
 
 	@Override
-	public boolean almacenarPedido(int ID) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean almacenarPedido(TPedido tPedido) throws Exception {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
+		EntityManager em = emf.createEntityManager();
+
+		Pedido pedidoobtenido = null;
+		TypedQuery<Pedido> query = null;
+
+		try {
+			em.getTransaction().begin();
+
+			query = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
+
+			query.setParameter("arg", tPedido.getId_pedido());
+
+			pedidoobtenido = query.getSingleResult();
+
+			em.lock(pedidoobtenido, LockModeType.OPTIMISTIC);
+
+			pedidoobtenido.setFechaEntregado(getFecha());
+			
+			em.persist(pedidoobtenido);
+			
+			for(ProductoDePedido prod_ped: pedidoobtenido.getListaProductosPedido())
+			{
+				Producto p = prod_ped.getProducto();
+				em.lock(p, LockModeType.OPTIMISTIC);
+				p.setStock(p.getStock() + prod_ped.getCantidad());
+				em.persist(p);
+			}
+			
+			em.getTransaction().commit();
+
+		} catch (NoResultException ex) {
+
+			em.getTransaction().rollback();
+			throw new Exception("No existe el pedido con ID: " + tPedido.getId_pedido());
+
+		} catch (Exception ex) {
+			
+			em.getTransaction().rollback();
+			throw ex;
+
+		} finally {
+
+			em.close();
+			emf.close();
+
+		}
+
+		return true;
 	}
 
 	@Override
-	public boolean cancelarPedido(int ID) throws Exception {
+	public boolean cancelarPedido(TPedido tPedido) throws Exception {
 
-		boolean respuestaComando = false;
-		Calendar fecha = new GregorianCalendar();
-		
-		if (ID >= 0){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
+		EntityManager em = emf.createEntityManager();
 
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
-			EntityManager em = emf.createEntityManager();
-	
-			try {
-				em.getTransaction().begin();
-	
-				Pedido pedido = em.find(Pedido.class, ID);
-	
-				if (pedido != null) {
-					
-					
-					em.getTransaction().commit();
-					respuestaComando = true;
-	
-				}else
-				{
-					em.getTransaction().rollback();
-				}
-					
-				
-			} catch (OptimisticLockException oe) {
-				em.getTransaction().rollback();
-				throw new Exception(
-						"Error al acceder los datos de forma concurrente.");
-			} catch (Exception e) {
-				em.getTransaction().rollback();
-				throw new Exception(
-						"Error al cancelar un pedido. Debe seleccionar un Pedido.");
-			} finally {
-				em.close();
-				emf.close();
-			}
-		} else
-			throw new Exception("No se pudo eliminar el pedido, el ID debe ser entero positivo.");
+		Pedido pedidoobtenido = null;
+		TypedQuery<Pedido> query = null;
 
-		return respuestaComando;
+		try {
+			em.getTransaction().begin();
+
+			query = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
+
+			query.setParameter("arg", tPedido.getId_pedido());
+
+			pedidoobtenido = query.getSingleResult();
+
+			em.lock(pedidoobtenido, LockModeType.OPTIMISTIC);
+
+			pedidoobtenido.setFechaCancelado(getFecha());
+			
+			em.persist(pedidoobtenido);
+			
+			em.getTransaction().commit();
+
+		} catch (NoResultException ex) {
+
+			em.getTransaction().rollback();
+			throw new Exception("No existe el pedido con ID: " + tPedido.getId_pedido());
+
+		} catch (Exception ex) {
+			
+			em.getTransaction().rollback();
+			throw ex;
+
+		} finally {
+
+			em.close();
+			emf.close();
+
+		}
+
+		return true;
 	}
 	
 	private String getFecha()
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:MM:SS dd-MM-YYYY");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY  HH:MM");
 		return(sdf.format( new GregorianCalendar().getTime()));
 	}
 }

@@ -11,8 +11,8 @@ public interface SAPedido {
 	
 	public boolean altaPedido(TPedido tPedido) throws Exception;
 		
-	public boolean almacenarPedido(int ID) throws Exception;
+	public boolean almacenarPedido(TPedido tPedido) throws Exception;
 	
-	public boolean cancelarPedido(int ID) throws Exception;
+	public boolean cancelarPedido(TPedido tPedido) throws Exception;
 
 }

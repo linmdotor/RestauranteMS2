@@ -332,6 +332,8 @@ public class VentanaProducto extends JFrame {
 		}
 
 		tbProductos.setModel(tabla);
+		
+		tbProductos.getColumnModel().getColumn(0).setMaxWidth(60);
 
 	}
 

@@ -116,6 +116,16 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
 				break;
 				
+			case ALMACENAR_PEDIDO:
+				new VentanaCorrecto((String) respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizar();
+				break;
+			
+			case CANCELAR_PEDIDO:
+				new VentanaCorrecto((String) respuestaCMD.getObjeto());
+				VentanaGestionPedidos.obtenerInstancia().actualizar();
+				break;
+				
 			// NUEVO PEDIDO	
 				
 			case INICIAR_VISTA_ALTA_PEDIDO:

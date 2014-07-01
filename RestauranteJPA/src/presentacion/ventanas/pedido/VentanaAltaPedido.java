@@ -3,9 +3,7 @@ package presentacion.ventanas.pedido;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,14 +21,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import negocio.ComprobadorEnteros;
-import negocio.pedido.businessobject.Pedido;
 import negocio.pedido.transfer.TPedido;
-import negocio.producto.businessobject.Producto;
-import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.productosdepedido.transfer.TProductoDePedido;
-import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
-import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.transfer.TProveedor;
 import presentacion.controlador.ApplicationController;
 import presentacion.controlador.EnumComandos;
@@ -51,8 +44,6 @@ public class VentanaAltaPedido extends JFrame {
 	private static Vector fila;
 	private JScrollPane scrollPanel;
 	
-	private Pedido pedido;
-
 	//Mutadores y Accedentes		
 	
 	public JTable getTbProveedores()
@@ -74,14 +65,6 @@ public class VentanaAltaPedido extends JFrame {
 
 	public void setTbProductosPedido(JTable tbProductosPedido) {
 		this.tbProductosPedido = tbProductosPedido;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
 	}
 
 	public void setTbProveedores(JTable tbProveedores)
@@ -145,7 +128,7 @@ public class VentanaAltaPedido extends JFrame {
 					{
 						if (getTbProductosPedido().getSelectedRow() != -1)
 						{							
-							textFieldCantidad.setText(Integer.toString((int)getTbProductosPedido().getValueAt(getTbProductosPedido().getSelectedRow(), 3)));							
+							textFieldCantidad.setText(Integer.toString((int)getTbProductosPedido().getValueAt(getTbProductosPedido().getSelectedRow(), 2)));							
 						}
 					}
 					}
@@ -260,7 +243,7 @@ public class VentanaAltaPedido extends JFrame {
 				
 			t.setProducto((int)tabla.getValueAt(fila, 0));
 			t.setPedido(-1);
-			t.setPrecio((double)tabla.getValueAt(fila, 2));
+			t.setPrecio((double)tabla.getValueAt(fila, 1));
 			t.setCantidad(obtenerCantidad());
 		}
 		
@@ -282,8 +265,8 @@ public class VentanaAltaPedido extends JFrame {
 			TProductoDePedido tproducto = new TProductoDePedido();
 			tproducto.setProducto((int)tbpedido.getValueAt(i, 0));
 			tproducto.setPedido(-1);
-			tproducto.setPrecio((double)tbpedido.getValueAt(i, 2));
-			tproducto.setCantidad((int)tbpedido.getValueAt(i, 3));
+			tproducto.setPrecio((double)tbpedido.getValueAt(i, 1));
+			tproducto.setCantidad((int)tbpedido.getValueAt(i, 2));
 			
 			listaproductos.add(tproducto);
 		}
@@ -318,11 +301,12 @@ public class VentanaAltaPedido extends JFrame {
 		modelopedido = new DefaultTableModel();
 		
 		modelopedido.addColumn("ID");
-		modelopedido.addColumn("NOMBRE");
 		modelopedido.addColumn("PRECIO");
 		modelopedido.addColumn("CANTIDAD");	
 						
-		tbProductosPedido.setModel(modelopedido);				
+		tbProductosPedido.setModel(modelopedido);
+		
+		tbProductosPedido.getColumnModel().getColumn(0).setMaxWidth(60);
 
 	}
 	
@@ -331,7 +315,6 @@ public class VentanaAltaPedido extends JFrame {
 		tabla = new Tabla();
 		
 		tabla.addColumn("ID");
-		tabla.addColumn("NOMBRE");
 		tabla.addColumn("PRECIO");
 	
 		
@@ -343,7 +326,6 @@ public class VentanaAltaPedido extends JFrame {
 				
 				fila = new Vector();
 				fila.add(TproductoDeProveedor.getProducto());
-				fila.add("FALTA");	
 				fila.add(TproductoDeProveedor.getPrecio());	
 				
 				tabla.addRow(fila);
@@ -379,7 +361,6 @@ public class VentanaAltaPedido extends JFrame {
 		{
 			fila = new Vector();
 			fila.add(tProductoPedido.getProducto());
-			fila.add("FALTA");	
 			fila.add(tProductoPedido.getPrecio());
 			fila.add(tProductoPedido.getCantidad());	
 
@@ -404,7 +385,7 @@ public class VentanaAltaPedido extends JFrame {
 			if((int)tbpedido.getValueAt(fila_act, 0) == tProductoPedido.getProducto())
 			{			
 				producto_encontrado = true;
-				recalcularTotal( - ((double)tbpedido.getValueAt(fila_act, 2)*(int)tbpedido.getValueAt(fila_act, 3)));
+				recalcularTotal( - ((double)tbpedido.getValueAt(fila_act, 1)*(int)tbpedido.getValueAt(fila_act, 2)));
 				modelopedido.removeRow(fila_act);				
 			}
 			fila_act++;
@@ -432,8 +413,8 @@ public class VentanaAltaPedido extends JFrame {
 		//si lo encuentra, lo modifica
 		if(producto_encontrado && tProductoPedido.getCantidad()>0)
 		{
-			recalcularTotal( - ((double)tbpedido.getValueAt(fila_act, 2)*(int)tbpedido.getValueAt(fila_act, 3)));
-			modelopedido.setValueAt(tProductoPedido.getCantidad(), fila_act, 3);
+			recalcularTotal( - ((double)tbpedido.getValueAt(fila_act, 1)*(int)tbpedido.getValueAt(fila_act, 2)));
+			modelopedido.setValueAt(tProductoPedido.getCantidad(), fila_act, 2);
 			recalcularTotal(tProductoPedido.getCantidad()*tProductoPedido.getPrecio());
 		}
 		

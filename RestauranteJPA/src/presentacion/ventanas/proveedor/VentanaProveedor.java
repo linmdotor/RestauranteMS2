@@ -266,6 +266,8 @@ public class VentanaProveedor extends JFrame{
 		}
 
 		tbProveedores.setModel(tabla);
+		
+		tbProveedores.getColumnModel().getColumn(0).setMaxWidth(60);
 
 	}
 

@@ -7,7 +7,7 @@ import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
 
-public class CMDTerminarPedido implements CMD{
+public class CMDAlmacenarPedido implements CMD{
 
 	@Override
 	public RespuestaCMD ejecuta(Object objeto) {
@@ -15,13 +15,15 @@ public class CMDTerminarPedido implements CMD{
 		RespuestaCMD respuestaComando = null;	
 		
 		TPedido tPedido = (TPedido)objeto;
-		if(tPedido.getListaProductosPedido().size() > 0)
+		
+		if(tPedido.getFechaEntregado().equals("---") && tPedido.getFechaCancelado().equals("---"))
 		{
 			try {
-				if(serviciosPedido.altaPedido(tPedido)){
-					respuestaComando = new RespuestaCMD(EnumComandos.TERMINAR_PEDIDO,"Se ha almacenado el nuevo Pedido");
+	
+				if(serviciosPedido.almacenarPedido(tPedido)){
+					respuestaComando = new RespuestaCMD(EnumComandos.ALMACENAR_PEDIDO,"Se ha almacenado el nuevo Pedido, y actualizado el Stock de los productos");
 				}else
-					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al almacenar nuevo pedido. Error al insertar los datos.");	
+					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al almacenar pedido. Error al insertar los datos.");	
 			
 			} catch (Exception e) {
 				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
@@ -29,8 +31,8 @@ public class CMDTerminarPedido implements CMD{
 			}
 		}
 		else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Debe seleccionar al menos un producto de la lista");
-			
+			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "No se puede almacenar un pedido que ya ha sido almacenado/cancelado");
+		
 	
 		return respuestaComando;
 	}
