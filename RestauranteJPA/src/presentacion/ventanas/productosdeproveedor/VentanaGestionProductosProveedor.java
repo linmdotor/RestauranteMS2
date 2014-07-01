@@ -50,7 +50,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		this.tbProductosProveedor = tbProveedores;
 	}
 	
-	public JTable tbProductos()
+	public JTable getTbProductos()
 	{
 		return tbProductosTotales;
 	}
@@ -116,7 +116,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		btnModiPrecio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(true));
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(getTbProveedores()));
 				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));	
 			}
 		});
@@ -129,7 +129,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		btnAnadirProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(false));
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(getTbProductos()));
 				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));
 			}
 
@@ -142,7 +142,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		btnEliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(true));
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, obtenerProductoProveedor(getTbProveedores()));
 				actualizar(Integer.parseInt(textFieldID_Proveedor.getText()));
 			}
 		});
@@ -173,7 +173,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
 
-						if (getTbProveedores().getSelectedRow() != -1)
+						if (getTbProveedores().getSelectedRow() != -1) //hay alguna fila seleccionada
 						{
 							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, Double.parseDouble(tbProductosProveedor.getValueAt(tbProductosProveedor.getSelectedRow(), 1).toString()));
 						}
@@ -197,7 +197,7 @@ public class VentanaGestionProductosProveedor extends JFrame {
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
 
-						if (tbProductosTotales.getSelectedRow() != -1)
+						if (tbProductosTotales.getSelectedRow() != -1) //hay alguna fila seleccionada
 						{							
 							limpiarFormulario();
 						}
@@ -219,24 +219,15 @@ public class VentanaGestionProductosProveedor extends JFrame {
 			
 	}
 	
-	/*Obtenemos un transfer con los datos de pantalla.
-	 * Si se indica TRUE, coge el dato de los productos que tiene el proveedor en su lista (modificar y eliminar)
-	 * Si se indica FALSE, coge el dato de los productos de la lista de TODOS los productos (añadir)
+	/*
+	 * Obtenemos un transfer con los datos de pProductoProveedor de una tabla concreta.
 	 */
-	private TProductoDeProveedor obtenerProductoProveedor(boolean cogerProductoDELProveedor) {
+	private TProductoDeProveedor obtenerProductoProveedor(JTable tabla) {
 		
 		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
 		
 		tProductoDeProveedor.setProveedor(Integer.parseInt(textFieldID_Proveedor.getText()));
-
-		if(cogerProductoDELProveedor)
-		{
-			tProductoDeProveedor.setProducto(Integer.parseInt(tbProductosProveedor.getValueAt(tbProductosProveedor.getSelectedRow(), 0).toString()));
-		}
-		else
-		{
-			tProductoDeProveedor.setProducto(Integer.parseInt(tbProductosTotales.getValueAt(tbProductosTotales.getSelectedRow(), 0).toString()));
-		}
+		tProductoDeProveedor.setProducto(Integer.parseInt(tabla.getValueAt(tabla.getSelectedRow(), 0).toString()));
 		
 		if (textFieldPrecio.getText().length() > 0)
 			tProductoDeProveedor.setPrecio(Double.parseDouble(textFieldPrecio.getText()));

@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,6 +31,7 @@ import presentacion.controlador.EnumComandos;
 import presentacion.ventanas.Tabla;
 
 
+@SuppressWarnings("serial")
 public class VentanaAltaPedido extends JFrame {
 	
 	private static VentanaAltaPedido ventana; //instancia singleton
@@ -126,7 +128,7 @@ public class VentanaAltaPedido extends JFrame {
 					public void valueChanged(ListSelectionEvent arg0) {
 					if (arg0.getValueIsAdjusting())
 					{
-						if (getTbProductosPedido().getSelectedRow() != -1)
+						if (getTbProductosPedido().getSelectedRow() != -1) //hay alguna fila seleccionada
 						{							
 							textFieldCantidad.setText(Integer.toString((int)getTbProductosPedido().getValueAt(getTbProductosPedido().getSelectedRow(), 2)));							
 						}
@@ -154,7 +156,8 @@ public class VentanaAltaPedido extends JFrame {
 		panelLista.add(btnAnadirProducto);
 		btnAnadirProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getTbProductosProveedor().getSelectedRow() != -1)
+				
+				if(getTbProductosProveedor().getSelectedRow() != -1) //hay alguna fila seleccionada
 					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ANADIR_PRODUCTO_A_PEDIDO, obtenerProductoPedido(getTbProductosProveedor(), getTbProductosProveedor().getSelectedRow()));
 				textFieldCantidad.setText("");
 			}
@@ -166,7 +169,8 @@ public class VentanaAltaPedido extends JFrame {
 		panelLista.add(btnEliminarProducto);
 		btnEliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getTbProductosPedido().getSelectedRow() != -1)				
+				
+				if(getTbProductosPedido().getSelectedRow() != -1) //hay alguna fila seleccionada		
 					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.QUITAR_PRODUCTO_DE_PEDIDO, obtenerProductoPedido(getTbProductosPedido(), getTbProductosPedido().getSelectedRow()));
 				textFieldCantidad.setText("");
 			}
@@ -178,7 +182,8 @@ public class VentanaAltaPedido extends JFrame {
 		panelLista.add(btnModiCantidad);
 		btnModiCantidad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getTbProductosPedido().getSelectedRow() != -1)	
+				
+				if(getTbProductosPedido().getSelectedRow() != -1) //hay alguna fila seleccionada
 					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO, obtenerProductoPedido(getTbProductosPedido(), getTbProductosPedido().getSelectedRow()));
 				textFieldCantidad.setText("");
 			}
@@ -214,8 +219,11 @@ public class VentanaAltaPedido extends JFrame {
 		panelLista.add(btnTerminarPedido);
 		btnTerminarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.TERMINAR_PEDIDO, obtenerPedido());
-				setVisible(false);				
+				if(mensajeConfirmacionSiNo("¿Seguro que desea finalizar el pedido?", "Terminar Pedido"))
+				{
+					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.TERMINAR_PEDIDO, obtenerPedido());
+					setVisible(false);	
+				}
 			}
 		});
 		
@@ -306,7 +314,7 @@ public class VentanaAltaPedido extends JFrame {
 						
 		tbProductosPedido.setModel(modelopedido);
 		
-		tbProductosPedido.getColumnModel().getColumn(0).setMaxWidth(60);
+		tbProductosPedido.getColumnModel().getColumn(0).setMaxWidth(60); //ajusta el ancho de la columna ID
 
 	}
 	
@@ -446,6 +454,11 @@ public class VentanaAltaPedido extends JFrame {
 		txtPrecioTotal.setText(Double.toString(redondear(Double.parseDouble(txtPrecioTotal.getText()) + cant)));	
 	}
 
+	private boolean mensajeConfirmacionSiNo(String msj, String cabecera) {	
+		return (JOptionPane.showConfirmDialog(this, msj, cabecera, JOptionPane.YES_NO_OPTION) == 0);
+
+	}
+	
 	public static double redondear(double numero){		
 		return Math.rint(numero*100)/100;		
 	}

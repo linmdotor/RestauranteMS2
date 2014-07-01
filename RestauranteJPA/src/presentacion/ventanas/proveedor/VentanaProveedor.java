@@ -267,7 +267,7 @@ public class VentanaProveedor extends JFrame{
 
 		tbProveedores.setModel(tabla);
 		
-		tbProveedores.getColumnModel().getColumn(0).setMaxWidth(60);
+		tbProveedores.getColumnModel().getColumn(0).setMaxWidth(60); //asigna ancho a la columna ID
 
 	}
 

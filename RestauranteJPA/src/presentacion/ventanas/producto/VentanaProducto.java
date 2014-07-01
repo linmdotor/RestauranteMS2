@@ -333,7 +333,7 @@ public class VentanaProducto extends JFrame {
 
 		tbProductos.setModel(tabla);
 		
-		tbProductos.getColumnModel().getColumn(0).setMaxWidth(60);
+		tbProductos.getColumnModel().getColumn(0).setMaxWidth(60); //asigna ancho a la columna ID
 
 	}
 

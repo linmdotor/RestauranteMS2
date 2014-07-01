@@ -282,7 +282,7 @@ public class SAPedidoImp implements SAPedido {
 	
 	private String getFecha()
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY  HH:MM");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY  HH:mm");
 		return(sdf.format( new GregorianCalendar().getTime()));
 	}
 }

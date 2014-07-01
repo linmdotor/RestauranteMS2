@@ -106,10 +106,14 @@ public class VentanaGestionPedidos extends JFrame{
 		panelFormulario.add(btnalmacenarPedido);
 		btnalmacenarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getTbPedidos().getSelectedRow() != -1)
+				
+				if(getTbPedidos().getSelectedRow() != -1) //hay alguna fila seleccionada
 				{
-					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, obtenerPedido());
-					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
+					if(mensajeConfirmacionSiNo("¿Seguro que desea cancelar este pedido? Los productos pasarán a formar parte del Stock", "Almacenar Pedido"))
+					{
+						ApplicationController.obtenerInstancia().handleRequest(EnumComandos.ALMACENAR_PEDIDO, obtenerPedido());
+						ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
+					}
 				}
 			}
 		});
@@ -120,10 +124,14 @@ public class VentanaGestionPedidos extends JFrame{
 		panelFormulario.add(btnCancelarPedido);
 		btnCancelarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getTbPedidos().getSelectedRow() != -1)
+				
+				if(getTbPedidos().getSelectedRow() != -1) //hay alguna fila seleccionada
 				{
-					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.CANCELAR_PEDIDO, obtenerPedido());
-					ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
+					if(mensajeConfirmacionSiNo("¿Seguro que desea cancelar este pedido?", "Cancelar Pedido"))
+					{
+						ApplicationController.obtenerInstancia().handleRequest(EnumComandos.CANCELAR_PEDIDO, obtenerPedido());
+						ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
+					}
 				}
 			}
 		});
@@ -165,8 +173,10 @@ public class VentanaGestionPedidos extends JFrame{
 		tbPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbPedidos.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent arg0) {
-					if (arg0.getValueIsAdjusting())
+					
+					public void valueChanged(ListSelectionEvent arg0) //hay alguna fila seleccionada
+					{
+					if (arg0.getValueIsAdjusting()) //sólo al hacer click (no al soltar el click)
 					{
 						if (getTbPedidos().getSelectedRow() != -1)
 						{
@@ -241,7 +251,7 @@ public class VentanaGestionPedidos extends JFrame{
 		
 		tbPedidos.setModel(tabla);
 		
-		tbPedidos.getColumnModel().getColumn(0).setMaxWidth(60);
+		tbPedidos.getColumnModel().getColumn(0).setMaxWidth(60); //ajusta el ancho de las columnas ID
 		tbPedidos.getColumnModel().getColumn(1).setMaxWidth(60);
 		
 		repaint();
