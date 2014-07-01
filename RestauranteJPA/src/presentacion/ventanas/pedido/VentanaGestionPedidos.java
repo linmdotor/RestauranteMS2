@@ -492,8 +492,9 @@ public class VentanaGestionPedidos extends JFrame{
 	}
 
 	// Metodos
-
 	public void actualizar() {
+		
+		actualizarTablaProductos(null);
 
 		ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PEDIDOS, null);
 		
@@ -519,15 +520,15 @@ public class VentanaGestionPedidos extends JFrame{
 		
 			List<TPedido> lista = (List<TPedido>) object;
 			
-			for (int i = 0; i < lista.size(); i++) {
+			for (TPedido tpedido : lista) {
 	
 				fila = new Vector();
-				TPedido pedido = lista.get(i);
-				fila.add(pedido.getId_pedido());
-				fila.add(pedido.getId_proveedor());
-				fila.add(pedido.getFechaRealizado());
-				fila.add(pedido.getFechaEntregado());
-				fila.add(pedido.getFechaCancelado());
+
+				fila.add(tpedido.getId_pedido());
+				fila.add(tpedido.getId_proveedor());
+				fila.add(tpedido.getFechaRealizado());
+				fila.add(tpedido.getFechaEntregado());
+				fila.add(tpedido.getFechaCancelado());
 	
 				tabla.addRow(fila);
 			}

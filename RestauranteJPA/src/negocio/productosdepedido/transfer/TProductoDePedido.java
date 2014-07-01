@@ -16,7 +16,7 @@ public class TProductoDePedido {
 	public TProductoDePedido() {	
 	}
 	
-	public TProductoDePedido(int producto, int pedido, float precio, int cantidad) {
+	public TProductoDePedido(int producto, int pedido, double precio, int cantidad) {
 		
 		this.producto= producto;
 		this.pedido = pedido;
@@ -62,9 +62,9 @@ public class TProductoDePedido {
 	
 	}
 
-	public void setPrecio(double precio) {
+	public void setPrecio(double d) {
 		
-		this.precio = precio;
+		this.precio = d;
 	
 	}
 	

@@ -3,7 +3,9 @@ package presentacion.ventanas.pedido;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -226,8 +228,7 @@ public class VentanaAltaPedido extends JFrame {
 		panelLista.add(btnTerminarPedido);
 		btnTerminarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.TERMINAR_PEDIDO, obtenerListaProductosPedido());
+				ApplicationController.obtenerInstancia().handleRequest(EnumComandos.TERMINAR_PEDIDO, obtenerPedido());
 				setVisible(false);				
 			}
 		});
@@ -266,7 +267,7 @@ public class VentanaAltaPedido extends JFrame {
 	/*
 	 * Obtiene una lista TProductoDePedido con todos los productos del pedido
 	 */
-	private List<TProductoDePedido> obtenerListaProductosPedido() {
+	private TPedido obtenerPedido() {
 						
 		List<TProductoDePedido> listaproductos = new ArrayList<TProductoDePedido>();	
 
@@ -284,7 +285,16 @@ public class VentanaAltaPedido extends JFrame {
 			listaproductos.add(tproducto);
 		}
 	
-		return listaproductos;
+		TPedido tpedido = new TPedido();
+		
+		tpedido.setId_pedido(-1);
+		tpedido.setId_proveedor(Integer.parseInt(txtIDProveedor.getText()));
+		tpedido.setFechaRealizado("---");
+		tpedido.setFechaEntregado("---");
+		tpedido.setFechaCancelado("---");
+		tpedido.setListaProductosPedido(listaproductos);
+		
+		return tpedido;
 	}
 
 	public static int obtenerCantidad(){

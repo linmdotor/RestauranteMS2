@@ -1,9 +1,11 @@
 package negocio.pedido.transfer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import negocio.pedido.businessobject.Pedido;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
+import negocio.productosdepedido.transfer.TProductoDePedido;
 
 
 
@@ -15,7 +17,7 @@ public class TPedido {
 	protected String fecha_realizado;
 	protected String fecha_entregado;
 	protected String fecha_cancelado;
-	//private List<ProductoDePedido> listaProductosPedido;
+	private List<TProductoDePedido> listaProductosPedido;
 
 	public TPedido(){
 		
@@ -27,6 +29,12 @@ public class TPedido {
 		this.fecha_realizado = pedido.getFechaRealizado();
 		this.fecha_entregado = pedido.getFechaEntregado();
 		this.fecha_cancelado = pedido.getFechaCancelado();
+		
+		listaProductosPedido = new ArrayList<TProductoDePedido>();
+		for(ProductoDePedido prod : pedido.getListaProductosPedido())
+		{
+			listaProductosPedido.add(new TProductoDePedido(prod));
+		}
 	}
 
 	public int getId_pedido() {
@@ -69,13 +77,13 @@ public class TPedido {
 		this.fecha_cancelado=fecha_cancelado;
 	}
 
-	/*public List<ProductoDePedido> getListaProductosPedido() {
+	public List<TProductoDePedido> getListaProductosPedido() {
 		return listaProductosPedido;
 	}
 
-	public void setListaProductosPedido(List<ProductoDePedido> listaProductosPedido) {
+	public void setListaProductosPedido(List<TProductoDePedido> listaProductosPedido) {
 		this.listaProductosPedido = listaProductosPedido;
-	}*/
+	}
 
 	
 }

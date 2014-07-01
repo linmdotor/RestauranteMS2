@@ -28,14 +28,14 @@ public class ProductoDePedido {
     private int version;
 	
 	private int cantidad;
-	private float precio;
+	private double precio;
 	 
 	 public ProductoDePedido ()
 	 {
 		 super();
 	 }
 	 
-	 public ProductoDePedido (Producto producto, Pedido pedido, int cantidad, float precio)
+	 public ProductoDePedido (Producto producto, Pedido pedido, int cantidad, double precio)
 	 {
 		 this.producto = producto;
 		 this.pedido = pedido;
@@ -61,11 +61,11 @@ public class ProductoDePedido {
 		 this.pedido = pedido;
 	 }  
 	
-	 public float getPrecio() {
+	 public double getPrecio() {
 		 return precio;
 	 }
 	 
-	 public void setPrecio(float precio) {
+	 public void setPrecio(double precio) {
 		this.precio = precio;
 	 }
 	 
