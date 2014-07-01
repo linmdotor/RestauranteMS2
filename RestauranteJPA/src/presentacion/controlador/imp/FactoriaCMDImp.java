@@ -11,23 +11,14 @@ package presentacion.controlador.imp;
 import java.util.HashMap;
 import java.util.Map;
 
-import presentacion.controlador.ApplicationController;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.FactoriaCMD;
 import presentacion.controlador.comando.CMDIniciarVistaPrincipal;
 import presentacion.controlador.comando.pedido.CMDAlmacenarPedido;
 import presentacion.controlador.comando.pedido.CMDCancelarPedido;
-import presentacion.controlador.comando.pedido.CMDTerminarPedido;
-import presentacion.controlador.comando.pedido.CMDAnadirProductoAPedido;
-import presentacion.controlador.comando.pedido.CMDModificarCantidadProductoDePedido;
-import presentacion.controlador.comando.pedido.CMDQuitarProductoDePedido;
-import presentacion.controlador.comando.pedido.CMDIniciarVistaAltaPedido;
 import presentacion.controlador.comando.pedido.CMDIniciarVistaPedido;
-import presentacion.controlador.comando.pedido.CMDModificarFormularioPedido;
 import presentacion.controlador.comando.pedido.CMDObtenerPedidos;
-import presentacion.controlador.comando.pedido.CMDObtenerProductosProveedorPedido;
-import presentacion.controlador.comando.pedido.CMDObtenerProveedorProducto;
 import presentacion.controlador.comando.pedido.CMDObtenerProveedoresDisponibles;
 import presentacion.controlador.comando.pedido.CMDObtenerProductosPedido;
 import presentacion.controlador.comando.producto.CMDAltaProducto;
@@ -36,6 +27,12 @@ import presentacion.controlador.comando.producto.CMDIniciarVistaProducto;
 import presentacion.controlador.comando.producto.CMDModificarFormularioProducto;
 import presentacion.controlador.comando.producto.CMDModificarProducto;
 import presentacion.controlador.comando.producto.CMDObtenerProductos;
+import presentacion.controlador.comando.productosdepedido.CMDAnadirProductoAPedido;
+import presentacion.controlador.comando.productosdepedido.CMDIniciarVistaAltaPedido;
+import presentacion.controlador.comando.productosdepedido.CMDModificarCantidadProductoDePedido;
+import presentacion.controlador.comando.productosdepedido.CMDObtenerProductosProveedorPedido;
+import presentacion.controlador.comando.productosdepedido.CMDQuitarProductoDePedido;
+import presentacion.controlador.comando.productosdepedido.CMDTerminarPedido;
 import presentacion.controlador.comando.productosdeproveedor.CMDAnadirProductoProveedor;
 import presentacion.controlador.comando.productosdeproveedor.CMDEliminarProductoProveedor;
 import presentacion.controlador.comando.productosdeproveedor.CMDIniciarVistaProductosDeProveedor;
@@ -83,30 +80,28 @@ public class FactoriaCMDImp extends FactoriaCMD {
 		map_cmd.put(EnumComandos.ANADIR_PRODUCTO_PROVEEDOR, new CMDAnadirProductoProveedor());
 		map_cmd.put(EnumComandos.ELIMINAR_PRODUCTO_PROVEEDOR, new CMDEliminarProductoProveedor());
 		map_cmd.put(EnumComandos.MODIFICAR_PRODUCTO_PROVEEDOR, new CMDModificarProductoProveedor());
-		map_cmd.put(EnumComandos.INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR, new CMDIniciarVistaProductosDeProveedor());
 		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR, new CMDObtenerProductosProveedor());
 		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_TOTALES, new CMDObtenerProductosTotales());
+		map_cmd.put(EnumComandos.INICIAR_VISTA_PRODUCTOS_DE_PROVEEDOR, new CMDIniciarVistaProductosDeProveedor());
 		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, new CMDModificarFormularioProductoProveedor());
 		
 		//COMANDOS PEDIDO
 		
-		map_cmd.put(EnumComandos.INICIAR_VISTA_PEDIDO, new CMDIniciarVistaPedido());
-		map_cmd.put(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, new CMDIniciarVistaAltaPedido());
-		map_cmd.put(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, new CMDModificarFormularioPedido());
+		map_cmd.put(EnumComandos.ALMACENAR_PEDIDO, new CMDAlmacenarPedido());
+		map_cmd.put(EnumComandos.CANCELAR_PEDIDO, new CMDCancelarPedido());
+		map_cmd.put(EnumComandos.OBTENER_PEDIDOS, new CMDObtenerPedidos());		
 		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PEDIDO, new CMDObtenerProductosPedido());
-		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO, new CMDObtenerProductosProveedorPedido());
-		map_cmd.put(EnumComandos.OBTENER_PROVEEDOR_PRODUCTO, new CMDObtenerProveedorProducto());
-		map_cmd.put(EnumComandos.OBTENER_PEDIDOS, new CMDObtenerPedidos());
 		map_cmd.put(EnumComandos.OBTENER_PROVEEDORES_DISPONIBLES, new CMDObtenerProveedoresDisponibles());
+		map_cmd.put(EnumComandos.INICIAR_VISTA_PEDIDO, new CMDIniciarVistaPedido());
+		
+		//COMANDOS PRODUCTOS DE PEDIDO
+			
 		map_cmd.put(EnumComandos.ANADIR_PRODUCTO_A_PEDIDO, new CMDAnadirProductoAPedido());
 		map_cmd.put(EnumComandos.QUITAR_PRODUCTO_DE_PEDIDO, new CMDQuitarProductoDePedido());
 		map_cmd.put(EnumComandos.MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO, new CMDModificarCantidadProductoDePedido());
 		map_cmd.put(EnumComandos.TERMINAR_PEDIDO, new CMDTerminarPedido());
-		map_cmd.put(EnumComandos.AÑADIR_PRODUCTO_PEDIDO, new CMDTerminarPedido());
-		map_cmd.put(EnumComandos.ALMACENAR_PEDIDO, new CMDAlmacenarPedido());
-		map_cmd.put(EnumComandos.CANCELAR_PEDIDO, new CMDCancelarPedido());
-		
-	
+		map_cmd.put(EnumComandos.OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO, new CMDObtenerProductosProveedorPedido());
+		map_cmd.put(EnumComandos.INICIAR_VISTA_ALTA_PEDIDO, new CMDIniciarVistaAltaPedido());
 	}
 
 	// Metodos

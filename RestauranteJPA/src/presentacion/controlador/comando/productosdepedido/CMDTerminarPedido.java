@@ -1,4 +1,4 @@
-package presentacion.controlador.comando.pedido;
+package presentacion.controlador.comando.productosdepedido;
 
 import negocio.factoria.FactoriaNegocio;
 import negocio.pedido.SAPedido;

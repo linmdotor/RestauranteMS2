@@ -21,7 +21,7 @@ public class CMDAlmacenarPedido implements CMD{
 			try {
 	
 				if(serviciosPedido.almacenarPedido(tPedido)){
-					respuestaComando = new RespuestaCMD(EnumComandos.ALMACENAR_PEDIDO,"Se ha almacenado el nuevo Pedido, y actualizado el Stock de los productos");
+					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PEDIDO,"Se ha almacenado el nuevo Pedido, y actualizado el Stock de los productos");
 				}else
 					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al almacenar pedido. Error al insertar los datos.");	
 			

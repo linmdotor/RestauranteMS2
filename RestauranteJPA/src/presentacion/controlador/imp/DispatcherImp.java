@@ -14,9 +14,9 @@ import presentacion.controlador.RespuestaCMD;
 import presentacion.ventanas.VentanaCorrecto;
 import presentacion.ventanas.VentanaError;
 import presentacion.ventanas.VentanaPrincipal;
-import presentacion.ventanas.pedido.VentanaAltaPedido;
 import presentacion.ventanas.pedido.VentanaGestionPedidos;
 import presentacion.ventanas.producto.VentanaProducto;
+import presentacion.ventanas.productosdepedido.VentanaAltaPedido;
 import presentacion.ventanas.productosdeproveedor.VentanaGestionProductosProveedor;
 import presentacion.ventanas.proveedor.VentanaProveedor;
 
@@ -104,10 +104,6 @@ public class DispatcherImp extends Dispatcher {
 				VentanaGestionPedidos.obtenerInstancia().actualizar();
 				break;	
 				
-			case OBTENER_PROVEEDORES_DISPONIBLES:
-				VentanaGestionPedidos.obtenerInstancia().actualizarListaProveedores(respuestaCMD.getObjeto());
-				break; 
-				
 			case OBTENER_PEDIDOS:
 				VentanaGestionPedidos.obtenerInstancia().rellenarTablaPedidos(respuestaCMD.getObjeto());
 				break;
@@ -115,13 +111,12 @@ public class DispatcherImp extends Dispatcher {
 			case OBTENER_PRODUCTOS_PEDIDO:
 				VentanaGestionPedidos.obtenerInstancia().actualizarTablaProductos(respuestaCMD.getObjeto());
 				break;
-				
-			case ALMACENAR_PEDIDO:
-				new VentanaCorrecto((String) respuestaCMD.getObjeto());
-				VentanaGestionPedidos.obtenerInstancia().actualizar();
-				break;
-			
-			case CANCELAR_PEDIDO:
+					
+			case OBTENER_PROVEEDORES_DISPONIBLES:
+				VentanaGestionPedidos.obtenerInstancia().actualizarListaProveedores(respuestaCMD.getObjeto());
+				break; 
+							
+			case CORRECTO_PEDIDO:
 				new VentanaCorrecto((String) respuestaCMD.getObjeto());
 				VentanaGestionPedidos.obtenerInstancia().actualizar();
 				break;
@@ -131,11 +126,7 @@ public class DispatcherImp extends Dispatcher {
 			case INICIAR_VISTA_ALTA_PEDIDO:
 				VentanaAltaPedido.obtenerInstancia().actualizar(respuestaCMD.getObjeto());
 				break;
-				
-			case OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO:
-				VentanaAltaPedido.obtenerInstancia().rellenarTablaProductosProveedor(respuestaCMD.getObjeto());
-				break;
-				
+			
 			case ANADIR_PRODUCTO_A_PEDIDO:
 				VentanaAltaPedido.anadirProducto(respuestaCMD.getObjeto());
 				break;
@@ -147,13 +138,15 @@ public class DispatcherImp extends Dispatcher {
 			case MODIFICAR_CANTIDAD_PRODUCTO_DE_PEDIDO: 
 				VentanaAltaPedido.modificarCantidadProducto(respuestaCMD.getObjeto());
 				break;
-				
+			
+			case OBTENER_PRODUCTOS_PROVEEDOR_PEDIDO:
+				VentanaAltaPedido.obtenerInstancia().rellenarTablaProductosProveedor(respuestaCMD.getObjeto());
+				break;
+					
 			case TERMINAR_PEDIDO:
 				new VentanaCorrecto((String) respuestaCMD.getObjeto());
 				VentanaGestionPedidos.obtenerInstancia().actualizar();			
 				break;
-			
-			
 				
 			// GENERICOS
 			

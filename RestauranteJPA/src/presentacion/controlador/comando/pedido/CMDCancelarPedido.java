@@ -21,7 +21,7 @@ public class CMDCancelarPedido implements CMD{
 			try {
 	
 				if(serviciosPedido.cancelarPedido(tPedido)){
-					respuestaComando = new RespuestaCMD(EnumComandos.CANCELAR_PEDIDO,"Se ha cancelar el nuevo Pedido.");
+					respuestaComando = new RespuestaCMD(EnumComandos.CORRECTO_PEDIDO,"Se ha cancelar el nuevo Pedido.");
 				}else
 					respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al cancelar pedido. Error al insertar los datos.");	
 			

@@ -1,4 +1,4 @@
-package presentacion.ventanas.pedido;
+package presentacion.ventanas.productosdepedido;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
