@@ -141,10 +141,13 @@ public class VentanaAltaPedido extends JFrame {
 		tbProductosPedido.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
+					if (arg0.getValueIsAdjusting())
+					{
 						if (getTbProductosPedido().getSelectedRow() != -1)
 						{							
 							textFieldCantidad.setText(Integer.toString((int)getTbProductosPedido().getValueAt(getTbProductosPedido().getSelectedRow(), 3)));							
 						}
+					}
 					}
 		});
 		// --------- CONSTRUCCIÓN TABLA TODOS LOS PRODUCTOS-------------

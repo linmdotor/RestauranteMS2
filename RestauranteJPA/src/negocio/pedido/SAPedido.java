@@ -15,6 +15,4 @@ public interface SAPedido {
 	
 	public boolean cancelarPedido(int ID) throws Exception;
 
-	public Object obtenerPedidoProductos(int objeto) throws Exception;
-
 }

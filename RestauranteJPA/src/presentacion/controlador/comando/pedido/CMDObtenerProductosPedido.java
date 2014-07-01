@@ -14,7 +14,7 @@ public class CMDObtenerProductosPedido implements CMD {
 		RespuestaCMD respuestaCMD = null;
 		
 		try {
-			respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS_PEDIDO, serviciosPedidoProducto.obtenerProductosPedido((int) objeto ));
+			respuestaCMD = new RespuestaCMD(EnumComandos.OBTENER_PRODUCTOS_PEDIDO, serviciosPedidoProducto.obtenerProductosPedido((int) objeto));
 		} catch (Exception e) {
 			respuestaCMD = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
 			e.printStackTrace();

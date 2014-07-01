@@ -462,14 +462,14 @@ public class VentanaGestionPedidos extends JFrame{
 		tbPedidos.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent arg0) {
-
+					if (arg0.getValueIsAdjusting())
+					{
 						if (getTbPedidos().getSelectedRow() != -1)
 						{
-							//Añade en el formulario los datos del Proveedor del pedido actual
-							//ApplicationController.obtenerInstancia().handleRequest(EnumComandos.MODIFICAR_FORMULARIO_PEDIDO, getTbPedidos().getValueAt(getTbPedidos().getSelectedRow(),0) );
 							//Añade los datos de la tabla de productos (lista de productos del pedido actual)
 							ApplicationController.obtenerInstancia().handleRequest(EnumComandos.OBTENER_PRODUCTOS_PEDIDO, getTbPedidos().getValueAt(getTbPedidos().getSelectedRow(),0) );
 						}
+					}
 					}
 				});
 		
@@ -548,18 +548,18 @@ public class VentanaGestionPedidos extends JFrame{
 		tabla.addColumn("ID_PRODUCTO");
 		tabla.addColumn("PRECIO");
 		tabla.addColumn("CANTIDAD");
-
+		
 		if (objeto != null)
 		{
 			List<TProductoDePedido> lista = (List<TProductoDePedido>) objeto;
 			
-			for (int i = 0; i < lista.size(); i++) {
+			for (TProductoDePedido tproducto_pedido: lista) {
 	
 				fila = new Vector();
-				TProductoDePedido producto_pedido = lista.get(i);
-				fila.add(producto_pedido.getProducto());
-				fila.add(producto_pedido.getPrecio());
-				fila.add(producto_pedido.getCantidad());
+				
+				fila.add(tproducto_pedido.getProducto());
+				fila.add(tproducto_pedido.getPrecio());
+				fila.add(tproducto_pedido.getCantidad());
 	
 				tabla.addRow(fila);
 			}
