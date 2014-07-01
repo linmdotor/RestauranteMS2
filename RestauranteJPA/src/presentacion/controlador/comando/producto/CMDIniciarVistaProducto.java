@@ -21,7 +21,6 @@ public class CMDIniciarVistaProducto implements CMD {
 		}
 
 		return respuestacomando;
-
 	}
 			
 }
