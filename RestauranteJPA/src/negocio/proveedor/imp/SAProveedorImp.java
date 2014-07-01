@@ -263,9 +263,12 @@ public class SAProveedorImp implements SAProveedor {
 				em.lock(proveedor, LockModeType.OPTIMISTIC);
 				
 				//Valida que no ha sido eliminado antes de darlo de baja
-				if (proveedor != null){
+				if (proveedor != null)
+				{
 					if(!proveedor.isDisponible())
+					{
 						throw new Exception("Este proveedor ya está marcado como NO disponible.");
+					}
 					
 					proveedor.setDisponible(false);
 					respuesta = true;

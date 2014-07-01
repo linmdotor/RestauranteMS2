@@ -13,6 +13,7 @@ import negocio.pedido.transfer.TPedido;
 import negocio.producto.businessobject.Producto;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.productosdepedido.transfer.TProductoDePedido;
+import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 
 public class SAPedidoImp implements SAPedido {
@@ -23,7 +24,6 @@ public class SAPedidoImp implements SAPedido {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 
-		TPedido tPedido;
 		Pedido pedidoobtenido = null;
 		TypedQuery<Pedido> query = null;
 
@@ -43,7 +43,6 @@ public class SAPedidoImp implements SAPedido {
 		} catch (NoResultException ex) {
 
 			em.getTransaction().rollback();
-
 			throw new Exception("No existe el pedido con ID: " + ID);
 
 		} catch (Exception ex) {
@@ -58,10 +57,7 @@ public class SAPedidoImp implements SAPedido {
 
 		}
 
-		tPedido = new TPedido(pedidoobtenido);
-
-		return tPedido;
-
+		return new TPedido(pedidoobtenido);
 	}
 
 	@Override
@@ -70,7 +66,6 @@ public class SAPedidoImp implements SAPedido {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 
-		
 		TypedQuery query = em.createQuery("SELECT e FROM Pedido e",	Pedido.class);
 
 		List<Pedido> listaPedido = query.getResultList();
@@ -78,8 +73,7 @@ public class SAPedidoImp implements SAPedido {
 		em.close();
 		emf.close();
 		
-		List<TPedido> listatPedido = new ArrayList<TPedido>();
-		
+		List<TPedido> listatPedido = new ArrayList<TPedido>();		
 		for(Pedido p : listaPedido)
 		{
 			listatPedido.add(new TPedido(p));
@@ -99,18 +93,35 @@ public class SAPedidoImp implements SAPedido {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 
+		em.getTransaction().begin();
+		
 		try {
+			//Realiza todas las validaciones del transfer
+			if(tPedido == null)
+			{
+				throw new Exception("Pedido nulo");
+			}
+			
+			//no validamos el IDPedido pues vamos a crearlo
+			
+			if(tPedido.getId_proveedor() < 0)
+			{
+				throw new Exception("El ID Proveedor debe ser >= 0");			
+			}
 			
 			//obtenemos proveedor			
-			em.getTransaction().begin();
-			
 			queryProveedor = em.createNamedQuery(Proveedor.QUERY_OBTENER_PROVEEDOR, Proveedor.class);
 			
 			queryProveedor.setParameter("arg", tPedido.getId_proveedor());
 			
-			proveedorObtenido = queryProveedor.getSingleResult();
-			
+			proveedorObtenido = queryProveedor.getSingleResult();			
 			em.lock(proveedorObtenido, LockModeType.OPTIMISTIC);
+			
+			//Verifica que sigue existinedo el proveedor y está disponible
+			if(proveedorObtenido == null || !proveedorObtenido.isDisponible())
+			{
+				throw new Exception("El proveedor con ID: " + tPedido.getId_proveedor() + " ya no existe o no está disponible");
+			}
 			
 			// sacamos el pedido con id mayor
 			List<TPedido> lista_pedidos = obtenerPedidos();
@@ -125,6 +136,12 @@ public class SAPedidoImp implements SAPedido {
 						ultimo_id_usado = lista_pedidos.get(i).getId_pedido();
 					}
 				}
+			}
+			
+			//verifica que no existe un Pedido con el ID que vamos a usar
+			if(em.find(Producto.class, (tPedido.getId_pedido())) != null)
+			{
+				throw new Exception("El pedido con el ID que se ha autogenerado: " + tPedido.getId_proveedor() + " ya existe");
 			}
 
 			// creamos un pedido con el último id usado + 1
@@ -148,9 +165,26 @@ public class SAPedidoImp implements SAPedido {
 				
 				queryProducto.setParameter("arg", tproductoPedido.getProducto());
 				
-				Producto productoObtenido = queryProducto.getSingleResult();
-				
+				Producto productoObtenido = queryProducto.getSingleResult();				
 				em.lock(productoObtenido, LockModeType.OPTIMISTIC);
+				
+				//validamos que el producto sigue existiendo, estando disponible
+				if(productoObtenido == null || !productoObtenido.isDisponible())
+				{
+					throw new Exception("El producto con ID: " + tproductoPedido.getProducto() + " ya no existe o no está disponible");
+				}
+				
+				//validamos que el producto nos lo ofrece nuestro proveedor
+				boolean encontrado = false;
+				for(ProductoDeProveedor listaproveedores : productoObtenido.getListaProductosProveedor())
+				{
+					if(listaproveedores.getProveedor().getId_proveedor() == tPedido.getId_proveedor())
+						encontrado = true;
+				}
+				if(!encontrado)
+				{
+					throw new Exception("El producto con ID: " + tproductoPedido.getProducto() + " ya no es ofrecido por el proveedor " + tPedido.getId_proveedor());
+				}
 				
 				//persistimos el producto-pedido
 				em.persist(new ProductoDePedido(productoObtenido, pedido, tproductoPedido.getCantidad(), tproductoPedido.getPrecio()));
@@ -175,23 +209,47 @@ public class SAPedidoImp implements SAPedido {
 
 	@Override
 	public boolean almacenarPedido(TPedido tPedido) throws Exception {
+		
+		boolean resultado = false;
+		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 
 		Pedido pedidoobtenido = null;
 		TypedQuery<Pedido> query = null;
 
+		em.getTransaction().begin();
+		
 		try {
-			em.getTransaction().begin();
-
+			//Realiza todas las validaciones del transfer
+			if(tPedido == null)
+			{
+				throw new Exception("Pedido nulo");
+			}
+			
+			if(tPedido.getId_pedido() < 0)
+			{
+				throw new Exception("El ID Pedido debe ser >= 0");			
+			}
+			
+			//Como en el almacenaje no se va a hacer nada con el proveedor y además
+				//sólo se tiene en cuenta el estado de los productos CUANDO SE HIZO EL PEDIDO, no estado actual
+				//no es necesario validar nada más
+			
+			//Como todo es correcto, lo modifica
 			query = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
 
 			query.setParameter("arg", tPedido.getId_pedido());
 
 			pedidoobtenido = query.getSingleResult();
-
 			em.lock(pedidoobtenido, LockModeType.OPTIMISTIC);
 
+			//Verifica que sigue existinedo el pedido
+			if(pedidoobtenido == null)
+			{
+				throw new Exception("El pedido con ID: " + tPedido.getId_pedido() + " ya no existe");
+			}
+			
 			pedidoobtenido.setFechaEntregado(getFecha());
 			
 			em.persist(pedidoobtenido);
@@ -200,11 +258,19 @@ public class SAPedidoImp implements SAPedido {
 			{
 				Producto p = prod_ped.getProducto();
 				em.lock(p, LockModeType.OPTIMISTIC);
+				
+				//Verifica que cada producto sigue existiendo
+				if (p == null)
+				{
+					throw new Exception("El producto del pedido con ID " + p.getId_producto() + " ya no existe, no se puede almacenar el pedido");
+				}
+				
 				p.setStock(p.getStock() + prod_ped.getCantidad());
 				em.persist(p);
 			}
 			
 			em.getTransaction().commit();
+			resultado = true;
 
 		} catch (NoResultException ex) {
 
@@ -223,7 +289,7 @@ public class SAPedidoImp implements SAPedido {
 
 		}
 
-		return true;
+		return resultado;
 	}
 
 	@Override
@@ -235,17 +301,37 @@ public class SAPedidoImp implements SAPedido {
 		Pedido pedidoobtenido = null;
 		TypedQuery<Pedido> query = null;
 
+		em.getTransaction().begin();
+		
 		try {
-			em.getTransaction().begin();
-
+			//Realiza todas las validaciones del transfer
+			if(tPedido == null)
+			{
+				throw new Exception("Pedido nulo");
+			}
+			
+			if(tPedido.getId_pedido() < 0)
+			{
+				throw new Exception("El ID Pedido debe ser >= 0");			
+			}
+			
+			//Como en la cancelación no se va a hacer nada con los productos ni proveedor
+				//no es necesario validar nada más
+			
+			//Como todo es correcto, lo modifica
 			query = em.createNamedQuery(Pedido.QUERY_OBTENER_PEDIDO, Pedido.class);
 
 			query.setParameter("arg", tPedido.getId_pedido());
 
 			pedidoobtenido = query.getSingleResult();
-
 			em.lock(pedidoobtenido, LockModeType.OPTIMISTIC);
 
+			//Verifica que sigue existinedo el pedido
+			if(pedidoobtenido == null)
+			{
+				throw new Exception("El pedido con ID: " + tPedido.getId_pedido() + " ya no existe");
+			}
+					
 			pedidoobtenido.setFechaCancelado(getFecha());
 			
 			em.persist(pedidoobtenido);

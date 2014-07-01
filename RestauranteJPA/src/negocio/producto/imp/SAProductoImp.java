@@ -290,7 +290,8 @@ public class SAProductoImp implements SAProducto {
 			Producto producto = em.find(Producto.class, (tProducto.getId_producto()));
 			em.lock(producto, LockModeType.OPTIMISTIC);
 				
-			if (producto != null){
+			if (producto != null)
+			{
 				
 				//Comprueba que el nuevo nombre no se repite (si alguien insertara el mismo paralelamente)
 				if(obtenerProductoPorNombre(tProducto.getNombre()) != null && !tProducto.getNombre().equals(producto.getNombre()))
@@ -300,7 +301,9 @@ public class SAProductoImp implements SAProducto {
 			
 				if((tProducto instanceof TProductoPerecedero && producto instanceof ProductoNoPerecedero)
 						|| (tProducto instanceof TProductoNoPerecedero && producto instanceof ProductoPerecedero))
+				{
 					throw new Exception("No se puede modificar el tipo del Producto.");	    	
+				}
 				
 				//Como todo es correcto, lo modifica
 				if (producto instanceof ProductoPerecedero) 
@@ -352,9 +355,12 @@ public class SAProductoImp implements SAProducto {
 				em.lock(producto, LockModeType.OPTIMISTIC);
 				
 				//Valida que el producto sigue existiendo antes de darlo de baja
-				if (producto != null){
+				if (producto != null)
+				{
 					if(!producto.isDisponible())
+					{
 						throw new Exception("Este producto ya está marcado como NO disponible.");
+					}
 					producto.setDisponible(false);
 					respuesta = true;
 					em.getTransaction().commit();		
