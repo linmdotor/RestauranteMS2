@@ -205,6 +205,7 @@ public class SAProductoImp implements SAProducto {
 				throw new Exception("Debe ponerle un nombre al producto");			
 			}
 			
+			//Valida que el nombre no esté repetido
 			if(obtenerProductoPorNombre(tProducto.getNombre()) != null)
 			{
 				throw new Exception("Ya existe un producto con ese nombre");
@@ -216,7 +217,6 @@ public class SAProductoImp implements SAProducto {
 			} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
 		
 		
-			
 			//Como todo es correcto, lo inserta
 			if(tProducto instanceof TProductoPerecedero){
 				
@@ -260,42 +260,43 @@ public class SAProductoImp implements SAProducto {
 		em.getTransaction().begin();
 			
 		try {
+			//Realiza todas las validaciones del transfer
+			if(tProducto == null)
+			{
+				throw new Exception("Producto nulo");
+			}
 			
+			if(!tProducto.isDisponible())
+			{
+				throw new Exception("Se debe insertar el producto como 'disponible'");
+			}
+			
+			if(tProducto.getStock() < 0)
+			{
+				throw new Exception("El Stock del producto no puede ser negativo");
+			}
+			
+			if(tProducto.getNombre().length() <= 0)
+			{
+				throw new Exception("Debe ponerle un nombre al producto");			
+			}
+			
+			if(tProducto instanceof TProductoPerecedero)
+			{	
+				validarFecha(((TProductoPerecedero) tProducto).getFechaCaducidad());	
+			} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
+						
+			//Obtiene el producto que va a modificar
 			Producto producto = em.find(Producto.class, (tProducto.getId_producto()));
+			em.lock(producto, LockModeType.OPTIMISTIC);
 				
 			if (producto != null){
 				
-				//Realiza todas las validaciones del transfer
-				if(tProducto == null)
-				{
-					throw new Exception("Producto nulo");
-				}
-				
-				if(!tProducto.isDisponible())
-				{
-					throw new Exception("Se debe insertar el producto como 'disponible'");
-				}
-				
-				if(tProducto.getStock() < 0)
-				{
-					throw new Exception("El Stock del producto no puede ser negativo");
-				}
-				
-				if(tProducto.getNombre().length() <= 0)
-				{
-					throw new Exception("Debe ponerle un nombre al producto");			
-				}
-				
-				//Comprueba que el nuevo nombre no se repite
+				//Comprueba que el nuevo nombre no se repite (si alguien insertara el mismo paralelamente)
 				if(obtenerProductoPorNombre(tProducto.getNombre()) != null && !tProducto.getNombre().equals(producto.getNombre()))
 				{
 					throw new Exception("Ya existe un producto con ese nombre");
 				}
-				
-				if(tProducto instanceof TProductoPerecedero)
-				{	
-					validarFecha(((TProductoPerecedero) tProducto).getFechaCaducidad());	
-				} //Si es producto no perecedero, Las recomendaciones no tienen ningún tipo de restricción que validar
 			
 				if((tProducto instanceof TProductoPerecedero && producto instanceof ProductoNoPerecedero)
 						|| (tProducto instanceof TProductoNoPerecedero && producto instanceof ProductoPerecedero))
@@ -348,8 +349,12 @@ public class SAProductoImp implements SAProducto {
 			try {
 				
 				Producto producto = em.find(Producto.class, ID);
-					
+				em.lock(producto, LockModeType.OPTIMISTIC);
+				
+				//Valida que el producto sigue existiendo antes de darlo de baja
 				if (producto != null){
+					if(!producto.isDisponible())
+						throw new Exception("Este producto ya está marcado como NO disponible.");
 					producto.setDisponible(false);
 					respuesta = true;
 					em.getTransaction().commit();		

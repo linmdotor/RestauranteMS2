@@ -227,7 +227,10 @@ public class VentanaGestionProductosProveedor extends JFrame {
 		TProductoDeProveedor tProductoDeProveedor = new TProductoDeProveedor();
 		
 		tProductoDeProveedor.setProveedor(Integer.parseInt(textFieldID_Proveedor.getText()));
-		tProductoDeProveedor.setProducto(Integer.parseInt(tabla.getValueAt(tabla.getSelectedRow(), 0).toString()));
+		if(tabla.getSelectedRow() != -1)
+			tProductoDeProveedor.setProducto(Integer.parseInt(tabla.getValueAt(tabla.getSelectedRow(), 0).toString()));
+		else
+			tProductoDeProveedor.setProducto(-1);
 		
 		if (textFieldPrecio.getText().length() > 0)
 			tProductoDeProveedor.setPrecio(Double.parseDouble(textFieldPrecio.getText()));

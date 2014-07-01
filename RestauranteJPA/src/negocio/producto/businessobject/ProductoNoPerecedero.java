@@ -1,7 +1,6 @@
 package negocio.producto.businessobject;
 
 import javax.persistence.Entity;
-import javax.persistence.Version;
 
 import negocio.producto.transfer.TProducto;
 import negocio.producto.transfer.TProductoNoPerecedero;
@@ -9,12 +8,7 @@ import negocio.producto.transfer.TProductoNoPerecedero;
 @Entity
 public class ProductoNoPerecedero extends Producto{
 	
-	/**
-	 * 
-	 */
-	/*@Version
-	 private long version;*/
-	
+	//Atributos
 	private String recomendaciones;
 
 	public ProductoNoPerecedero() {

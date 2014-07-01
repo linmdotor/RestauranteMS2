@@ -7,9 +7,7 @@ import javax.persistence.*;
 
 import negocio.producto.transfer.TProducto;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
-import negocio.productosdeproveedor.*;
 import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
-import negocio.proveedor.businessobject.Proveedor;
 
 
 /**
@@ -27,17 +25,13 @@ import negocio.proveedor.businessobject.Proveedor;
 
 public class Producto implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	// Atributos
+	
 	public static final String QUERY_OBTENER_PRODUCTO = "negocio.producto.objetoNegocio.Producto.findProductoById_producto";
 	public static final String QUERY_OBTENER_PRODUCTO_NOMBRE = "negocio.producto.objetoNegocio.Producto.findProductoByNombre";
 	public static final String QUERY_OBTENER_TODOS_PRODUCTOS = "negocio.producto.objetoNegocio.Producto.buscarTodosProductos";
 	
-	/*@Version
-	 private long version;*/
+	// Atributos
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +39,7 @@ public class Producto implements Serializable {
 	protected boolean disponible;
 	protected int stock;
 	protected String nombre;
+	
 	@Version
     private int version;
 	

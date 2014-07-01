@@ -8,10 +8,7 @@ import negocio.proveedor.businessobject.Proveedor;
 @Entity
 @IdClass(ProductoDeProveedorId.class)
 public class ProductoDeProveedor {
-	
-	/*@Version
-	 private long version;*/
-	
+
 	@Id
 	@ManyToOne
 	private Proveedor proveedor;

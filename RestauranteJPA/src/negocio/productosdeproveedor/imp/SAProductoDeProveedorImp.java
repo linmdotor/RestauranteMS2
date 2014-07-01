@@ -19,47 +19,59 @@ import negocio.proveedor.businessobject.Proveedor;
 
 public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 
-	public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor)  throws Exception {
-		
-		boolean resultado = false;
-		
+	
+	@Override
+	public TProductoDeProveedor obtenerProductoProveedor(int IDprod, int IDprov) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
 		EntityManager em = emf.createEntityManager();
-
-		Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
-		Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
 		
-		ProductoDeProveedor precioProductoProveedor = new ProductoDeProveedor(proveedor, producto, tProductoDeProveedor.getPrecio());
-
-		try {
+		TProductoDeProveedor resultado = null;
+		
+		Proveedor proveedorObtenido = em.find(Proveedor.class, IDprov);
+		TypedQuery<Proveedor> query = null;
+		
+		try{
 			
 			em.getTransaction().begin();
 			
-			em.lock(proveedor, LockModeType.OPTIMISTIC);
+			query = em.createNamedQuery(Proveedor.QUERY_OBTENER_PROVEEDOR, Proveedor.class);
 			
-			em.persist(precioProductoProveedor);
+			query.setParameter("arg", IDprov);
 			
-			em.getTransaction().commit();	
+			proveedorObtenido = query.getSingleResult();
 			
-			resultado =  true;
-		
-		} catch(OptimisticLockException oe) {			
+			em.lock(proveedorObtenido, LockModeType.OPTIMISTIC);
+			
+			em.getTransaction().commit();
+							
+		} catch(NoResultException ex){
+			
 			em.getTransaction().rollback();			
-			throw new Exception("No se pudo añadir el producto al proveedor, porque está bloqueado");
-		}			
-		catch (Exception e) {			
-			em.getTransaction().rollback();			
-			throw new Exception("No se pudo añadir el producto al proveedor.");
+			throw new Exception("No existe el proveedor con ID: " + IDprov);
+			
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			throw ex;
+			
 		} finally {
-			 
+
 			em.close();
 			emf.close();
-			
-		 }			
+	
+		}		
+		
+		List<ProductoDeProveedor> listaproductos = proveedorObtenido.getListaProductosProveedor();
+		
+		for(ProductoDeProveedor p : listaproductos)
+		{
+			if(p.getProducto().getId_producto() == IDprod)
+				return(new TProductoDeProveedor(p));
+		}
 		
 		return resultado;
+		
 	}
-
+	
 	@Override
 	public List<TProductoDeProveedor> obtenerProductosProveedor(int ID) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
@@ -112,6 +124,74 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 		
 	}
 
+public boolean anadirProductoProveedor(TProductoDeProveedor tProductoDeProveedor)  throws Exception {
+		
+		boolean resultado = false;
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");		
+		EntityManager em = emf.createEntityManager();
+
+		em.getTransaction().begin();
+		
+		try {
+			//Realiza todas las validaciones del transfer
+			if(tProductoDeProveedor == null)
+			{
+				throw new Exception("ProductoProveedor nulo");
+			}
+			
+			if(tProductoDeProveedor.getPrecio() < 0)
+			{
+				throw new Exception("El precio del producto debe ser >= 0");
+			}
+			
+			if(tProductoDeProveedor.getProducto() < 0)
+			{
+				throw new Exception("El ID de Producto tiene que ser >= 0");
+			}
+			
+			if(tProductoDeProveedor.getProveedor() < 0)
+			{
+				throw new Exception("El ID de Proveedor tiene que ser >= 0");
+			}
+			
+			//Valida que no se haya insertado ya ese producto-proveedor
+			if(obtenerProductoProveedor(tProductoDeProveedor.getProducto(), tProductoDeProveedor.getProveedor()) != null)
+			{
+				throw new Exception("Ya existe ese producto en ese proveedor");
+			}
+			
+			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+			em.lock(proveedor, LockModeType.OPTIMISTIC);
+			Producto producto = em.find(Producto.class, tProductoDeProveedor.getProducto());
+			em.lock(producto, LockModeType.OPTIMISTIC);
+			
+			ProductoDeProveedor precioProductoProveedor = new ProductoDeProveedor(proveedor, producto, tProductoDeProveedor.getPrecio());
+					
+			em.persist(precioProductoProveedor);
+			
+			em.getTransaction().commit();	
+			
+			resultado =  true;
+		
+		} catch(OptimisticLockException oe) {			
+			em.getTransaction().rollback();			
+			throw new Exception("No se pudo añadir el producto al proveedor, porque está bloqueado");
+		}			
+		catch (Exception e) {			
+			em.getTransaction().rollback();			
+			throw e;
+		} finally {
+			 
+			em.close();
+			emf.close();
+			
+		 }			
+		
+		return resultado;
+	}
+
+	
 	@Override
 	public boolean modificarProductoProveedor(TProductoDeProveedor tProductoDeProveedor) throws Exception {
 
@@ -120,12 +200,38 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");	
 		EntityManager em = emf.createEntityManager();
 		
+		em.getTransaction().begin();
+		
 		try {
-						
-			em.getTransaction().begin();			
-
-			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
 			
+			//Realiza todas las validaciones del transfer
+			if(tProductoDeProveedor == null)
+			{
+				throw new Exception("ProductoProveedor nulo");
+			}
+			
+			if(tProductoDeProveedor.getPrecio() < 0)
+			{
+				throw new Exception("El precio del producto debe ser >= 0");
+			}
+			
+			if(tProductoDeProveedor.getProducto() < 0)
+			{
+				throw new Exception("El ID de Producto tiene que ser >= 0");
+			}
+			
+			if(tProductoDeProveedor.getProveedor() < 0)
+			{
+				throw new Exception("El ID de Proveedor tiene que ser >= 0");
+			}
+			
+			//Valida que exista ese producto-proveedor
+			if(obtenerProductoProveedor(tProductoDeProveedor.getProducto(), tProductoDeProveedor.getProveedor()) == null)
+			{
+				throw new Exception("No existe ese producto en ese proveedor");
+			}
+												
+			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());			
 			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Actualizamos ese producto en concreto buscando en la lista cual es el que corresponde a ese ID			
@@ -144,7 +250,7 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 		}			
 		catch (Exception e) {				
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo modificar el producto al proveedor.");				
+			throw e;				
 		} finally {
 			 
 			em.close();
@@ -163,12 +269,35 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UNIDAD_PERSISTENCIA_RESTAURANTE");
 		EntityManager em = emf.createEntityManager();
 		
+		em.getTransaction().begin();
+		
 		try {
 			
-			em.getTransaction().begin();			
-
-			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());
+			//Realiza todas las validaciones del transfer
+			if(tProductoDeProveedor == null)
+			{
+				throw new Exception("ProductoProveedor nulo");
+			}
 			
+			//Como es para eliminar, el precio nos da igual
+			
+			if(tProductoDeProveedor.getProducto() < 0)
+			{
+				throw new Exception("El ID de Producto tiene que ser >= 0");
+			}
+			
+			if(tProductoDeProveedor.getProveedor() < 0)
+			{
+				throw new Exception("El ID de Proveedor tiene que ser >= 0");
+			}
+			
+			//Valida que exista ese producto-proveedor
+			if(obtenerProductoProveedor(tProductoDeProveedor.getProducto(), tProductoDeProveedor.getProveedor()) == null)
+			{
+				throw new Exception("No existe ese producto en ese proveedor");
+			}
+			
+			Proveedor proveedor = em.find(Proveedor.class, tProductoDeProveedor.getProveedor());			
 			em.lock(proveedor, LockModeType.OPTIMISTIC);
 			
 			// Borramos	ese producto en concreto buscando en la lista cual es el que corresponde a ese ID	
@@ -194,7 +323,7 @@ public class SAProductoDeProveedorImp implements SAProductoDeProveedor{
 		}			
 		catch (Exception e) {		
 			em.getTransaction().rollback();
-			throw new Exception("No se pudo eliminar el producto al proveedor.");
+			throw e;
 		} finally {
 			 
 			em.close();

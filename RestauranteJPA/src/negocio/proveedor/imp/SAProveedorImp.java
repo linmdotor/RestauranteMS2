@@ -11,15 +11,9 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import negocio.producto.businessobject.Producto;
-import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
 import negocio.proveedor.SAProveedor;
 import negocio.proveedor.businessobject.Proveedor;
 import negocio.proveedor.transfer.TProveedor;
-import negocio.proveedor.transfer.ValidarTProveedor;
-import presentacion.controlador.EnumComandos;
-import presentacion.controlador.RespuestaCMD;
-import principal.Principal;
 
 public class SAProveedorImp implements SAProveedor {
 
@@ -149,6 +143,8 @@ public class SAProveedorImp implements SAProveedor {
 
 			}
 			
+			//Los nombres en proveedor se pueden repetir, por lo que no hay que validarlo
+			
 			//Como todo es correcto, lo inserta
 			Proveedor proveedor = new Proveedor(tproveedor);
 				
@@ -187,39 +183,41 @@ public class SAProveedorImp implements SAProveedor {
 		em.getTransaction().begin();
 		
 		try {
+			//Realiza todas las validaciones del transfer
+			if(tProveedor == null)
+			{
+				throw new Exception("Proveedor nulo");
+			}
 			
-			Proveedor proveedor = em.find(Proveedor.class, (tProveedor.getId_proveedor()));
-				
-			if (proveedor != null){
-				
-				//Realiza todas las validaciones del transfer
-				if(tProveedor == null)
+			if(tProveedor.getNombre().length() <= 0)
+			{
+				throw new Exception("Debe ponerle un nombre al proveedor");			
+			}
+			
+			if(!tProveedor.isDisponible())
+			{
+				throw new Exception("Se debe modificar el proveedor como 'disponible'");
+			}
+			
+			validarNIF(tProveedor.getNIF());
+			
+			for(int i = 0; i < tProveedor.getTelefono().length();i++)
+			{	
+				if(tProveedor.getTelefono().charAt(i)<'0' ||  tProveedor.getTelefono().charAt(i)>'9')
 				{
-					throw new Exception("Proveedor nulo");
+					throw new Exception("el teléfono sólo debe contener numeros");
 				}
-				
-				if(tProveedor.getNombre().length() <= 0)
-				{
-					throw new Exception("Debe ponerle un nombre al proveedor");			
-				}
-				
-				if(!tProveedor.isDisponible())
-				{
-					throw new Exception("Se debe insertar el proveedor como 'disponible'");
-				}
-				
-				validarNIF(tProveedor.getNIF());
-				
-				for(int i = 0; i < tProveedor.getTelefono().length();i++)
-				{	
-					if(tProveedor.getTelefono().charAt(i)<'0' ||  tProveedor.getTelefono().charAt(i)>'9')
-					{
-						throw new Exception("el teléfono sólo debe contener numeros");
-					}
 
-				}
-				
-				//Como todo es correcto, lo inserta
+			}
+			
+			//Como todo es correcto, lo inserta
+			Proveedor proveedor = em.find(Proveedor.class, (tProveedor.getId_proveedor()));
+			em.lock(proveedor, LockModeType.OPTIMISTIC);
+			
+				//valida que no lo han eliminado
+			if (proveedor != null)
+			{
+
 				proveedor.setAll(tProveedor);					
 				em.getTransaction().commit();		
 				resultado = true;
@@ -262,8 +260,13 @@ public class SAProveedorImp implements SAProveedor {
 			try {
 				
 				Proveedor proveedor = em.find(Proveedor.class, ID);
-					
+				em.lock(proveedor, LockModeType.OPTIMISTIC);
+				
+				//Valida que no ha sido eliminado antes de darlo de baja
 				if (proveedor != null){
+					if(!proveedor.isDisponible())
+						throw new Exception("Este proveedor ya está marcado como NO disponible.");
+					
 					proveedor.setDisponible(false);
 					respuesta = true;
 					em.getTransaction().commit();		

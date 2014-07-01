@@ -4,20 +4,14 @@
 package negocio.producto.businessobject;
 
 import javax.persistence.Entity;
-import javax.persistence.Version;
 
 import negocio.producto.transfer.TProducto;
 import negocio.producto.transfer.TProductoPerecedero;
 
 @Entity
 public class ProductoPerecedero extends Producto{
-
-	/**
-	 * 
-	 */
-	/*@Version
-	 private long version;*/
 	
+	//Atributos
 	private String fechaCaducidad;
 	
 	public ProductoPerecedero() {

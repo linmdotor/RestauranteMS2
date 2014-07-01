@@ -17,8 +17,8 @@ public class CMDAnadirProductoProveedor implements CMD {
 		SAProductoDeProveedor serviciosProductoProveedor = FactoriaNegocio.obtenerInstancia().generaSAProductosDeProveedor();
 		RespuestaCMD respuestacomando = null;
 		
-		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) {
-
+		if(new ValidarTProductoDeProveedor().productoCorrecto((TProductoDeProveedor) objeto)) 
+		{
 			try {			
 				if(serviciosProductoProveedor.anadirProductoProveedor((TProductoDeProveedor)objeto))
 					respuestacomando = new RespuestaCMD(EnumComandos.CORRECTO_PRODUCTO_PROVEEDOR, "Se ha añadido el Producto al Proveedor.");

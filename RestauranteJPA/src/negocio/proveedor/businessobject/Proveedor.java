@@ -38,11 +38,6 @@ import negocio.proveedor.transfer.TProveedor;
 
 public class Proveedor implements Serializable {
 	
-	// Atributos
-	
-	/*@Version
-	 private long version;*/
-
 	/**
 	 * 
 	 */
@@ -50,6 +45,7 @@ public class Proveedor implements Serializable {
 	public static final String QUERY_OBTENER_PROVEEDOR = "negocio.proveedor.objetoNegocio.Proveedor.findProveedor";
 	public static final String QUERY_OBTENER_TODOS_PROVEEDORES = "negocio.proveedor.objetoNegocio.Proveedor.buscarTodosProveedores";
 
+	// Atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id_proveedor;
@@ -62,10 +58,7 @@ public class Proveedor implements Serializable {
     private int version;
 	// Relaciones JPA
 	
-    //@ManyToMany(mappedBy = "listaProveedores")
-    //private List<Producto> listaProductos;
-
-	@OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
     private List<ProductoDeProveedor> listaProductosProveedor;
 	
 	@OneToMany(mappedBy="proveedor", cascade = CascadeType.PERSIST)
@@ -108,16 +101,7 @@ public class Proveedor implements Serializable {
 		this.listaProductosProveedor = listaProductosProveedor;
 	}
 
-    /*public List<Producto> getListaProductos() {
-		return listaProductos;
-	}
-
-	public void setListaProductos(List<Producto> listaProductos) {
-		this.listaProductos = listaProductos;
-	}*/
-	
-
-	public int getId_proveedor() {
+    public int getId_proveedor() {
 		return id_proveedor;
 	}
 
