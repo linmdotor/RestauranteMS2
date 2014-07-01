@@ -6,16 +6,12 @@ import negocio.producto.businessobject.Producto;
 import javax.persistence.*;
 
 
-
-/**
- * Entity implentation class for Entity: PedidoProducto
- *
- */
 @Entity  
 @IdClass(ProductoDePedidoID.class) 
 public class ProductoDePedido {
 
 	//Atributos
+	
 	@Id
 	@ManyToOne
 	private Pedido pedido;

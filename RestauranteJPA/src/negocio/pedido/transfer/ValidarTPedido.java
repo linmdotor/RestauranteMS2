@@ -7,10 +7,10 @@ public class ValidarTPedido {
 
 		boolean productoCorrecto = false;
 
-		if (tPedido.getFechaCancelado() != null && tPedido.getFechaCancelado() != ""
-		&&  tPedido.getFechaEntregado() != null && tPedido.getFechaEntregado() != ""
-		&&  tPedido.getFechaRealizado() != null && tPedido.getFechaRealizado() != ""
-		&&  tPedido.getId_pedido() > 0 && tPedido.getId_proveedor() >0)
+		if (tPedido.getFechaCancelado().length() > 0
+		&&  tPedido.getFechaEntregado().length() > 0
+		&&  tPedido.getFechaRealizado().length() > 0
+		&&  tPedido.getId_pedido() > 0 && tPedido.getId_proveedor() > 0)
 		{
 			productoCorrecto = true;
 		}

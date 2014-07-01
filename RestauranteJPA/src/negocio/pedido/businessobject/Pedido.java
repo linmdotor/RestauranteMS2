@@ -22,7 +22,6 @@ import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.proveedor.businessobject.Proveedor;
 
 
-
 @Entity
 @Table(name = "pedidos", uniqueConstraints = { @UniqueConstraint(columnNames = "id_pedido") })
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -32,11 +31,11 @@ import negocio.proveedor.businessobject.Proveedor;
 })
 public class Pedido{
 
-	// Atributos
-	
 	public static final String QUERY_OBTENER_PEDIDO = "obtenerPedido";
 	public static final String QUERY_OBTENER_TODOS_PEDIDOS = "obtenerTodosPedidos";
 
+	// Atributos
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id_pedido;

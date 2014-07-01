@@ -14,18 +14,8 @@ import negocio.pedido.businessobject.Pedido;
 import negocio.productosdepedido.SAProductoDePedido;
 import negocio.productosdepedido.businessobject.ProductoDePedido;
 import negocio.productosdepedido.transfer.TProductoDePedido;
-import negocio.productosdeproveedor.businessobject.ProductoDeProveedor;
-import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
-import negocio.proveedor.businessobject.Proveedor;
 
 public class SAProductoDePedidoImp implements SAProductoDePedido {
-
-	@Override
-	public boolean anadirProductoPedido(TProductoDePedido tProductoDePedido)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public List<TProductoDePedido> obtenerProductosPedido(int ID) throws Exception
@@ -44,16 +34,14 @@ public class SAProductoDePedidoImp implements SAProductoDePedido {
 			
 			query.setParameter("arg", ID);
 			
-			pedidoObtenido = query.getSingleResult();
-			
+			pedidoObtenido = query.getSingleResult();			
 			em.lock(pedidoObtenido, LockModeType.OPTIMISTIC);
 			
 			em.getTransaction().commit();
 							
 		} catch(NoResultException ex){
 			
-			em.getTransaction().rollback();
-			
+			em.getTransaction().rollback();			
 			throw new Exception("No existe el pedido con ID: " + ID);
 			
 		} catch (Exception ex) {
@@ -78,20 +66,6 @@ public class SAProductoDePedidoImp implements SAProductoDePedido {
 		
 		return listatProd;
 		
-	}
-
-	@Override
-	public boolean modificarProductoPedido(TProductoDePedido tProductoDePedido)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean bajaProductoPedido(TProductoDePedido tProductoDePedido)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
