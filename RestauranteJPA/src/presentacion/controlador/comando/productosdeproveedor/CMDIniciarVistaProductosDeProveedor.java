@@ -2,8 +2,6 @@
 package presentacion.controlador.comando.productosdeproveedor;
 
 import negocio.factoria.FactoriaNegocio;
-import negocio.producto.SAProducto;
-import negocio.productosdeproveedor.SAProductoDeProveedor;
 import negocio.proveedor.SAProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;

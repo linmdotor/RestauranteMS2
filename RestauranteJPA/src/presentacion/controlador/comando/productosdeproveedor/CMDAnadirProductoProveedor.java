@@ -1,9 +1,6 @@
 package presentacion.controlador.comando.productosdeproveedor;
 
 import negocio.factoria.FactoriaNegocio;
-import negocio.producto.SAProducto;
-import negocio.producto.transfer.TProducto;
-import negocio.producto.transfer.ValidarTProducto;
 import negocio.productosdeproveedor.SAProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
 import negocio.productosdeproveedor.transfer.ValidarTProductoDeProveedor;

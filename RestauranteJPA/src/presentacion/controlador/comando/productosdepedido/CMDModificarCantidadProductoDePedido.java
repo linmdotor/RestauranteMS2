@@ -1,7 +1,5 @@
 package presentacion.controlador.comando.productosdepedido;
 
-import negocio.factoria.FactoriaNegocio;
-import negocio.pedido.SAPedido;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;

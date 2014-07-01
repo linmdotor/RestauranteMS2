@@ -1,9 +1,5 @@
 package presentacion.controlador.comando.productosdeproveedor;
 
-import negocio.factoria.FactoriaNegocio;
-import negocio.productosdeproveedor.SAProductoDeProveedor;
-import negocio.productosdeproveedor.transfer.TProductoDeProveedor;
-import negocio.productosdeproveedor.transfer.ValidarTProductoDeProveedor;
 import presentacion.controlador.CMD;
 import presentacion.controlador.EnumComandos;
 import presentacion.controlador.RespuestaCMD;
