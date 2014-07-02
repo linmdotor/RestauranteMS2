@@ -16,8 +16,8 @@ public class CMDTerminarPedido implements CMD{
 		SAPedido serviciosPedido = FactoriaNegocio.obtenerInstancia().generaSAPedido();
 		RespuestaCMD respuestaComando = null;	
 		
-		if (new ValidarTPedido().pedidoCorrecto((TPedido)objeto))
-		{
+		//if (new ValidarTPedido().pedidoCorrecto((TPedido)objeto))
+		//{
 			TPedido tPedido = (TPedido)objeto;
 			if(tPedido.getListaProductosPedido().size() > 0)
 			{
@@ -34,9 +34,9 @@ public class CMDTerminarPedido implements CMD{
 			}
 			else
 				respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Debe seleccionar al menos un producto de la lista");
-		}
-		else
-			respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar el producto. Los datos no son válidos");
+		//}
+		//else
+		//	respuestaComando = new RespuestaCMD(EnumComandos.ERROR, "Error al insertar el producto. Los datos no son válidos");
 	
 		return respuestaComando;
 	}
