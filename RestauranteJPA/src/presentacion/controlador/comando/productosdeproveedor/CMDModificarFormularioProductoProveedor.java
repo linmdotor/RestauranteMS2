@@ -9,19 +9,21 @@ public class CMDModificarFormularioProductoProveedor implements CMD {
 	public RespuestaCMD ejecuta(Object objeto) {	
 
 		RespuestaCMD respuestacomando = null;
-				
-		try {
-			if((double)objeto >= 0) {
-				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, (double)objeto);
-			} else {
-				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Producto de Proveedor seleccionado");
+			
+		if((double)objeto >= 0) 
+		{
+			try {
+					respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PRODUCTO_PROVEEDOR, (double)objeto);		 
+					
+				} catch (Exception e) {
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e) {
-			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
-		}
+		else 
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al cargar el formulario. Los datos no son válidos.");
 		
-		return respuestacomando;		
+	return respuestacomando;		
 	
 	}
 	

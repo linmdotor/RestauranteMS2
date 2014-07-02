@@ -14,20 +14,25 @@ public class CMDModificarFormularioProveedor implements CMD {
 		SAProveedor serviciosProveedor = FactoriaNegocio.obtenerInstancia().generaSAProveedor();
 		RespuestaCMD respuestacomando = null;
 		
-		try {
-			
-			if(serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()) != null)
-			{
-				respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()));
-			} else {
-				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Proveedor seleccionado");
+		if ((Integer) objeto != -1)
+		{
+			try {
+				
+				if(serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()) != null)
+				{
+					respuestacomando = new RespuestaCMD(EnumComandos.MODIFICAR_FORMULARIO_PROVEEDOR, serviciosProveedor.obtenerProveedor(serviciosProveedor.obtenerProveedores().get((int) objeto).getId_proveedor()));
+				} else {
+					respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "No se ha podido cargar el Proveedor seleccionado");
+				}
+				
+			} catch (Exception e) {
+				respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
+				e.printStackTrace();
 			}
-			
-		} catch (Exception e) {
-			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, e.getMessage());
-			e.printStackTrace();
 		}
-		
+		else
+			respuestacomando = new RespuestaCMD(EnumComandos.ERROR, "Error al cargar el formulario. Los datos no son válidos.");
+			
 		return respuestacomando;		
 	
 	}
